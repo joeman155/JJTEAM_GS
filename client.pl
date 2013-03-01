@@ -7,11 +7,10 @@ use Device::Modem::Protocol::Xmodem;
 
 
 
-$lockfile = "/tmp/hab.lock";
 
-
-$DEBUG = 1;
-$i = 1;
+$DEBUG = 0;
+my $i = 1;
+my $filename = "";
 
 my $port=Device::SerialPort->new("/dev/ttyUSB0");
 
@@ -70,9 +69,10 @@ while (1 == 1)
        }
 
   # printf "gotit = %s\n", $gotit;                # input BEFORE the match
+      $v_file = $filename . '_image' . $i . '.jpg';
       if ($gotit =~ /X/) 
       {
-        print "Starting download in 5 seconds....\n";
+        print "Starting download in 5 seconds to $v_file....\n";
       }
 
      sleep 5;
@@ -80,7 +80,7 @@ while (1 == 1)
 
        my $receive = Device::SerialPort::Xmodem::Receive->new(
                 port     => $port,
-                filename => '/home/joeman/Desktop/images/image' . $i . '.jpg'
+                filename => '/home/joeman/Desktop/images/' . $v_file
         );
 
         $receive->start();
@@ -136,7 +136,8 @@ sub decode_line()
     $v_result = "Failed to send picture.";
   } elsif ($p_line =~ m/^F:(.*)$/)
   {
-    $v_result = "File $1 being saved to SD";
+    $filename = $1;
+    $v_result = "File $filename being saved to SD";
   } elsif ($p_line =~ m/^T:(.*)$/)
   {
     $v_result = "Time in milliseconds since power turned on: $1";
