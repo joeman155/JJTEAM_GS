@@ -5,7 +5,19 @@ use Device::SerialPort::Xmodem;
 use Device::Modem;
 use Device::Modem::Protocol::Xmodem;
 
+my($day, $month, $year) = (localtime)[3,4,5];
+$month = sprintf '%02d', $month+1;
+$day   = sprintf '%02d', $day;
+my $rrmmdd =  $year+1900 . $month . $day;
 
+# gps_file
+$gps_file = "gps_data.txt";
+
+# measurements_file
+$measurements_file = "measurements.txt";
+
+
+# Open these files for writing data in
 
 
 $DEBUG = 0;
@@ -69,7 +81,7 @@ while (1 == 1)
        }
 
   # printf "gotit = %s\n", $gotit;                # input BEFORE the match
-      $v_file = $filename . '_image' . $i . '.jpg';
+      $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
       if ($gotit =~ /X/) 
       {
         print "Starting download in 5 seconds to $v_file....\n";
@@ -94,7 +106,6 @@ print "Finished Transmission\n";
 }
 
 
-
 exit;
 
 
@@ -114,14 +125,24 @@ sub decode_line()
   } elsif ($p_line =~ /^S$/)
   {
     $v_result = "Powering up HOPE";
+  } elsif ($p_line =~ /^G$/)
+  {
+    $v_result = "HOPE powered up";
   } elsif ($p_line =~ m/^M(.+),(.+),(.+)$/)
   {
     $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3\n";
+    $now_string = localtime;
+    open(my $meas_fh, '>>' . $measurements_file) or die "issue opening measurements file";
+    print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . "\n";
+    close($meas_fh);
   } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+)$/)
   {
     $v_lat = $1/100000;
     $v_long = $2/100000;
     $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: $3\nDate: $4\nTime: $5\n";
+    open(my $gps_fh, '>>' . $gps_file) or die "issue opening gps file";
+    print $gps_fh $v_result;
+    close($gps_fh);
   } elsif ($p_line =~ /^C$/)
   {
     $v_result = "Taking picture";
