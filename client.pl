@@ -146,6 +146,21 @@ sub decode_line()
   } elsif ($p_line =~ /^C$/)
   {
     $v_result = "Taking picture";
+  } elsif ($p_line =~ /^E0$/)
+  {
+    $v_result = "Error initialising SD";
+  } elsif ($p_line =~ /^E1$/)
+  {
+    $v_result = "Error initialising SD";
+  } elsif ($p_line =~ /^E2$/)
+  {
+    $v_result = "Error creating image file on SD";
+  } elsif ($p_line =~ /^E3$/)
+  {
+    $v_result = "Error opening GPS file on SD";
+  } elsif ($p_line =~ /^E4$/)
+  {
+    $v_result = "Error opening file for pressure/temp measurements on SD";
   } elsif ($p_line =~ /^D$/)
   {
     $v_result = "Finished taking picture";
