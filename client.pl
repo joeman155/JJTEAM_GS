@@ -4,6 +4,7 @@ use Device::SerialPort qw( :PARAM :STAT 0.07 );
 use Device::SerialPort::Xmodem;
 use Device::Modem;
 use Device::Modem::Protocol::Xmodem;
+use POSIX;
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
@@ -176,7 +177,14 @@ sub decode_line()
     $v_result = "File $filename being saved to SD";
   } elsif ($p_line =~ m/^T:(.*)$/)
   {
-    $v_result = "Time in milliseconds since power turned on: $1";
+    $v_seconds = $1/1000;
+    $v_minutes = $v_seconds/60;
+    $v_hours   = $v_minutes/60;
+    $v_hours_rounded = floor($v_hours);
+    $v_minutes_rounded = floor(60 * ($v_hours - $v_hours_rounded));
+    $v_seconds_rounded = floor($v_seconds - ($3600 * $v_hours + 60 * $v_minutes_rounded));
+    # $v_result = "Time in milliseconds since power turned on: $1";
+    $v_result = "Time since power turned on is " . $v_hours_rounded . "hours and " . $v_minutes_rounded . "minutes and " . $v_seconds_rounded . "seconds.\n";
   } elsif ($p_line =~ /^\.$/)
   {
     if ($taking_picture == 1)
