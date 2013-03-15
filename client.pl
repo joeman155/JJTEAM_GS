@@ -12,10 +12,10 @@ $day   = sprintf '%02d', $day;
 my $rrmmdd =  $year+1900 . $month . $day;
 
 # gps_file
-$gps_file = "gps_data.txt";
+$gps_file = "out/gps_data" . $rrmmdd . ".txt";
 
 # measurements_file
-$measurements_file = "measurements.txt";
+$measurements_file = "out/measurements.txt";
 
 
 # Open these files for writing data in
@@ -24,6 +24,8 @@ $measurements_file = "measurements.txt";
 $DEBUG = 0;
 my $i = 1;
 my $filename = "";
+$pic_count = 0;
+$pic_dl_freq = 5; # How often to download a pic
 
 my $port=Device::SerialPort->new("/dev/ttyUSB0");
 
@@ -70,36 +72,39 @@ while (1 == 1)
     
       if ($result =~ /Menu/)
       {
+        # We don't want to d/l EACH time we are offered...just occasionly
+        if ($pic_count % $pic_dl_freq == 0)
+        {
 
-       $count_out = $port->write("2\r\n");
-       print "Sent request to download image\n";
+          $count_out = $port->write("2\r\n");
+          print "Sent request to download image\n";
 
-       my $gotit = "";
-       until ("" ne $gotit) {
-         $gotit = $port->lookfor;       # poll until data ready
-         die "Aborted without match\n" unless (defined $gotit);
-         sleep 1;                          # polling sample time
-       }
+          my $gotit = "";
+          until ("" ne $gotit) {
+            $gotit = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $gotit);
+            sleep 1;                          # polling sample time
+          }
 
-  # printf "gotit = %s\n", $gotit;                # input BEFORE the match
-      $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
-      if ($gotit =~ /X/) 
-      {
-        print "Starting download in 5 seconds to $v_file....\n";
-      }
+          $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
+          if ($gotit =~ /X/) 
+          {
+            print "Starting download in 5 seconds to $v_file....\n";
+          }
 
-     sleep 5;
-     print "Download started.\n";
+          sleep 5;
+          print "Download started.\n";
 
-       my $receive = Device::SerialPort::Xmodem::Receive->new(
+          my $receive = Device::SerialPort::Xmodem::Receive->new(
                 port     => $port,
-                filename => '/home/joeman/Desktop/images/' . $v_file
-        );
+                filename => 'out/images/' . $v_file
+          );
 
-        $receive->start();
-$i++;
-print "Finished Transmission\n";
-
+          $receive->start();
+          $i++;
+          print "Finished Transmission\n";
+        }
+        $pic_count++;
       }
     }
 
@@ -141,9 +146,14 @@ sub decode_line()
     $v_lat = $1/100000;
     $v_long = $2/100000;
     $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: $3\nDate: $4\nTime: $5\n";
+    $v_line = $4 . "," . $5 . "," . $v_lat . "," . $v_long . "," . $3 . "\n";
     open(my $gps_fh, '>>' . $gps_file) or die "issue opening gps file";
-    print $gps_fh $v_result;
+    print $gps_fh $v_line;
     close($gps_fh);
+
+    # Generate the kml file each time we have more gps data
+    create_kml($gps_file);
+
   } elsif ($p_line =~ /^C$/)
   {
     $v_result = "Taking picture";
@@ -203,4 +213,83 @@ sub decode_line()
   }
 
  return $v_result;
+}
+
+
+
+sub create_kml()
+{
+local ($gps_file) = @_;
+
+open (my $kml_file, ">out/hab_gps.kml") or die "Cannot create hab_gps.kml";
+
+$startline = << "STARTLINE";
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<Placemark>
+<name>Cairns HAB launch - JJ Team</name>
+<LookAt>
+<longitude>145.65888</longitude>
+<latitude>-16.75229</latitude>
+<altitude>1000</altitude>
+<range>500.882995</range>
+<tilt>60.768762</tilt>
+<heading>270.131493</heading>
+</LookAt>
+<styleUrl>#msn_icon12</styleUrl>
+<LineString>
+<tessellate>1</tessellate>
+<altitudeMode>absolute</altitudeMode> 
+<coordinates>
+STARTLINE
+
+print $kml_file $startline;
+
+open FILE, "<", $gps_file or die "No GPS Data";
+while ($line = <FILE>)
+{
+ 
+  $line =~ /^(.*),(.*),(.*),(.*),(.*)$/;
+
+  print $kml_file $4 . "," . $3 . "," . $5 . "\n";
+$points .= << "HERE"
+   <Placemark>
+     <name>$1, $2</name>
+     <Point>
+       <coordinates>$4,$3,$5</coordinates>
+     </Point>
+   </Placemark>
+HERE
+
+}
+
+close(FILE);
+# -72.516244,-13.162806,0
+# -72.516244,-13.162706,1000
+# -72.516244,-13.162606,2000
+# -72.516244,-13.162606,2000
+# -72.516244,-13.162206,2000
+# -72.516244,-13.161606,2000
+# -72.516244,-13.152606,2000
+
+$finishline = << "FINISHLINE";
+</coordinates>
+</LineString>
+</Placemark>
+FINISHLINE
+
+print $kml_file $finishline;
+
+print $kml_file $points;
+$finishpoints = << "FINISHPOINTS";
+</Document>
+</kml>
+FINISHPOINTS
+
+print $kml_file $finishpoints;
+
+close($kml_file);
+
+
 }
