@@ -104,6 +104,10 @@ while (1 == 1)
           $i++;
           print "Finished Transmission\n";
         }
+        else
+        {
+          print "Skipping d/l of image this time.\n";
+        }
         $pic_count++;
       }
     }
