@@ -18,28 +18,65 @@ $gps_file = "out/gps_data" . $rrmmdd . ".txt";
 $measurements_file = "out/measurements.txt";
 
 
-# Open these files for writing data in
+# Defaults 
+$mode = 0;
 
+
+# Parameters
+$param1 = $ARGV[0];
+
+if ($param1) 
+{
+  if ($param1 =~ /^T$/) 
+    {
+     $mode = 1;
+    }
+  elsif ($param1 =~ /^N$/)
+    {
+     $mode = 2;
+    }
+  else 
+    {
+     print "If providing parameter, it must only be T (testing) or N (normal)\n";
+     exit;
+    }
+}
+
+print "HOPE Client started\n";
 
 $DEBUG = 0;
 my $i = 1;
 my $filename = "";
 $pic_count = 0;
-$pic_dl_freq = 5; # How often to download a pic
+$pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
 
-my $port=Device::SerialPort->new("/dev/ttyUSB0");
+ my $port=Device::SerialPort->new("/dev/ttyUSB0");
+
 
  my $STALL_DEFAULT=10; # how many seconds to wait for new input
  
  my $timeout=$STALL_DEFAULT;
 
 
-  # similar
+eval {
+  # Try initialising Serial Port
   $port->baudrate(9600);
   $port->parity("none");
   $port->databits(8);
   $port->stopbits(1); 
 #  $port->handshake("xoff"); 
+  };
+if (my $e = $@)
+  {
+   print("Issues initialising Serial modem. Check It is connected.\n");
+   print("Error: " . $e . "\n");
+   exit;
+  }
+
+print "Connected to Serial Port...\n";
+print "Listening for HOPE...\n";
+if ($mode == 1) { print " -- TEST MODE --\n"; }
+if ($mode == 2) { print " -- NORMAL MODE --\n"; }
 
 
   $port->read_char_time(0);     # don't wait for each character
@@ -76,33 +113,70 @@ while (1 == 1)
         if ($pic_count % $pic_dl_freq == 0)
         {
 
-          $count_out = $port->write("2\r\n");
-          print "Sent request to download image\n";
-
-          my $gotit = "";
-          until ("" ne $gotit) {
-            $gotit = $port->lookfor;       # poll until data ready
-            die "Aborted without match\n" unless (defined $gotit);
-            sleep 1;                          # polling sample time
-          }
-
-          $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
-          if ($gotit =~ /X/) 
+          if ($mode == 0)
           {
-            print "Starting download in 5 seconds to $v_file....\n";
+            $count_out = $port->write("2\r\n");
+            print "Sent request to download image\n";
+
+            my $gotit = "";
+            until ("" ne $gotit) {
+              $gotit = $port->lookfor;       # poll until data ready
+              die "Aborted without match\n" unless (defined $gotit);
+              sleep 1;                          # polling sample time
+            }
+
+            $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
+            if ($gotit =~ /X/) 
+            {
+              print "Starting download in 5 seconds to $v_file....\n";
+            }
+
+            sleep 5;
+            print "Download started.\n";
+
+            my $receive = Device::SerialPort::Xmodem::Receive->new(
+                  port     => $port,
+                  filename => 'out/images/' . $v_file
+            );
+
+            $receive->start();
+            $i++;
+            print "Finished Transmission\n";
           }
+          elsif ($mode == 1)
+          {
+            $count_out = $port->write("2\r\n");
+            print "Sent request put in test mode\n";
+   
+            my $gotit = "";
+            until ("" ne $gotit) {
+              $gotit = $port->lookfor;       # poll until data ready
+              die "Aborted without match\n" unless (defined $gotit);
+              sleep 1;                          # polling sample time
+            }
 
-          sleep 5;
-          print "Download started.\n";
+            if ($gotit =~ /T/) 
+            {
+              print "HOPE is now in Test mode\n";
+            }
+          }
+          elsif ($mode == 2)
+          {
+            $count_out = $port->write("3\r\n");
+            print "Sent request put in normal mode\n";
+  
+            my $gotit = "";
+            until ("" ne $gotit) {
+              $gotit = $port->lookfor;       # poll until data ready
+              die "Aborted without match\n" unless (defined $gotit);
+              sleep 1;                          # polling sample time
+            }
 
-          my $receive = Device::SerialPort::Xmodem::Receive->new(
-                port     => $port,
-                filename => 'out/images/' . $v_file
-          );
-
-          $receive->start();
-          $i++;
-          print "Finished Transmission\n";
+            if ($gotit =~ /N/)
+            {
+              print "HOPE is now in Normal mode\n";
+            }
+          }
         }
         else
         {
