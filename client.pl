@@ -37,7 +37,7 @@ if ($param1)
     }
   else 
     {
-     print "If providing parameter, it must only be T (testing) or N (normal)\n";
+     print "If providing parameter, it must only be T (fewer pics) or N (No pics)\n";
      exit;
     }
 }
@@ -110,10 +110,10 @@ while (1 == 1)
       if ($result =~ /Menu/)
       {
         # We don't want to d/l EACH time we are offered...just occasionly
-        if ($pic_count % $pic_dl_freq == 0)
+        if ($mode == 0)
         {
 
-          if ($mode == 0)
+          if ($pic_count % $pic_dl_freq == 0)
           {
             $count_out = $port->write("2\r\n");
             print "Sent request to download image\n";
@@ -143,46 +143,47 @@ while (1 == 1)
             $i++;
             print "Finished Transmission\n";
           }
-          elsif ($mode == 1)
+          else
           {
-            $count_out = $port->write("2\r\n");
-            print "Sent request put in test mode\n";
-   
-            my $gotit = "";
-            until ("" ne $gotit) {
-              $gotit = $port->lookfor;       # poll until data ready
-              die "Aborted without match\n" unless (defined $gotit);
-              sleep 1;                          # polling sample time
-            }
-
-            if ($gotit =~ /T/) 
-            {
-              print "HOPE is now in Test mode\n";
-            }
+            print "Skipping d/l of image this time.\n";
           }
-          elsif ($mode == 2)
-          {
-            $count_out = $port->write("3\r\n");
-            print "Sent request put in normal mode\n";
-  
-            my $gotit = "";
-            until ("" ne $gotit) {
-              $gotit = $port->lookfor;       # poll until data ready
-              die "Aborted without match\n" unless (defined $gotit);
-              sleep 1;                          # polling sample time
-            }
-
-            if ($gotit =~ /N/)
-            {
-              print "HOPE is now in Normal mode\n";
-            }
-          }
+          $pic_count++;
         }
-        else
+        elsif ($mode == 1)
         {
-          print "Skipping d/l of image this time.\n";
+          $count_out = $port->write("1\r\n");
+          print "Sent request put in test mode\n";
+ 
+          my $gotit = "";
+          until ("" ne $gotit) {
+            $gotit = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $gotit);
+            sleep 1;                          # polling sample time
+          }
+
+          if ($gotit =~ /T/) 
+          {
+            print "HOPE is now in Test mode\n";
+          }
         }
-        $pic_count++;
+        elsif ($mode == 2)
+        {
+          $count_out = $port->write("3\r\n");
+          print "Sent request put in normal mode\n";
+  
+          my $gotit = "";
+          until ("" ne $gotit) {
+            $gotit = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $gotit);
+            sleep 1;                          # polling sample time
+          }
+
+          if ($gotit =~ /N/)
+          {
+            print "HOPE is now in Normal mode\n";
+          }
+        }
+
       }
     }
 
@@ -203,9 +204,9 @@ sub decode_line()
   if ($p_line =~ /U/)
   {
     $v_result = "Menu";
-  } elsif ($p_line =~ /^H$/)
+  } elsif ($p_line =~ /^H:([0-9]+)$/)
   {
-    $v_result = "Heartbeat";
+    $v_result = "Heartbeat Count: " . $1;
   } elsif ($p_line =~ /^S$/)
   {
     $v_result = "Powering up HOPE";
