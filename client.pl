@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use lib '/home/root/hope/modules/lib/perl/site_perl/5.14.2';
+
 use Device::SerialPort qw( :PARAM :STAT 0.07 );
 use Device::SerialPort::Xmodem;
 use Device::Modem;
@@ -50,7 +52,7 @@ my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
 
- my $port=Device::SerialPort->new("/dev/ttyUSB0");
+ my $port=Device::SerialPort->new("/dev/ttyO1");
 
 
  my $STALL_DEFAULT=10; # how many seconds to wait for new input
@@ -115,8 +117,11 @@ while (1 == 1)
 
           if ($pic_count % $pic_dl_freq == 0)
           {
+            print "Sending request to download image\n";
+            $port->lookclear;
             $count_out = $port->write("2\r\n");
-            print "Sent request to download image\n";
+            warn "write failed\n"   unless ($count_out);
+            warn "write incomplete\n" if ($count_out != length("2\r\n") );
 
             my $gotit = "";
             until ("" ne $gotit) {
@@ -125,23 +130,37 @@ while (1 == 1)
               sleep 1;                          # polling sample time
             }
 
+
             $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
             if ($gotit =~ /X/) 
             {
               print "Starting download in 5 seconds to $v_file....\n";
+
+              sleep 5;
+              print "Download started.\n";
+
+              my $receive = Device::SerialPort::Xmodem::Receive->new(
+                    port     => $port,
+                    filename => 'out/images/' . $v_file,
+                    DEBUG    => 1
+              );
+
+              $receive->start();
+              $i++;
+              print "Finished Transmission\n";
+            } 
+            elsif ($gotit =~ /W/)
+            {
+              print "Timeout waiting for response from ground station.\n";
             }
-
-            sleep 5;
-            print "Download started.\n";
-
-            my $receive = Device::SerialPort::Xmodem::Receive->new(
-                  port     => $port,
-                  filename => 'out/images/' . $v_file
-            );
-
-            $receive->start();
-            $i++;
-            print "Finished Transmission\n";
+            elsif ($gotit =~ /Q/)
+            {
+              print "Did not recognise response from station.\n";
+            }
+            else
+            {
+              print "HAB never started sending....perhaps it didn't get request to send image?\n";
+            }
           }
           else
           {
