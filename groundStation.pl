@@ -2,7 +2,7 @@
 
 use lib '/home/root/hope/modules/lib/perl/site_perl/5.14.2';
 
-use strict;
+# use strict;
 use warnings;
 use IO::Socket;
 use threads;
@@ -15,14 +15,14 @@ use POSIX;
 
 
 #get the port to bind to or default to 8000 - which remote.pl connects to
-my $port = 8000;
+my $tcpPort = 8000;
 
 # a hash to record client machines and thread queue for internal comunication
 my $i = 1;
 my $queue_id = 1;
 my %clients;
 my @queues;
-my $max_clients = 5;
+my $max_clients = 3;
 
 # Initialise queues
 while ($i < $max_clients)
@@ -31,6 +31,7 @@ while ($i < $max_clients)
   push(@queues, $queue);
   $i++;
 }
+
 
 
 my($day, $month, $year) = (localtime)[3,4,5];
@@ -72,7 +73,6 @@ if ($param1)
 print "HOPE Client started\n";
 
 $DEBUG = 0;
-my $i = 1;
 my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
@@ -113,14 +113,14 @@ my $monitor = threads->create ("monitor_modem", \@queues);
 
 
 # create the listen socket - where clients connect to get information from modem
-my $listen_socket = IO::Socket::INET->new(LocalPort => $port,
+my $listen_socket = IO::Socket::INET->new(LocalPort => $tcpPort,
                                           Listen => 10,
                                           Proto => 'tcp',
                                           Reuse => 1);
 #make sure we are bound to the port
 die "Cant't create a listening socket: $@" unless $listen_socket;
 
-warn "Server ready. Waiting for connections on $port ... \n";
+warn "Server ready. Waiting for connections on $tcpPort ... \n";
 
 #wait for connections at the accept call
 while (my $connection = $listen_socket->accept) {
@@ -133,6 +133,7 @@ sub send_data_to_remote {
     my ($queues, $queue_id, $socket) = @_;
     my $queue = @$queues[$queue_id];
 
+    print $socket "Connected.\n";
 print "Got a connection from client! Access queue $queue_id\n";
        while (defined(my $item = $queue->dequeue())) {
         print $socket "$item\n";
@@ -146,30 +147,36 @@ print "Got a connection from client! Access queue $queue_id\n";
 
 sub monitor_modem()
 {
+	local($queues) = @_;
+
+
+
 while (1 == 1)
 {
   $answer = "";
   @lines = NULL;
 
-  print_to_queue("Test");
-
   $answer = $port->read(80);
   @lines = split /\r\n/, $answer;
   $line_count = @lines;
 
-  print "Number of lines: " . $line_count. "\n" if $DEBUG;
+  $str =  "Number of lines: " . $line_count. "\n" if $DEBUG;
+  print_to_queue($queues, $str) if $DEBUG ;
   
   # Parse each line
   foreach $line (@lines)
   {
 
-    print "DECODING Line: " . $line . "\n" if $DEBUG;
+    $str = "DECODING Line: " . $line . "\n" if $DEBUG;
+    print_to_queue($queues, $str) if $DEBUG;
 
     $result = decode_line($line);
     
     if (length($result) > 0)
     {
-      print $result . "\n";
+	    # $str = $result . "\n";
+      $str = $result;
+      print_to_queue($queues, $str);
     
       if ($result =~ /Menu/)
       {
@@ -179,7 +186,8 @@ while (1 == 1)
 
           if ($pic_count % $pic_dl_freq == 0)
           {
-            print "Sending request to download image\n";
+            $str = "Sending request to download image\n";
+            print_to_queue($queues, $str);
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
@@ -196,10 +204,12 @@ while (1 == 1)
             $v_file = $rrmmdd . "_" . $filename . '_image' . $i . '.jpg';
             if ($gotit =~ /X/) 
             {
-              print "Starting download in 5 seconds to $v_file....\n";
+              $str = "Starting download in 5 seconds to $v_file....\n";
+              print_to_queue($queues, $str);
 
               sleep 5;
-              print "Download started.\n";
+              $str = "Download started.\n";
+              print_to_queue($queues, $str);
 
               my $receive = Device::SerialPort::Xmodem::Receive->new(
                     port     => $port,
@@ -209,31 +219,37 @@ while (1 == 1)
 
               $receive->start();
               $i++;
-              print "Finished Transmission\n";
+              $str = "Finished Transmission\n";
+              print_to_queue($queues, $str);
             } 
             elsif ($gotit =~ /W/)
             {
-              print "Timeout waiting for response from ground station.\n";
+              $str = "Timeout waiting for response from ground station.\n";
+              print_to_queue($queues, $str);
             }
             elsif ($gotit =~ /Q/)
             {
-              print "Did not recognise response from station.\n";
+              $str = "Did not recognise response from station.\n";
+              print_to_queue($queues, $str);
             }
             else
             {
-              print "HAB never started sending....perhaps it didn't get request to send image?\n";
+              $str = "HAB never started sending....perhaps it didn't get request to send image?\n";
+              print_to_queue($queues, $str);
             }
           }
           else
           {
-            print "Skipping d/l of image this time.\n";
+            $str = "Skipping d/l of image this time.\n";
+            print_to_queue($queues, $str);
           }
           $pic_count++;
         }
         elsif ($mode == 1)
         {
           $count_out = $port->write("1\r\n");
-          print "Sent request put in test mode\n";
+          $str = "Sent request put in test mode\n";
+          print_to_queue($queues, $str);
  
           my $gotit = "";
           until ("" ne $gotit) {
@@ -244,13 +260,15 @@ while (1 == 1)
 
           if ($gotit =~ /T/) 
           {
-            print "HOPE is now in Test mode\n";
+            $str = "HOPE is now in Test mode\n";
+            print_to_queue($queues, $str);
           }
         }
         elsif ($mode == 2)
         {
           $count_out = $port->write("3\r\n");
-          print "Sent request put in normal mode\n";
+          $str = "Sent request put in normal mode\n";
+          print_to_queue($queues, $str);
   
           my $gotit = "";
           until ("" ne $gotit) {
@@ -261,7 +279,8 @@ while (1 == 1)
 
           if ($gotit =~ /N/)
           {
-            print "HOPE is now in Normal mode\n";
+            $str = "HOPE is now in Normal mode\n";
+            print_to_queue($queues, $str);
           }
         }
 
@@ -451,18 +470,21 @@ print $kml_file $finishpoints;
 
 close($kml_file);
 
-
 }
 
 
 
 sub print_to_queue()
 {
-  local($message) = $_;
+  local($queues, $message) = @_;
 
-  # Put data on each queue that we get from the modem
-  foreach my $queue (@$queues) {
-    $queue -> enqueue($message);
+  if ($message)
+  {
+    `echo "$message" >> /tmp/message.log`;
+    # Put data on each queue that we get from the modem
+    foreach my $queue (@$queues) {
+      $queue -> enqueue($message);
+    }
   }
 
 }
