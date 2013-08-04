@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Slider - Vertical slider</title>
+        <link rel="stylesheet" href="jq/themes/ui-lightness/jquery-ui.css">
+
+
+  <script src="jq/jquery-1.9.1.js"></script>
+  <script src="jq/ui/jquery.ui.core.js"></script>
+  <script src="jq/ui/jquery.ui.widget.js"></script>
+  <script src="jq/ui/jquery.ui.mouse.js"></script>
+  <script src="jq/ui/jquery.ui.button.js"></script>
+  <script src="jq/ui/jquery.ui.position.js"></script>
+  <script src="jq/ui/jquery.ui.effect.js"></script>
+  <script src="jq/ui/jquery.ui.effect-slide.js"></script>
+
+	<style>
+		#messages {
+float: left;
+		}
+		#messages ul {
+		list-style-type: none;
+		width: 200px;
+		padding: 0px;
+		}
+
+		#messages li {
+		list-style-type: none;
+		width: 200px;
+		padding: 4px;
+		background: #ccc;
+		border: 1px solid #000;
+		}
+
+		#container {
+		width: 300px;
+		height: 400px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: grey;
+		overflow: scroll;
+		margin: 0px;
+		padding: 0px;
+		}
+	</style>
+	<script>
+	$(function() {
+		$ ("#addrow").click(function () {
+		slideDown();
+		return false;
+		});
+
+		var last_id;
+
+		function getMessages() 
+		{
+		// Poll Server
+		$.ajax({
+			url: '/getMessage.php',
+			data: { id: last_id },
+			type: "GET",
+			dataType: "json",
+			success: function(data) {
+				$.each(data, function(index,element) {
+				// Foreach message...add it to the browser page.
+				addMessage("<li>" + element.message + "</li>");
+				last_id = element.id;
+				});
+				},
+			failure: function() {
+				alert('failure occured');
+				}
+
+			});
+		}
+
+	function addMessage(message)
+	{
+		$("#messages").prepend(message);
+		$("#messages li:first").effect("slide", {direction: "down"}, "slow");
+	}
+
+	setInterval(function(){
+		getMessages();
+	}, 500);
+	});
+
+
+	</script>
+</head>
+<body>
+
+<div class="demo-description">
+	<p> Description</p>
+</div>
+
+	<div id="container">
+	<ul id="messages">
+		<li>Heading</li>
+	</ul>
+	</div>
+
+	<input id="addrow" type="button" value="Add Row"/>
+<div id="slider-vertical" style="height:200px;"></div>
+
+</body>
+</html>
