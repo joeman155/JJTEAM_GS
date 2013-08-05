@@ -44,7 +44,6 @@
 		border-style: solid;
 		border-width: 1px;
 		border-color: grey;
-		overflow: scroll;
 		margin: 0px;
 		padding: 0px;
 		}
@@ -98,7 +97,7 @@
 	function addMessage(message)
 	{
 		$("#messages").prepend(message);
-		$("#messages li:first").effect("slide", {direction: "down"}, "slow");
+		$("#messages li:first").effect("slide", {direction: "down"}, "fast");
 	}
 
 	setInterval(function(){
@@ -107,7 +106,7 @@
 		getMessages();
 		}
 	processing = 0;
-	}, 500);
+	}, 1000);
 	});
 
 

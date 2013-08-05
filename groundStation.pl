@@ -11,7 +11,10 @@ use Device::SerialPort qw( :PARAM :STAT 0.07 );
 use Device::SerialPort::Xmodem;
 use Device::Modem;
 use Device::Modem::Protocol::Xmodem;
+use DBI;
 use POSIX;
+
+
 
 
 #get the port to bind to or default to 8000 - which remote.pl connects to
@@ -161,14 +164,14 @@ while (1 == 1)
   $line_count = @lines;
 
   $str =  "Number of lines: " . $line_count. "\n" if $DEBUG;
-  print_to_queue($queues, $str) if $DEBUG ;
+  log_messages($queues, $str) if $DEBUG ;
   
   # Parse each line
   foreach $line (@lines)
   {
 
     $str = "DECODING Line: " . $line . "\n" if $DEBUG;
-    print_to_queue($queues, $str) if $DEBUG;
+    log_messages($queues, $str) if $DEBUG;
 
     $result = decode_line($line);
     
@@ -176,7 +179,7 @@ while (1 == 1)
     {
 	    # $str = $result . "\n";
       $str = $result;
-      print_to_queue($queues, $str);
+      log_messages($queues, $str);
     
       if ($result =~ /Menu/)
       {
@@ -187,7 +190,7 @@ while (1 == 1)
           if ($pic_count % $pic_dl_freq == 0)
           {
             $str = "Sending request to download image\n";
-            print_to_queue($queues, $str);
+            log_messages($queues, $str);
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
@@ -205,11 +208,11 @@ while (1 == 1)
             if ($gotit =~ /X/) 
             {
               $str = "Starting download in 5 seconds to $v_file....\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
 
               sleep 5;
               $str = "Download started.\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
 
               my $receive = Device::SerialPort::Xmodem::Receive->new(
                     port     => $port,
@@ -220,28 +223,28 @@ while (1 == 1)
               $receive->start();
               $i++;
               $str = "Finished Transmission\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
             } 
             elsif ($gotit =~ /W/)
             {
               $str = "Timeout waiting for response from ground station.\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
             }
             elsif ($gotit =~ /Q/)
             {
               $str = "Did not recognise response from station.\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
             }
             else
             {
               $str = "HAB never started sending....perhaps it didn't get request to send image?\n";
-              print_to_queue($queues, $str);
+              log_messages($queues, $str);
             }
           }
           else
           {
             $str = "Skipping d/l of image this time.\n";
-            print_to_queue($queues, $str);
+            log_messages($queues, $str);
           }
           $pic_count++;
         }
@@ -249,7 +252,7 @@ while (1 == 1)
         {
           $count_out = $port->write("1\r\n");
           $str = "Sent request put in test mode\n";
-          print_to_queue($queues, $str);
+          log_messages($queues, $str);
  
           my $gotit = "";
           until ("" ne $gotit) {
@@ -261,14 +264,14 @@ while (1 == 1)
           if ($gotit =~ /T/) 
           {
             $str = "HOPE is now in Test mode\n";
-            print_to_queue($queues, $str);
+            log_messages($queues, $str);
           }
         }
         elsif ($mode == 2)
         {
           $count_out = $port->write("3\r\n");
           $str = "Sent request put in normal mode\n";
-          print_to_queue($queues, $str);
+          log_messages($queues, $str);
   
           my $gotit = "";
           until ("" ne $gotit) {
@@ -280,7 +283,7 @@ while (1 == 1)
           if ($gotit =~ /N/)
           {
             $str = "HOPE is now in Normal mode\n";
-            print_to_queue($queues, $str);
+            log_messages($queues, $str);
           }
         }
 
@@ -474,13 +477,26 @@ close($kml_file);
 
 
 
-sub print_to_queue()
+sub log_messages()
 {
   local($queues, $message) = @_;
 
   if ($message)
   {
+    # Log to log file
     `echo "$message" >> /tmp/message.log`;
+
+    # Initialise DB connection
+    my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+
+    # Put in DB
+    $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', date('now'))";
+
+    $sth = $dbh->prepare($query);
+    $rv = $sth->execute();
+
+    $dbh->disconnect();
+
     # Put data on each queue that we get from the modem
     foreach my $queue (@$queues) {
       $queue -> enqueue($message);
