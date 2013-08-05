@@ -9,7 +9,7 @@ catch (PDOException $e)
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
-$sql = "select * from messages_t where id > " . $id;
+$sql = "select * from messages_t where id > " . $id . " ORDER BY id ASC";
 
 $rows = $dbh->query($sql);
 
@@ -18,16 +18,16 @@ $result = array();
 foreach ($rows as $row)
 {
 
-# $id['id'] = $row['id'];
-# $message['message'] = $row['message'];
-#
-
 $v['id'] = $row['id'];
 $v['message'] = $row['message'];
+$id = $row['id'];
+`echo pushing $id >> /tmp/ids.txt`;
 
 array_push($result, $v);
 
 }
+
+`echo END >> /tmp/ids.txt`;
 
 $json = json_encode($result);
 print $json;

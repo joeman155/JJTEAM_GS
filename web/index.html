@@ -18,6 +18,7 @@
 	<style>
 		#messages {
 		padding-left: 0px;
+		margin: 0px;
 		}
 		#messages ul {
 		list-style-type: none;
@@ -28,9 +29,9 @@
 
 		#messages li {
 		list-style-type: none;
-		width: 100%;
-		padding: 0px;
-		padding-top: 6px;
+		width: 98%;
+		padding-left: 4px;
+		padding-top: 0px;
 		padding-bottom: 6px;
 		background: #ccc;
 		border: 1px solid green;
@@ -47,6 +48,18 @@
 		margin: 0px;
 		padding: 0px;
 		}
+		#header {
+		width: 300px;
+		height: 30px;
+		background-color: yellow;
+		margin: 0px;
+		padding: 0px;
+		text-align: center;
+		}
+		#header p {
+		padding: 3px;
+		font-weight: bold;
+		}
 	</style>
 	<script>
 	$(function() {
@@ -56,6 +69,7 @@
 		});
 
 		var last_id;
+		var processing = 0;
 
 		function getMessages() 
 		{
@@ -65,11 +79,13 @@
 			data: { id: last_id },
 			type: "GET",
 			dataType: "json",
+			async: false,
+			cache: false,
 			success: function(data) {
 				$.each(data, function(index,element) {
 				// Foreach message...add it to the browser page.
-				addMessage("<li>" + element.message + "</li>");
 				last_id = element.id;
+				addMessage("<li>" + element.message + element.id + "</li>");
 				});
 				},
 			failure: function() {
@@ -86,7 +102,11 @@
 	}
 
 	setInterval(function(){
+	if (processing == 0) {
+		processing = 1;
 		getMessages();
+		}
+	processing = 0;
 	}, 500);
 	});
 
@@ -95,13 +115,12 @@
 </head>
 <body>
 
-<div class="demo-description">
+<div id="header" class="demo-description">
 	<p>Hope web client - Messages</p>
 </div>
 
 	<div id="container">
 	<ul id="messages">
-		<li>Heading</li>
 	</ul>
 	</div>
 
