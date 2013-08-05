@@ -323,15 +323,23 @@ sub decode_line()
     open(my $meas_fh, '>>' . $measurements_file) or die "issue opening measurements file";
     print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . "\n";
     close($meas_fh);
+
+    insert_measurements($1, $3, $2);
+
   } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+)$/)
   {
     $v_lat = $1/100000;
     $v_long = $2/100000;
-    $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: $3\nDate: $4\nTime: $5\n";
+    $v_alt = $3;
+    $v_gps_date = $4;
+    $v_gps_time = $5;
+    $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: " . $v_alt . "\nDate: " . $v_gps_date . "\nTime: " . $v_gps_time . "\n";
     $v_line = $4 . "," . $5 . "," . $v_lat . "," . $v_long . "," . $3 . "\n";
     open(my $gps_fh, '>>' . $gps_file) or die "issue opening gps file";
     print $gps_fh $v_line;
     close($gps_fh);
+
+    insert_gps($v_lat, $v_long, $v_alt, $v_gps_date, $v_gps_time);
 
     # Generate the kml file each time we have more gps data
     create_kml($gps_file);
@@ -374,7 +382,7 @@ sub decode_line()
     $v_hours   = $v_minutes/60;
     $v_hours_rounded = floor($v_hours);
     $v_minutes_rounded = floor(60 * ($v_hours - $v_hours_rounded));
-    $v_seconds_rounded = floor($v_seconds - ($3600 * $v_hours + 60 * $v_minutes_rounded));
+    $v_seconds_rounded = floor($v_seconds - (3600 * $v_hours + 60 * $v_minutes_rounded));
     # $v_result = "Time in milliseconds since power turned on: $1";
     $v_result = "Time since power turned on is " . $v_hours_rounded . "hours and " . $v_minutes_rounded . "minutes and " . $v_seconds_rounded . "seconds.\n";
   } elsif ($p_line =~ /^\.$/)
@@ -490,10 +498,10 @@ sub log_messages()
     my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
     # Put in DB
-    $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', date('now'))";
+    $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', datetime('now'))";
 
     $sth = $dbh->prepare($query);
-    $rv = $sth->execute();
+    $sth->execute();
 
     $dbh->disconnect();
 
@@ -502,5 +510,42 @@ sub log_messages()
       $queue -> enqueue($message);
     }
   }
+
+}
+
+
+sub insert_measurements()
+{
+ local($pressure, $internal_temp, $external_temp) = @_;
+
+ # Initialise DB connection
+ my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+
+ # Put in DB
+ $query = "INSERT INTO measurements_t (pressure, internal_temp, external_temp, creation_date)
+                   values (" . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now'))";
+
+ $sth = $dbh->prepare($query);
+ $sth->execute();
+ 
+ $dbh->disconnect();
+
+}
+
+sub insert_gps()
+{
+ local($latitude, $longitude, $height, $gps_date, $gps_time) = @_;
+
+ # Initialise DB connection
+ my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+
+ # Put in DB
+ $query = "INSERT INTO gps_t (latitude, longitude, height, gps_date, gps_time, creation_date)
+                   values (" . $latitude . ", " . $longitude . ", " . $height . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now'))";
+
+ $sth = $dbh->prepare($query);
+ $sth->execute();
+ 
+ $dbh->disconnect();
 
 }

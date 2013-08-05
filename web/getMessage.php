@@ -27,7 +27,7 @@ foreach ($rows as $row)
 
 $v['id'] = $row['id'];
 $v['message'] = $row['message'];
-$id = $row['id'];
+$v['creation_date'] = $row['creation_date'];
 
 array_push($result, $v);
 
