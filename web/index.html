@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>jQuery UI Slider - Vertical slider</title>
+	<title>Hope Client Web Portal</title>
         <link rel="stylesheet" href="jq/themes/ui-lightness/jquery-ui.css">
 
 
@@ -85,7 +85,7 @@
 				$.each(data, function(index,element) {
 				// Foreach message...add it to the browser page.
 				last_id = element.id;
-				addMessage("<li>" + element.message + element.id + "</li>");
+				addMessage("<li>" + element.id + " - " + element.message + "</li>");
 				});
 				},
 			failure: function() {
