@@ -66,6 +66,10 @@ if ($param1)
     {
      $mode = 2;
     }
+  elsif ($param1 =~ /^C$/)
+    {
+     $mode = 3;
+    }
   else 
     {
      print "If providing parameter, it must only be T (fewer pics) or N (No pics)\n";
@@ -103,6 +107,7 @@ print "Connected to Serial Port...\n";
 print "Listening for HOPE...\n";
 if ($mode == 1) { print " -- TEST MODE --\n"; }
 if ($mode == 2) { print " -- NORMAL MODE --\n"; }
+if ($mode == 3) { print " -- WILL INITIATE CUTDOWN MODE AT NEXT POLL --\n"; }
 
 
 $port->read_char_time(0);     # don't wait for each character
@@ -286,7 +291,24 @@ while (1 == 1)
             log_messages($queues, $str);
           }
         }
-
+	elsif ($mode == 3)
+	{
+          $count_out = $port->write("4\r\n");
+          $str = "Sent request intiate cutdown\n";
+          log_messages($queues, $str);
+  
+          my $gotit = "";
+          until ("" ne $gotit) {
+            $gotit = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $gotit);
+            sleep 1;                          # polling sample time
+          }
+          if ($gotit =~ /B/)
+          {
+            $str = "HOPE cutdown initiated!\n";
+            log_messages($queues, $str);
+          }
+	}
       }
     }
 
@@ -365,6 +387,9 @@ sub decode_line()
   } elsif ($p_line =~ /^D$/)
   {
     $v_result = "Finished taking picture";
+  } elsif ($p_line =~ /^B$/)
+  {
+    $v_result = "Reached Max Altitude - Cutdown initiated";
   } elsif ($p_line =~ /^Y$/)
   {
     $v_result = "Finished sending picture";
