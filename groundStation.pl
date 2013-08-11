@@ -49,8 +49,10 @@ $gps_file = "out/gps_data" . $rrmmdd . ".txt";
 $measurements_file = "out/measurements.txt";
 
 # Cutdown file
-$cutdown_file = "/tmp/cutdown.txt";
-`rm -f $cutdown_file`;
+$cutdown_req_file = "/home/root/hope/run/cutdown_requested.txt";
+$cutdown_init_file = "/home/root/hope/run/cutdown_initiated.txt";
+`rm -f $cutdown_req_file`;
+`rm -f $cutdown_init_file`;
 $cutdown_initiated = 0;
 
 # Defaults 
@@ -193,9 +195,10 @@ while (1 == 1)
       if ($result =~ /Menu/)
       {
         # We don't want to d/l EACH time we are offered...just occasionly
-	if ($mode == 3 || (-f $cutdown_file && $cutdown_initiated == 0))
+	if ($mode == 3 || (-f $cutdown_req_file && $cutdown_initiated == 0))
 	{
 	  $cutdown_initiated = 1;
+	  `touch $cutdown_init_file`;
           $count_out = $port->write("4\r\n");
           $str = "Sent request intiate cutdown\n";
           log_messages($queues, $str);

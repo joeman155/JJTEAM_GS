@@ -1,22 +1,9 @@
-<html>
-  <head>
-    <title>Status</title>
-    <link rel="stylesheet" href="images.css">
-
-  <script src="jq/jquery-1.9.1.js"></script>
-  <script src="jq/ui/jquery.ui.core.js"></script>
-  <script src="jq/ui/jquery.ui.widget.js"></script>
-  <script src="jq/ui/jquery.ui.mouse.js"></script>
-  <script src="jq/ui/jquery.ui.button.js"></script>
-  <script src="jq/ui/jquery.ui.position.js"></script>
-  <script src="jq/ui/jquery.ui.effect.js"></script>
-  <script src="jq/ui/jquery.ui.effect-slide.js"></script>
-  <script src="jq/ui/jquery.ui.tabs.js"></script>
-
-  </head>
-<body>
-
 <?
+# INIT
+$home_dir = "/home/root/hope";
+$cutdown_req_file = $home_dir . "/run/cutdown_requested.txt";
+$cutdown_init_file = $home_dir . "/run/cutdown_initiated.txt";
+
 
 # Get all the latest measurements
 try {
@@ -98,10 +85,20 @@ $external_temp = $row['external_temp'];
   <td><?= $external_temp?></td>
 </tr>
 
-
 </table>
 
+<h2>Cutdown</h2>
+<?
+if (file_exists($cutdown_init_file)) {
+  $cutdown_msg = "Cutdown initiated";
+} else if (file_exists($cutdown_req_file)) {
+  $cutdown_msg = "Cutdown requested";
+} else {
+  $cutdown_msg = "NA";
+}
+?>
+	<b>Cutdown Status</b>: <?= $cutdown_msg ?>
 
 
-</body>
-</html>
+
+
