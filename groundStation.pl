@@ -48,6 +48,10 @@ $gps_file = "out/gps_data" . $rrmmdd . ".txt";
 # measurements_file
 $measurements_file = "out/measurements.txt";
 
+# Cutdown file
+$cutdown_file = "/tmp/cutdown.txt";
+`rm -f $cutdown_file`;
+$cutdown_initiated = 0;
 
 # Defaults 
 $mode = 0;
@@ -72,7 +76,7 @@ if ($param1)
     }
   else 
     {
-     print "If providing parameter, it must only be T (fewer pics) or N (No pics)\n";
+     print "If providing parameter, it must only be T (fewer pics) or N (No pics) of C (Initiate cutdown)\n";
      exit;
     }
 }
@@ -189,7 +193,26 @@ while (1 == 1)
       if ($result =~ /Menu/)
       {
         # We don't want to d/l EACH time we are offered...just occasionly
-        if ($mode == 0)
+	if ($mode == 3 || (-f $cutdown_file && $cutdown_initiated == 0))
+	{
+	  $cutdown_initiated = 1;
+          $count_out = $port->write("4\r\n");
+          $str = "Sent request intiate cutdown\n";
+          log_messages($queues, $str);
+  
+          my $gotit = "";
+          until ("" ne $gotit) {
+            $gotit = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $gotit);
+            sleep 1;                          # polling sample time
+          }
+          if ($gotit =~ /B/)
+          {
+            $str = "HOPE cutdown initiated!\n";
+            log_messages($queues, $str);
+          }
+	}
+        elsif ($mode == 0)
         {
 
           if ($pic_count % $pic_dl_freq == 0)
@@ -291,24 +314,6 @@ while (1 == 1)
             log_messages($queues, $str);
           }
         }
-	elsif ($mode == 3)
-	{
-          $count_out = $port->write("4\r\n");
-          $str = "Sent request intiate cutdown\n";
-          log_messages($queues, $str);
-  
-          my $gotit = "";
-          until ("" ne $gotit) {
-            $gotit = $port->lookfor;       # poll until data ready
-            die "Aborted without match\n" unless (defined $gotit);
-            sleep 1;                          # polling sample time
-          }
-          if ($gotit =~ /B/)
-          {
-            $str = "HOPE cutdown initiated!\n";
-            log_messages($queues, $str);
-          }
-	}
       }
     }
 
