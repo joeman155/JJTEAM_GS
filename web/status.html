@@ -1,0 +1,16 @@
+<script>
+	var current_index = $("#tabs").tabs("option","active"); 
+	if (current_index == 1) {
+        setInterval(function(){
+        // $("#status").html('test');
+	$.ajax({
+		url: "status.php",
+		success: function(s,x) {
+			$("#stats").html(s);
+		}
+	})	
+        }, 1000);
+	}
+</script>
+<div id="stats">
+</div>
