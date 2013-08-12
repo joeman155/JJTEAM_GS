@@ -1,15 +1,13 @@
 <script>
 	var current_index = $("#tabs").tabs("option","active"); 
 	if (current_index == 1) {
+
+	// Initial Load
+	load_status();
+
         setInterval(function(){
-        // $("#status").html('test');
-	$.ajax({
-		url: "status.php",
-		success: function(s,x) {
-			$("#stats").html(s);
-		}
-	})	
-        }, 1000);
+	load_status();
+        }, 5000);
 	}
 
 
@@ -22,6 +20,17 @@
 		}
 	    });
 	});
+
+	function load_status()
+	{
+        $.ajax({
+                url: "status.php",
+                success: function(s,x) {
+                    $("#stats").html(s);
+                }
+        })
+
+	}
 </script>
 <div id="stats">
 </div>
