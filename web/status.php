@@ -45,6 +45,17 @@ $internal_temp = $row['internal_temp'];
 $external_temp = $row['external_temp'];
 
 ?>
+<script>
+        $("#cutdown").click(function() {
+        alert("About to request cutdown");
+        $.ajax({
+                url: "cutdown.php",
+                success: function(s,x) {
+                        $("#stats").html(s);
+                }
+            });
+        });
+</script>
 <h1>Latest Information</h1>
 <h2>GPS Information</h2>
 <table id="gps">
@@ -94,10 +105,19 @@ if (file_exists($cutdown_init_file)) {
 } else if (file_exists($cutdown_req_file)) {
   $cutdown_msg = "Cutdown requested";
 } else {
-  $cutdown_msg = "NA";
+  $cutdown_msg = "";
 }
+
+if ($cutdown_msg != "") {
 ?>
 	<b>Cutdown Status</b>: <?= $cutdown_msg ?>
+<?
+} else {
+?>
+<input id="cutdown" type="button" value="Initiate Cutdown"/>
+<?
+}
+?>
 
 
 
