@@ -11,6 +11,19 @@
 	})	
         }, 1000);
 	}
+
+
+	$("#cutdown").click(function() {
+	alert("About to request cutdown");
+	$.ajax({
+		url: "cutdown.php",
+		success: function(s,x) {
+			$("#stats").html(s);
+		}
+	    });
+	});
 </script>
 <div id="stats">
 </div>
+
+<input id="cutdown" type="button" value="Initiate Cutdown"/>
