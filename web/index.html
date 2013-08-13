@@ -105,6 +105,27 @@
 		$("#messages li:first").effect("slide", {direction: "down"}, "fast");
 	}
 
+	function  load_datetime()
+	{
+	$.ajax({
+	url: '/getdatetime.php',
+	cache: false,
+	async: false,
+	success: function(s,x) {
+	$("#datetime").html('<h2>' + s + '</h2>');
+		}
+
+	});
+	}
+
+	// Initial load
+	load_datetime();
+
+	setInterval(function(){
+	        load_datetime();
+	        }, 5000);
+
+
 	setInterval(function(){
 	if (processing == 0) {
 		processing = 1;
@@ -119,8 +140,12 @@
 </head>
 <body>
 
+
 <div id="header" class="demo-description">
 	<p>Hope web client - Messages</p>
+</div>
+
+<div id="datetime">
 </div>
 
 <div id="tabs">
