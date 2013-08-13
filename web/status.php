@@ -28,6 +28,7 @@ $longitude = $row['longitude'];
 $height = $row['height'];
 $gps_date = $row['gps_date'];
 $gps_time = $row['gps_time'];
+$gps_creation_date = date("d-M-Y H:i:s", $row['creation_date']);
 
 
 
@@ -40,6 +41,7 @@ $sth->execute();
 
 $row = $sth->fetch();
 
+$measurement_date = date("d-M-Y H:i:s", $row['creation_date']);
 $pressure = $row['pressure'];
 $internal_temp = $row['internal_temp'];
 $external_temp = $row['external_temp'];
@@ -57,7 +59,7 @@ $external_temp = $row['external_temp'];
         });
 </script>
 <h1>Latest Information</h1>
-<h2>GPS Information</h2>
+<h2>GPS Information - <?= $gps_creation_date?></h2>
 <table id="gps">
 <tr>
   <th>Latitude</th>
@@ -81,7 +83,7 @@ $external_temp = $row['external_temp'];
 </tr>
 </table>
 
-<h2>Latest measurements</h2>
+<h2>Latest Measurements - <?= $measurement_date?></h2>
 <table id="measurements">
 <tr>
   <th>Air Pressure</th>
