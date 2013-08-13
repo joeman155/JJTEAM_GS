@@ -95,10 +95,11 @@ h2{
   color: #666666;
 }
 
-ul{
+#imagelist ul{
   list-style-type: none;
 }
 
-li{
-	list-style-type: none;
+#imagelist li{
+  list-style-type: none;
+  text-align: left;
 }

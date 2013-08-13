@@ -1,21 +1,3 @@
-<html>
-  <head>
-    <title>Images</title>
-    <link rel="stylesheet" href="images.css">
-
-  <script src="jq/jquery-1.9.1.js"></script>
-  <script src="jq/ui/jquery.ui.core.js"></script>
-  <script src="jq/ui/jquery.ui.widget.js"></script>
-  <script src="jq/ui/jquery.ui.mouse.js"></script>
-  <script src="jq/ui/jquery.ui.button.js"></script>
-  <script src="jq/ui/jquery.ui.position.js"></script>
-  <script src="jq/ui/jquery.ui.effect.js"></script>
-  <script src="jq/ui/jquery.ui.effect-slide.js"></script>
-  <script src="jq/ui/jquery.ui.tabs.js"></script>
-
-  </head>
-<body>
-
 <?
 $directory = 'out/images';    //where the gallery images are located
  
@@ -41,7 +23,7 @@ $title = htmlspecialchars($title);    //make the filename html-safe to prevent p
  
 $nomargin='';
 
-echo "<ul>\n";
+echo "<ul id=\"imagelist\">\n";
 if(in_array($ext,$allowed_types))    //if the extension is an allowable type
 {
 if(($i+1)%4==0) $nomargin='nomargin';    //the last image on the row is assigned the CSS class "nomargin"
@@ -66,5 +48,3 @@ echo "</ul>\n";
 closedir($dir_handle);    //close the directory
 
 ?>
-</body>
-</html>
