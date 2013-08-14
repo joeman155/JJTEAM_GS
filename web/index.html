@@ -17,6 +17,10 @@
   <script src="jq/ui/jquery.ui.effect-slide.js"></script>
   <script src="jq/ui/jquery.ui.tabs.js"></script>
 
+      <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+      <meta charset="utf-8">
+          <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
 	<style>
 		#messages {
 		padding-left: 0px;
@@ -62,6 +66,11 @@
 		padding: 3px;
 		font-weight: bold;
 		}
+                html, body, #map-canvas {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                }
 	</style>
 	<script>
 	$(function() {
@@ -118,6 +127,7 @@
 	});
 	}
 
+
 	// Initial load
 	load_datetime();
 
@@ -136,6 +146,16 @@
 	});
 
 
+	var map;
+	function initialize() {
+	var mapOptions = {
+		zoom: 8,
+	        center: new google.maps.LatLng(-34.397, 150.644),
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	}
+
 	</script>
 </head>
 <body>
@@ -152,11 +172,15 @@
 	<ul>
 		<li><a href="#messages">Messages</a></li>
 		<li><a href="/status.html">Status</a></li>
+		<li><a href="/map.html">Map</a></li>
 		<li><a href="/images.php">Images</a></li>
 	</ul>
 	<div id="messages" class="container">
 		<ul id="messages">
 		</ul>
+	</div>
+
+	<div id="map-canvas" style="height: 400px; width: 400px; border-color: red; border-width: 2px;">
 	</div>
 
 	<div id="status">

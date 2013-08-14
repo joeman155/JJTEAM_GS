@@ -37,4 +37,4 @@ array_push($result, $v);
 $json = json_encode($result);
 print $json;
 
-$db = null;
+$dbh = null;
