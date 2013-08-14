@@ -1,3 +1,6 @@
+<?
+header("Access-Control-Allow-Origin: http://leederville.net");
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -157,7 +160,6 @@
 	});
 
 
-        var map;
         function initialize() {
         // Get latest GPS Status
 	$.ajax({
@@ -169,7 +171,6 @@
 		success: function(data) {
 			v_lat=data.latitude;
 			v_long=data.longitude;
-			
 			},
 		failure: function() {
 			alert('failure when getting latest gps data');
@@ -179,9 +180,58 @@
         var mapOptions = {
                 zoom: 8,
                 center: new google.maps.LatLng(v_lat, v_long),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.TERRAIN
                 };
-        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var kmlUrl;
+
+
+
+	// Download kml file to blob
+	var blob;
+
+	$.ajax({
+		url: '/out/test.kml',
+		type: "GET",
+		async: false,
+		cache: false,
+		success: function(data) {
+				blob = new Blob([data], { type: "text/plain;charset=utf-8;"});
+			},
+		error: function(jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                        }
+		});
+
+       
+
+	// Upload file to leederville.net
+	var fd = new FormData();
+	fd.append("file", blob);
+	$.ajax({
+		url: "http://leederville.net/~joeman/bbb/upload.php",
+		type: "POST",
+		data: fd,
+		async: false,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function(response) {
+				kmlUrl = response;
+			},
+		error: function(jqXHR, textStatus, errorMessage) {
+			console.log(errorMessage);
+			}
+		});
+
+
+        // Create Overlay
+        // var serverAddress = 'leederville.net';
+        // var kmlURI = '/~joeman/public_html/bbb/test.kml';
+	// var kmlUrl = 'http://' + serverAddress + kmlURI;
+	var oLayer = new google.maps.KmlLayer({url: kmlUrl});
+	oLayer.setMap(map);
+
         }
 
 	</script>
@@ -200,7 +250,7 @@
 	<ul>
 		<li><a href="#messages">Messages</a></li>
 		<li><a href="/status.html">Status</a></li>
-		<li><a href="/map.php">Map</a></li>
+		<li><a href="/map.html">Map</a></li>
 		<li><a href="/images.php">Images</a></li>
 	</ul>
 	<div id="messages" class="container">
