@@ -6,6 +6,7 @@ CREATE TABLE messages_t (id integer primary key autoincrement,
 
 CREATE TABLE measurements_t (id integer primary key autoincrement,
                          instance_id varchar2(100),
+                         voltage float,
                          pressure float,
                          internal_temp float,
                          external_temp float,

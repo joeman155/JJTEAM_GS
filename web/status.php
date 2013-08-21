@@ -42,6 +42,7 @@ $sth->execute();
 $row = $sth->fetch();
 
 $measurement_date = date("d-M-Y H:i:s", $row['creation_date']);
+$voltage = $row['voltage'];
 $pressure = $row['pressure'];
 $internal_temp = $row['internal_temp'];
 $external_temp = $row['external_temp'];
@@ -85,6 +86,10 @@ $external_temp = $row['external_temp'];
 
 <h2>Latest Measurements - <?= $measurement_date?></h2>
 <table id="measurements">
+<tr>
+  <th>PSU Voltage</th>
+  <td><?= $voltage?></td>
+</tr>
 <tr>
   <th>Air Pressure</th>
   <td><?= $pressure?></td>

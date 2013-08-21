@@ -346,15 +346,15 @@ sub decode_line()
   } elsif ($p_line =~ /^G$/)
   {
     $v_result = "HOPE powered up";
-  } elsif ($p_line =~ m/^M(.+),(.+),(.+)$/)
+  } elsif ($p_line =~ m/^M(.+),(.+),(.+),(.+)$/)
   {
-    $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3\n";
+    $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3, Voltage: $4\n";
     $now_string = localtime;
     open(my $meas_fh, '>>' . $measurements_file) or die "issue opening measurements file";
-    print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . "\n";
+    print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . ",V:" . $4 . "\n";
     close($meas_fh);
 
-    insert_measurements($1, $3, $2);
+    insert_measurements($4, $1, $3, $2);
 
   } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+)$/)
   {
@@ -549,14 +549,14 @@ sub log_messages()
 
 sub insert_measurements()
 {
- local($pressure, $internal_temp, $external_temp) = @_;
+ local($voltage, $pressure, $internal_temp, $external_temp) = @_;
 
  # Initialise DB connection
  my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
- $query = "INSERT INTO measurements_t (pressure, internal_temp, external_temp, creation_date)
-                   values (" . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now'))";
+ $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, creation_date)
+                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
