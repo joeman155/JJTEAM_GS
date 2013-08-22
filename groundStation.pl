@@ -85,7 +85,7 @@ if ($param1)
 
 print "HOPE Client started\n";
 
-$DEBUG = 0;
+$DEBUG = 1;
 my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
@@ -175,21 +175,20 @@ while (1 == 1)
   $line_count = @lines;
 
   $str =  "Number of lines: " . $line_count. "\n" if $DEBUG;
-  log_messages($queues, $str) if $DEBUG ;
   
   # Parse each line
   foreach $line (@lines)
   {
 
-    $str = "DECODING Line: " . $line . "\n" if $DEBUG;
-    log_messages($queues, $str) if $DEBUG;
+    $str = "DECODING Line: '" . $line . "'\n" if $DEBUG;
+    print $str if $DEBUG;
 
     $result = decode_line($line);
     
     if (length($result) > 0)
     {
-	    # $str = $result . "\n";
       $str = $result;
+      print "LOGGING MESSAGE: $str \n";
       log_messages($queues, $str);
     
       if ($result =~ /Menu/)
@@ -432,7 +431,7 @@ sub decode_line()
   }
   else
   {
-   $v_result = "Cannot find a match for '" . $p_line . "'\n" if $DEBUG;
+   $v_result = "Cannot Decode: " . $p_line . "\n";
   }
 
  return $v_result;
