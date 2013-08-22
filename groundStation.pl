@@ -20,20 +20,7 @@ use POSIX;
 #get the port to bind to or default to 8000 - which remote.pl connects to
 my $tcpPort = 8000;
 
-# a hash to record client machines and thread queue for internal comunication
 my $i = 1;
-my $queue_id = 1;
-my %clients;
-my @queues;
-my $max_clients = 3;
-
-# Initialise queues
-while ($i < $max_clients)
-{
-  my $queue = Thread::Queue -> new;
-  push(@queues, $queue);
-  $i++;
-}
 
 
 
@@ -85,7 +72,7 @@ if ($param1)
 
 print "HOPE Client started\n";
 
-$DEBUG = 1;
+$DEBUG = 0;
 my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
@@ -116,80 +103,38 @@ if ($mode == 2) { print " -- NORMAL MODE --\n"; }
 if ($mode == 3) { print " -- WILL INITIATE CUTDOWN MODE AT NEXT POLL --\n"; }
 
 
-$port->read_char_time(0);     # don't wait for each character
-$port->read_const_time(1000); # 1 second per unfulfilled "read" call
+$port->are_match("\r\n");
 
 my $taking_picture = 0;
 
 
-# Start thread to monitor modem
-my $monitor = threads->create ("monitor_modem", \@queues);
-
-
-# create the listen socket - where clients connect to get information from modem
-my $listen_socket = IO::Socket::INET->new(LocalPort => $tcpPort,
-                                          Listen => 10,
-                                          Proto => 'tcp',
-                                          Reuse => 1);
-#make sure we are bound to the port
-die "Cant't create a listening socket: $@" unless $listen_socket;
-
-warn "Server ready. Waiting for connections on $tcpPort ... \n";
-
-#wait for connections at the accept call
-while (my $connection = $listen_socket->accept) {
-    # spawn a thread to handle the connection
-    my $child = threads->create ("send_data_to_remote", \@queues, $queue_id, $connection);
-}
-
-sub send_data_to_remote {
-    # accept data from the socket and put it on the queue
-    my ($queues, $queue_id, $socket) = @_;
-    my $queue = @$queues[$queue_id];
-
-    print $socket "Connected.\n";
-print "Got a connection from client! Access queue $queue_id\n";
-       while (defined(my $item = $queue->dequeue())) {
-        print $socket "$item\n";
-    }
-
-}
-
-
+monitor_modem();
 
 
 
 sub monitor_modem()
 {
-	local($queues) = @_;
-
-
 
 while (1 == 1)
 {
-  $answer = "";
-  @lines = NULL;
 
-  $answer = $port->read(80);
-  @lines = split /\r\n/, $answer;
-  $line_count = @lines;
+          my $habline = "";
+          until ("" ne $habline) {
+            $habline = $port->lookfor;       # poll until data ready
+            die "Aborted without match\n" unless (defined $habline);
+            sleep 1;                          # polling sample time
+          }
 
-  $str =  "Number of lines: " . $line_count. "\n" if $DEBUG;
-  
-  # Parse each line
-  foreach $line (@lines)
-  {
-
-    $str = "DECODING Line: '" . $line . "'\n" if $DEBUG;
+    $str = "DECODING Line: '" . $habline . "'\n" if $DEBUG;
     print $str if $DEBUG;
 
-    $result = decode_line($line);
+    $result = decode_line($habline);
     
     if (length($result) > 0)
     {
       $str = $result;
-      print "LOGGING MESSAGE: $str \n";
-      log_messages($queues, $str);
+      print "LOGGING MESSAGE: $str \n" if $DEBUG;
+      log_messages($str);
     
       if ($result =~ /Menu/)
       {
@@ -200,7 +145,7 @@ while (1 == 1)
 	  `touch $cutdown_init_file`;
           $count_out = $port->write("4\r\n");
           $str = "Sent request intiate cutdown\n";
-          log_messages($queues, $str);
+          log_messages($str);
   
           my $gotit = "";
           until ("" ne $gotit) {
@@ -211,7 +156,7 @@ while (1 == 1)
           if ($gotit =~ /B/)
           {
             $str = "HOPE cutdown initiated!\n";
-            log_messages($queues, $str);
+            log_messages($str);
           }
 	}
         elsif ($mode == 0)
@@ -220,7 +165,7 @@ while (1 == 1)
           if ($pic_count % $pic_dl_freq == 0)
           {
             $str = "Sending request to download image\n";
-            log_messages($queues, $str);
+            log_messages($str);
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
@@ -238,11 +183,11 @@ while (1 == 1)
             if ($gotit =~ /X/) 
             {
               $str = "Starting download in 5 seconds to $v_file....\n";
-              log_messages($queues, $str);
+              log_messages($str);
 
               sleep 5;
               $str = "Download started.\n";
-              log_messages($queues, $str);
+              log_messages($str);
 
               my $receive = Device::SerialPort::Xmodem::Receive->new(
                     port     => $port,
@@ -253,28 +198,28 @@ while (1 == 1)
               $receive->start();
               $i++;
               $str = "Finished Transmission\n";
-              log_messages($queues, $str);
+              log_messages($str);
             } 
             elsif ($gotit =~ /W/)
             {
               $str = "Timeout waiting for response from ground station.\n";
-              log_messages($queues, $str);
+              log_messages($str);
             }
             elsif ($gotit =~ /Q/)
             {
               $str = "Did not recognise response from station.\n";
-              log_messages($queues, $str);
+              log_messages($str);
             }
             else
             {
               $str = "HAB never started sending....perhaps it didn't get request to send image?\n";
-              log_messages($queues, $str);
+              log_messages($str);
             }
           }
           else
           {
             $str = "Skipping d/l of image this time.\n";
-            log_messages($queues, $str);
+            log_messages($str);
           }
           $pic_count++;
         }
@@ -282,7 +227,7 @@ while (1 == 1)
         {
           $count_out = $port->write("1\r\n");
           $str = "Sent request put in test mode\n";
-          log_messages($queues, $str);
+          log_messages($str);
  
           my $gotit = "";
           until ("" ne $gotit) {
@@ -294,14 +239,14 @@ while (1 == 1)
           if ($gotit =~ /T/) 
           {
             $str = "HOPE is now in Test mode\n";
-            log_messages($queues, $str);
+            log_messages($str);
           }
         }
         elsif ($mode == 2)
         {
           $count_out = $port->write("3\r\n");
           $str = "Sent request put in normal mode\n";
-          log_messages($queues, $str);
+          log_messages($str);
   
           my $gotit = "";
           until ("" ne $gotit) {
@@ -313,13 +258,12 @@ while (1 == 1)
           if ($gotit =~ /N/)
           {
             $str = "HOPE is now in Normal mode\n";
-            log_messages($queues, $str);
+            log_messages($str);
           }
         }
       }
     }
 
-  } 
 }
 }
 
@@ -519,7 +463,7 @@ close($kml_file);
 
 sub log_messages()
 {
-  local($queues, $message) = @_;
+  local($message) = @_;
 
   if ($message)
   {
@@ -537,10 +481,6 @@ sub log_messages()
 
     $dbh->disconnect();
 
-    # Put data on each queue that we get from the modem
-    foreach my $queue (@$queues) {
-      $queue -> enqueue($message);
-    }
   }
 
 }
@@ -581,3 +521,10 @@ sub insert_gps()
  $dbh->disconnect();
 
 }
+
+
+
+# Start thread to monitor modem
+print "Listening";
+
+
