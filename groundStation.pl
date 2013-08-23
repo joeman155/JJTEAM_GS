@@ -45,6 +45,8 @@ $cutdown_initiated = 0;
 # Defaults 
 $mode = 0;
 
+# Sensor constants
+$voltage_multipler = 5.7 * 3.3 /1024;
 
 # Parameters
 $param1 = $ARGV[0];
@@ -291,13 +293,14 @@ sub decode_line()
     $v_result = "HOPE powered up";
   } elsif ($p_line =~ m/^M(.+),(.+),(.+),(.+)$/)
   {
-    $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3, Voltage: $4\n";
+    $voltage = $voltage_multipler * $4;
+    $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3, Voltage: " . $voltage . "\n";
     $now_string = localtime;
     open(my $meas_fh, '>>' . $measurements_file) or die "issue opening measurements file";
-    print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . ",V:" . $4 . "\n";
+    print $meas_fh "T:" . $now_string . ",P:" . $1 . ",ET:" . $2 . ",IT:" . $3 . ",V:" . $voltage . "\n";
     close($meas_fh);
 
-    insert_measurements($4, $1, $3, $2);
+    insert_measurements($voltage, $1, $3, $2);
 
   } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+)$/)
   {
