@@ -74,7 +74,7 @@ if ($param1)
 
 print "HOPE Client started\n";
 
-$DEBUG = 0;
+$DEBUG = 1;
 my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
@@ -294,6 +294,7 @@ sub decode_line()
   } elsif ($p_line =~ m/^M(.+),(.+),(.+),(.+)$/)
   {
     $voltage = $voltage_multipler * $4;
+    $voltage = sprintf("%.2f", $voltage);
     $v_result = "Air Pressure: $1\nExternal Temp: $2, Internal Temp: $3, Voltage: " . $voltage . "\n";
     $now_string = localtime;
     open(my $meas_fh, '>>' . $measurements_file) or die "issue opening measurements file";
@@ -477,7 +478,7 @@ sub log_messages()
     my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
     # Put in DB
-    $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', datetime('now'))";
+    $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', datetime('now', 'localtime'))";
 
     $sth = $dbh->prepare($query);
     $sth->execute();
@@ -498,7 +499,7 @@ sub insert_measurements()
 
  # Put in DB
  $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, creation_date)
-                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now'))";
+                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
@@ -516,7 +517,7 @@ sub insert_gps()
 
  # Put in DB
  $query = "INSERT INTO gps_t (latitude, longitude, height, gps_date, gps_time, creation_date)
-                   values (" . $latitude . ", " . $longitude . ", " . $height . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now'))";
+                   values (" . $latitude . ", " . $longitude . ", " . $height . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
