@@ -141,12 +141,27 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	});
 	}
 
+	function  load_pid()
+	{
+	$.ajax({
+	url: '/getpid.php',
+	cache: false,
+	async: false,
+	success: function(s,x) {
+	$("#pid").html('<h2>Daemon Status: ' + s + '</h2>');
+		}
+
+	});
+	}
+
 
 	// Initial load
 	load_datetime();
+	load_pid();
 
 	setInterval(function(){
 	        load_datetime();
+	        load_pid();
 	        }, 5000);
 
 
@@ -244,6 +259,9 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 </div>
 
 <div id="datetime">
+</div>
+
+<div id="pid">
 </div>
 
 <div id="tabs">
