@@ -13,7 +13,7 @@ $dir_handle = @opendir($directory) or die("There is an error with your image dir
  
 $files = array();
 while (false !== ($file = readdir($dir_handle))) {
-       if ($file != "." && $file != "..") {
+       if ($file != "." && $file != ".." && filesize($directory . "/" . $file) > 0) {
           $files[filemtime($directory . "/" . $file)] = $file;
        }
    }
