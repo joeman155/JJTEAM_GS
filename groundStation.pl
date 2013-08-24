@@ -168,6 +168,7 @@ while (1 == 1)
           {
             $str = "Sending request to download image\n";
             log_messages($str);
+	    print $str if $DEBUG;
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
@@ -186,10 +187,12 @@ while (1 == 1)
             {
               $str = "Starting download in 5 seconds to $v_file....\n";
               log_messages($str);
+	      print $str if $DEBUG;
 
               sleep 5;
               $str = "Download started.\n";
               log_messages($str);
+	      print $str if $DEBUG;
 
               my $receive = Device::SerialPort::Xmodem::Receive->new(
                     port     => $port,
@@ -201,27 +204,32 @@ while (1 == 1)
               $i++;
               $str = "Finished Transmission\n";
               log_messages($str);
+	      print $str if $DEBUG;
             } 
             elsif ($gotit =~ /W/)
             {
               $str = "Timeout waiting for response from ground station.\n";
               log_messages($str);
+	      print $str if $DEBUG;
             }
             elsif ($gotit =~ /Q/)
             {
               $str = "Did not recognise response from station.\n";
               log_messages($str);
+	      print $str if $DEBUG;
             }
             else
             {
               $str = "HAB never started sending....perhaps it didn't get request to send image?\n";
               log_messages($str);
+	      print $str if $DEBUG;
             }
           }
           else
           {
             $str = "Skipping d/l of image this time.\n";
             log_messages($str);
+	    print $str if $DEBUG;
           }
           $pic_count++;
         }
