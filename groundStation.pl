@@ -137,6 +137,13 @@ while (1 == 1)
       $str = $result;
       print "LOGGING MESSAGE: $str \n" if $DEBUG;
       log_messages($str);
+
+      # If image not taken properly...E5 error...then make sure we don't
+      # try to download it.
+      $image_error = 0;
+      if  ($habline =~ /^E5$/) {
+	      $image_error = 1;
+      }
     
       if ($result =~ /Menu/)
       {
@@ -164,7 +171,7 @@ while (1 == 1)
         elsif ($mode == 0)
         {
 
-          if ($pic_count % $pic_dl_freq == 0)
+          if ($pic_count % $pic_dl_freq == 0 && $image_error == 0)
           {
             $str = "Sending request to download image\n";
             log_messages($str);
@@ -231,7 +238,11 @@ while (1 == 1)
             log_messages($str);
 	    print $str if $DEBUG;
           }
-          $pic_count++;
+
+	  # If no error...then imcrement count.
+	  if ($image_error == 0) {
+          	$pic_count++;
+	  }
         }
         elsif ($mode == 1)
         {
@@ -347,6 +358,15 @@ sub decode_line()
   } elsif ($p_line =~ /^E4$/)
   {
     $v_result = "Error opening file for pressure/temp measurements on SD";
+  } elsif ($p_line =~ /^Q$/)
+  {
+    $v_result = "Did not recognise response from station.";
+  } elsif ($p_line =~ /^W$/)
+  {
+    $v_result = "Timeout while waiting for user menu option to be made.";
+  } elsif ($p_line =~ /^E5$/)
+  {
+    $v_result = "Error/timeout taking picture.";
   } elsif ($p_line =~ /^D$/)
   {
     $v_result = "Finished taking picture";
