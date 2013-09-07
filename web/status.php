@@ -14,6 +14,17 @@ catch (PDOException $e)
      echo $e->getMessage();
     }
 
+# Get latest beaglebone voltage
+$sql = "select * from bb_voltage_t where id = (select max(id) from bb_voltage_t)";
+
+$sth = $dbh->prepare($sql);
+
+$sth->execute();
+
+$row = $sth->fetch();
+$bb_voltage = $row['voltage'];
+$bb_voltage_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
+
 # GPS
 $sql = "select * from gps_t where id = (select max(id) from gps_t)";
 
@@ -83,6 +94,7 @@ $external_temp = $row['external_temp'];
 </tr>
 </table>
 
+<br/>
 <h2>Latest Measurements (<?= $measurement_date?>)</h2>
 <table id="measurements">
 <tr>
@@ -101,7 +113,15 @@ $external_temp = $row['external_temp'];
   <th>External Temp</th>
   <td><?= $external_temp?></td>
 </tr>
+</table>
 
+<br/>
+<h2>Beaglebone Voltage (<?= $bb_voltage_date?>)</h2>
+<table id="bb_measurements">
+<tr>
+  <th>Beaglebone Voltage</th>
+  <td><?= round($bb_voltage,2)?></td>
+</tr>
 </table>
 
 <h2>Cutdown</h2>

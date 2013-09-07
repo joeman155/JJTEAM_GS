@@ -48,7 +48,7 @@ $mode = 0;
 # Sensor constants
 $voltage_multipler = 5.7 * 3.3 /1024;
 
-$bb_voltage_multilier = 11 * 1.8/4096;
+$bb_voltage_multipler = 11 * 1.8/4096;
 
 # Parameters
 $param1 = $ARGV[0];
@@ -127,9 +127,11 @@ while (1 == 1)
             $habline = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $habline);
             sleep 1;                          # polling sample time
+
+            # Get BBB voltage supply reading and put into table
+            get_bb_voltage();
           }
 
-    get_bb_voltage();
 
     $str = "DECODING Line: '" . $habline . "'\n" if $DEBUG;
     print $str if $DEBUG;
@@ -566,6 +568,21 @@ print "Listening";
 
 sub get_bb_voltage()
 {
+ $v_ain1 = `cat /sys/devices/ocp.2/helper.14/AIN2`;
+ $v_voltage = $bb_voltage_multipler * $v_ain1;
 
+ # Initialise DB connection
+ my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+
+ print $query;
+
+ # Put in DB
+ $query = "INSERT INTO bb_voltage_t (voltage, creation_date)
+           values (" . $v_voltage . ", datetime('now', 'localtime'))";
+
+ $sth = $dbh->prepare($query);
+ $sth->execute();
+
+ $dbh->disconnect(); 
 
 }

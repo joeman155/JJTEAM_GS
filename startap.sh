@@ -5,7 +5,7 @@
 sleep 15
 
 # Initialise the ADC
-echo cape-bone-iio > /sys/devices/bone_capemgr.*/slots
+echo cape-bone-iio > /sys/devices/bone_capemgr.8/slots
 
 
 echo Set date and time
