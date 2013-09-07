@@ -48,6 +48,8 @@ $mode = 0;
 # Sensor constants
 $voltage_multipler = 5.7 * 3.3 /1024;
 
+$bb_voltage_multilier = 11 * 1.8/4096;
+
 # Parameters
 $param1 = $ARGV[0];
 
@@ -126,6 +128,8 @@ while (1 == 1)
             die "Aborted without match\n" unless (defined $habline);
             sleep 1;                          # polling sample time
           }
+
+    get_bb_voltage();
 
     $str = "DECODING Line: '" . $habline . "'\n" if $DEBUG;
     print $str if $DEBUG;
@@ -560,3 +564,8 @@ sub insert_gps()
 print "Listening";
 
 
+sub get_bb_voltage()
+{
+
+
+}

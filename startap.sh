@@ -4,6 +4,10 @@
 # echo APD wait a few seconds for the USB to be ready
 sleep 15
 
+# Initialise the ADC
+echo cape-bone-iio > /sys/devices/bone_capemgr.*/slots
+
+
 echo Set date and time
 echo ds3232 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 sleep 1
@@ -17,13 +21,13 @@ sleep 1
 date
 
 # echo APD ifconfig
-# ifconfig wlan0 192.168.11.65
+ifconfig wlan0 inet 192.168.11.65 up
 
 # echo APD starting dhcp server
-# udhcpd  -f -S /etc/udhcpd.conf.wlan
+nohup udhcpd  -f -S /etc/udhcpd.conf.wlan &
 
 # echo APD start wifi AP
-# hostapd /home/root/hope/etc/hostapd.conf
+nohup hostapd /home/root/hope/etc/hostapd.conf &
 
 
 echo Starting groundstation...
