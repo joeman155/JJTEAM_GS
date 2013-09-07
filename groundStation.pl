@@ -48,7 +48,7 @@ $mode = 0;
 # Sensor constants
 $voltage_multipler = 5.7 * 3.3 /1024;
 
-$bb_voltage_multipler = 11 * 1.8/4096;
+$bb_voltage_multipler = 11 * 1.8/1800;
 
 # Parameters
 $param1 = $ARGV[0];
@@ -568,7 +568,7 @@ print "Listening";
 
 sub get_bb_voltage()
 {
- $v_ain1 = `cat /sys/devices/ocp.2/helper.14/AIN2`;
+ $v_ain1 = `cat /sys/devices/ocp.2/helper.14/AIN1`;
  $v_voltage = $bb_voltage_multipler * $v_ain1;
 
  # Initialise DB connection
