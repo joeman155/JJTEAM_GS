@@ -574,8 +574,6 @@ sub get_bb_voltage()
  # Initialise DB connection
  my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
- print $query;
-
  # Put in DB
  $query = "INSERT INTO bb_voltage_t (voltage, creation_date)
            values (" . $v_voltage . ", datetime('now', 'localtime'))";
