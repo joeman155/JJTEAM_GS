@@ -42,9 +42,15 @@ $gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
 
 # Calculate distance between LOCAL and HAB GPS 
 if ($latitude != "" && $longitude != "" && $v_local_lat != "" && $v_local_long != "") {
-  $v_horizontal_distance = calculateDistance($latitude, $longitude, $v_local_lat, $v_local_long, "K");
+  $v_horizontal_distance = calculateDistance($v_local_lat, $v_local_long, $latitude, $longitude, "K");
+  $v_direction = calculateDirection($v_local_lat, $v_local_long, $latitude, $longitude);
+  $v_los_distance = ($v_horizontal_distance ^ 2 + ($height - $v_local_alt)^2)^0.5;
+  $v_direction = round($v_direction);
+  $v_los_distance = round($v_los_distance);
 } else {
   $v_horizontal_distance = "Not enough info to calculate.";
+  $v_direction = $v_horizontal_distance;
+  $v_los_distance = $v_horizontal_distance;
 }
 
 
@@ -115,8 +121,12 @@ $external_temp = $row['external_temp'];
 <h2>Relational calculated values</h2>
 <table id="relational">
 <tr>
-  <th>Distance a long ground</th>
+  <th>Distance (Great circle)</th>
   <td><?= $v_horizontal_distance?></td>
+</tr>
+<tr>
+  <th>Approx Distance (LOS)</th>
+  <td><?= $v_los_distance?></td>
 </tr>
 <tr>
   <th>Direction</th>
@@ -125,6 +135,10 @@ $external_temp = $row['external_temp'];
 <tr>
   <th>Speed</th>
   <td><?= $v_horizontal_speed?></td>
+</tr>
+<tr>
+  <th>Direction in which HAB is travelling</th>
+  <td><?= $v_bearing?></td>
 </tr>
 <tr>
   <th>Distance a long ground</th>
@@ -204,10 +218,34 @@ function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit) {
         return $miles;
       }
 }
-{
 
-
-
+function _deg2rad_multi() {
+    // Grab all the arguments as an array & apply deg2rad to each element
+    $arguments = func_get_args();
+    return array_map('deg2rad', $arguments);
 }
+
+
+
+function calculateDirection($p_lat1, $p_lon1, $p_lat2, $p_lon2) {
+    // Convert our degrees to radians:
+    list($lat1, $lon1, $lat2, $lon2) =
+        _deg2rad_multi($p_lat1, $p_lon1, $p_lat2, $p_lon2);
+
+    // Run the formula and store the answer (in radians)
+    $rads = atan2(
+            sin($lon2 - $lon1) * cos($lat2),
+            (cos($lat1) * sin($lat2)) -
+                  (sin($lat1) * cos($lat2) * cos($lon2 - $lon1)) );
+
+    // Convert this back to degrees to use with a compass
+    $degrees = rad2deg($rads);
+
+    // If negative subtract it from 360 to get the bearing we are used to.
+    $degrees = ($degrees < 0) ? 360 + $degrees : $degrees;
+
+    return $degrees;
+}
+
 
 
