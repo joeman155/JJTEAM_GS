@@ -19,22 +19,17 @@ catch (PDOException $e)
 
 # Get latest beaglebone voltage
 $sql = "select * from bb_voltage_t where id = (select max(id) from bb_voltage_t)";
-
 $sth = $dbh->prepare($sql);
-
 $sth->execute();
 
 $row = $sth->fetch();
 $bb_voltage = $row['voltage'];
 $bb_voltage_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
 
-# GPS
+# HAB GPS
 $sql = "select * from gps_t where id = (select max(id) from gps_t)";
-
 $sth = $dbh->prepare($sql);
-
 $sth->execute();
-
 $row = $sth->fetch();
 
 $latitude = $row['latitude'];
@@ -45,14 +40,18 @@ $gps_time = $row['gps_time'];
 $gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
 
 
+# Calculate distance between LOCAL and HAB GPS 
+if ($latitude != "" && $longitude != "" && $v_local_lat != "" && $v_local_long != "") {
+  $v_distance = calculateDistance($latitude, $longitude, $v_local_lat, $v_local_long, "K");
+} else {
+  $v_distance = "Not enough info to calculate.";
+}
+
 
 # Pressure, internal temp, external temp
 $sql = "select * from measurements_t where id = (select max(id) from measurements_t)";
-
 $sth = $dbh->prepare($sql);
-
 $sth->execute();
-
 $row = $sth->fetch();
 
 $measurement_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
@@ -113,6 +112,14 @@ $external_temp = $row['external_temp'];
 </tr>
 </table>
 
+<h2>Relational calculated values</h2>
+<table id="relational">
+<tr>
+  <th>Distance a long ground</th>
+  <td><?= $v_distance?></td>
+</tr>
+<tr>
+</table>
 
 
 <br/>
@@ -167,5 +174,29 @@ if ($cutdown_msg != "") {
 ?>
 
 
+
+
+<?
+function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit) {
+  $theta = $lon1 - $lon2;
+  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+  $dist = acos($dist);
+  $dist = rad2deg($dist);
+  $miles = $dist * 60 * 1.1515;
+  $unit = strtoupper($unit);
+
+  if ($unit == "K") {
+    return ($miles * 1.609344);
+  } else if ($unit == "N") {
+      return ($miles * 0.8684);
+    } else {
+        return $miles;
+      }
+}
+{
+
+
+
+}
 
 
