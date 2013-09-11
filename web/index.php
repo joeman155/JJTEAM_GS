@@ -157,6 +157,17 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	}
 
 
+// GPS
+          if (navigator.geolocation)
+            {
+          navigator.geolocation.watchPosition(gps_success_callback);
+            }
+          else
+            {
+            $("#gps_error").html("Geolocation is not supported by this browser.");
+            }
+
+
 	// Initial load
 	load_datetime();
 	load_pid();

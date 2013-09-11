@@ -14,7 +14,7 @@ function gps_success_callback(p)
  v_local_timestamp = new Date();
  v_local_timestamp.format("dd/mm/yy h:mm:ss");
 
- // alert('lat='+v_local_lat+';lon='+v_local_long+';alt='+v_local_alt);
+// alert('lat='+v_local_lat+';lon='+v_local_long+';alt='+v_local_alt);
 }
 
 function gps_error_callback(p)
