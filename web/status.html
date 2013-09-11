@@ -43,7 +43,8 @@ $("#alt").html(v_local_alt);
 			local_lat : v_local_lat,
 			local_long : v_local_long,
 			local_alt : v_local_alt,
-			local_got_gps : v_got_gps
+			local_got_gps : v_got_gps,
+			local_timestamp : v_local_timestamp
 		},
                 success: function(s,x) {
                     $("#stats").html(s);
@@ -52,12 +53,6 @@ $("#alt").html(v_local_alt);
 
 	}
 </script>
-Lat: <p id="lat">
-</p>
-Long: <p id="long">
-</p>
-Alt: <p id="alt">
-</p>
 <p id="gps_error">
 </p>
 <div id="stats">

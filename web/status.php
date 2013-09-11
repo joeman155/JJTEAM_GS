@@ -1,6 +1,13 @@
 <?
 include "config.inc";
 
+$v_local_lat = $_REQUEST['local_lat'];
+$v_local_long = $_REQUEST['local_long'];
+$v_local_alt  = $_REQUEST['local_alt'];
+$v_local_got_gps = $_REQUEST['local_got_gps'];
+$v_local_timestamp = $_REQUEST['local_timestamp'];
+
+
 # Get all the latest measurements
 try {
      $dbh = new PDO("sqlite:" . $db_file);
@@ -66,7 +73,7 @@ $external_temp = $row['external_temp'];
             });
         });
 </script>
-<h2>GPS Information (<?= $gps_creation_date?>)</h2>
+<h2>HAB GPS Information (<?= $gps_creation_date?>)</h2>
 <table id="gps">
 <tr>
   <th>Latitude</th>
@@ -89,6 +96,24 @@ $external_temp = $row['external_temp'];
   <td><?= $gps_time?></td>
 </tr>
 </table>
+
+<h2>Local GPS Information (<?= $v_local_timestamp?>)</h2>
+<table id="local_gps">
+<tr>
+  <th>Latitude</th>
+  <td><?= $v_local_lat?></td>
+</tr>
+<tr>
+  <th>Longitude</th>
+  <td><?= $v_local_long?></td>
+</tr>
+<tr>
+  <th>Altitude</th>
+  <td><?= round($v_local_alt,0)?></td>
+</tr>
+</table>
+
+
 
 <br/>
 <h2>Latest Measurements (<?= $measurement_date?>)</h2>
