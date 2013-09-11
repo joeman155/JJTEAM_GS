@@ -42,9 +42,9 @@ $gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
 
 # Calculate distance between LOCAL and HAB GPS 
 if ($latitude != "" && $longitude != "" && $v_local_lat != "" && $v_local_long != "") {
-  $v_distance = calculateDistance($latitude, $longitude, $v_local_lat, $v_local_long, "K");
+  $v_horizontal_distance = calculateDistance($latitude, $longitude, $v_local_lat, $v_local_long, "K");
 } else {
-  $v_distance = "Not enough info to calculate.";
+  $v_horizontal_distance = "Not enough info to calculate.";
 }
 
 
@@ -116,9 +116,20 @@ $external_temp = $row['external_temp'];
 <table id="relational">
 <tr>
   <th>Distance a long ground</th>
-  <td><?= $v_distance?></td>
+  <td><?= $v_horizontal_distance?></td>
 </tr>
 <tr>
+  <th>Direction</th>
+  <td><?= $v_direction?></td>
+</tr>
+<tr>
+  <th>Speed</th>
+  <td><?= $v_horizontal_speed?></td>
+</tr>
+<tr>
+  <th>Distance a long ground</th>
+  <td><?= $v_vertical_speed?></td>
+</tr>
 </table>
 
 
