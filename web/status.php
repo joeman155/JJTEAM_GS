@@ -1,13 +1,9 @@
 <?
-# INIT
-$home_dir = "/home/root/hope";
-$cutdown_req_file = $home_dir . "/run/cutdown_requested.txt";
-$cutdown_init_file = $home_dir . "/run/cutdown_initiated.txt";
-
+include "config.inc";
 
 # Get all the latest measurements
 try {
-     $dbh = new PDO("sqlite:/home/root/hope/hope.db");
+     $dbh = new PDO("sqlite:" . $db_file);
     }
 catch (PDOException $e)
     {

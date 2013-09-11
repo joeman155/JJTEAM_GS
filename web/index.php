@@ -20,6 +20,9 @@ header("Access-Control-Allow-Origin: http://leederville.net");
   <script src="jq/ui/jquery.ui.effect-slide.js"></script>
   <script src="jq/ui/jquery.ui.tabs.js"></script>
 
+  <script src="js/geo.js?id=1" type="text/javascript" charset="utf-8"></script>
+  <script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+
       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
       <meta charset="utf-8">
           <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
@@ -102,7 +105,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 		{
 		// Poll Server
 		$.ajax({
-			url: '/getMessage.php',
+			url: 'getMessage.php',
 			data: { id: last_id },
 			type: "GET",
 			dataType: "json",
@@ -131,7 +134,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	function  load_datetime()
 	{
 	$.ajax({
-	url: '/getdatetime.php',
+	url: 'getdatetime.php',
 	cache: false,
 	async: false,
 	success: function(s,x) {
@@ -144,7 +147,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	function  load_pid()
 	{
 	$.ajax({
-	url: '/getpid.php',
+	url: 'getpid.php',
 	cache: false,
 	async: false,
 	success: function(s,x) {
@@ -176,9 +179,10 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 
 
         function initialize() {
+
         // Get latest GPS Status
 	$.ajax({
-		url: '/getLatestGPS.php',
+		url: 'getLatestGPS.php',
 		type: "GET",
 		dataType: "json",
 		async: false,
@@ -206,7 +210,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	var blob;
 
 	$.ajax({
-		url: '/out/test.kml',
+		url: 'out/test.kml',
 		type: "GET",
 		async: false,
 		cache: false,
@@ -267,9 +271,9 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 <div id="tabs">
 	<ul>
 		<li><a href="#messages">Log</a></li>
-		<li><a href="/status.html">Status</a></li>
-		<li><a href="/map.html">Map</a></li>
-		<li><a href="/images.php">Images</a></li>
+		<li><a href="status.html">Status</a></li>
+		<li><a href="map.html">Map</a></li>
+		<li><a href="images.php">Images</a></li>
 	</ul>
 	<div id="messages" class="container">
 		<ul id="messages">

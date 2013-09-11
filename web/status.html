@@ -23,15 +23,43 @@
 
 	function load_status()
 	{
+           // Get Viewers GPS info
+/*
+           if(geo_position_js.init()) {
+              geo_position_js.getCurrentPosition(gps_success_callback,gps_error_callback,{enableHighAccuracy:true});
+              alert('lat='+v_local_lat+';lon='+v_local_long+';alt='+v_local_alt);
+           }
+*/
+	navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback);
+/*
+$("#lat").html(v_local_lat);
+$("#long").html(v_local_long);
+$("#alt").html(v_local_alt);
+*/
         $.ajax({
                 url: "status.php",
+		type: "GET",
+		data: {
+			local_lat : v_local_lat,
+			local_long : v_local_long,
+			local_alt : v_local_alt,
+			local_got_gps : v_got_gps
+		},
                 success: function(s,x) {
                     $("#stats").html(s);
-                }
+		}
         })
 
 	}
 </script>
+Lat: <p id="lat">
+</p>
+Long: <p id="long">
+</p>
+Alt: <p id="alt">
+</p>
+<p id="gps_error">
+</p>
 <div id="stats">
 </div>
 

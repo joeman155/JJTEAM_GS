@@ -1,6 +1,8 @@
 <?
+include "config.inc";
+
 try {
-     $dbh = new PDO("sqlite:/home/root/hope/hope.db");
+     $dbh = new PDO("sqlite:" . $db_file);
     }
 catch (PDOException $e)
     {
