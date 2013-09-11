@@ -20,7 +20,6 @@ header("Access-Control-Allow-Origin: http://leederville.net");
   <script src="jq/ui/jquery.ui.effect-slide.js"></script>
   <script src="jq/ui/jquery.ui.tabs.js"></script>
 
-  <script src="js/geo.js?id=1" type="text/javascript" charset="utf-8"></script>
   <script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 
       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">

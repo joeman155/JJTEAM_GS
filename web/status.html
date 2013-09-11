@@ -30,12 +30,22 @@
               alert('lat='+v_local_lat+';lon='+v_local_long+';alt='+v_local_alt);
            }
 */
-	navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback);
+//	navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback);
 /*
 $("#lat").html(v_local_lat);
 $("#long").html(v_local_long);
 $("#alt").html(v_local_alt);
 */
+	  if (navigator.geolocation)
+	    {
+  	  navigator.geolocation.watchPosition(gps_success_callback);
+	    }
+	  else
+            {
+            $("#gps_error").html("Geolocation is not supported by this browser.");
+            }
+
+
         $.ajax({
                 url: "status.php",
 		type: "GET",
