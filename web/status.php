@@ -44,9 +44,10 @@ $gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
 if ($latitude != "" && $longitude != "" && $v_local_lat != "" && $v_local_long != "") {
   $v_horizontal_distance = calculateDistance($v_local_lat, $v_local_long, $latitude, $longitude, "K");
   $v_direction = calculateDirection($v_local_lat, $v_local_long, $latitude, $longitude);
-  $v_los_distance = ($v_horizontal_distance ^ 2 + ($height/1000 - $v_local_alt/1000)^2)^0.5;
+  $v_los_distance = pow(pow($v_horizontal_distance, 2) + pow($height/1000 - $v_local_alt/1000, 2), 0.5);
   $v_direction = round($v_direction);
-  $v_los_distance = round($v_los_distance);
+  $v_los_distance = round($v_los_distance,3);
+  $v_horizontal_distance = round($v_horizontal_distance,3);
 } else {
   $v_horizontal_distance = "Not enough info to calculate.";
   $v_direction = $v_horizontal_distance;
