@@ -1,0 +1,17 @@
+# NOTE: This version is not being used because when a connection
+# is re-made...for some reason...the phone cannot get an IP again!...
+# We need to switch off groundstation
+#
+# We keep this for possible future use...
+#
+interface=wlan0
+driver=nl80211
+ssid=Hopenet
+channel=1
+hw_mode=g
+auth_algs=1
+wpa=3
+wpa_passphrase=1234567890
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+rsn_pairwise=CCMP
