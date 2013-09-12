@@ -267,9 +267,8 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 </head>
 <body>
 
-
 <div id="header" class="demo-description">
-	<p>Hope web client - Messages</p>
+	<p>Hope web client - Messages.</p>
 </div>
 
 <div id="datetime">

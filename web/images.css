@@ -18,7 +18,6 @@ body,h1,h2,h3,p,td,quote,small,form,input,ul,li,ol,label{
  
 body{
   margin-top:20px;
-  color:white;
   font-size:13px;
   background: #fff url(images/bg.jpg) repeat top left;
 }
