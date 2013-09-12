@@ -78,6 +78,16 @@ header("Access-Control-Allow-Origin: http://leederville.net");
                 }
 	</style>
 	<script>
+// GPS
+          if (navigator.geolocation)
+            {
+             navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback,{enableHighAccuracy:true});
+            }
+          else
+            {
+            $("#gps_error").html("Geolocation is not supported by this browser.");
+            }
+
 	$(function() {
 		$( "#tabs" ).tabs( {
 			activate: function(e,ui) {
@@ -156,16 +166,6 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	});
 	}
 
-
-// GPS
-          if (navigator.geolocation)
-            {
-          navigator.geolocation.watchPosition(gps_success_callback);
-            }
-          else
-            {
-            $("#gps_error").html("Geolocation is not supported by this browser.");
-            }
 
 
 	// Initial load

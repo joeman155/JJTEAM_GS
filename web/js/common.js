@@ -6,8 +6,8 @@ var v_local_timestamp;
 
 function gps_success_callback(p)
 {
- v_local_lat=p.coords.latitude.toFixed(4);
- v_local_long=p.coords.longitude.toFixed(4);
+ v_local_lat=p.coords.latitude.toFixed(6);
+ v_local_long=p.coords.longitude.toFixed(6);
  v_local_alt=p.coords.altitude;
  v_local_timestamp=p.coords.timestamp;
  v_got_gps=1;
