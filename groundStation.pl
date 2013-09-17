@@ -88,7 +88,7 @@ my $timeout=$STALL_DEFAULT;
 
 # Try initialising Serial Port
 eval {
-  $port->baudrate(9600);
+  $port->baudrate(57600);
   $port->parity("none");
   $port->databits(8);
   $port->stopbits(1); 
