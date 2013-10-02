@@ -19,7 +19,7 @@ date
 ifconfig wlan0 inet 192.168.11.65 up
 
 # echo APD starting dhcp server
-nohup udhcpd  -f -S /etc/udhcpd.conf.wlan &
+nohup udhcpd  -f -S /home/root/hope/etc/udhcpd.conf.wlan &
 
 # echo APD start wifi AP
 nohup hostapd /home/root/hope/etc/hostapd.conf &
