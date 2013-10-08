@@ -80,15 +80,18 @@ $DEBUG = 1;
 my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
+my $serial_port = "/dev/ttyO1";
+my $serial_speed = 57600;
 
-my $port=Device::SerialPort->new("/dev/ttyO1");
+my $port=Device::SerialPort->new($serial_port);
+my $modem = new Device::Modem(port => $serial_port);
 my $STALL_DEFAULT=10; # how many seconds to wait for new input
 my $timeout=$STALL_DEFAULT;
 
 
 # Try initialising Serial Port
 eval {
-  $port->baudrate(57600);
+  $port->baudrate($serial_speed);
   $port->parity("none");
   $port->databits(8);
   $port->stopbits(1); 
@@ -98,6 +101,10 @@ if (my $e = $@)
    print("Issues initialising Serial modem. Check It is connected.\n");
    print("Error: " . $e . "\n");
    exit;
+  }
+
+  if( ! $modem->connect( baudrate => $serial_speed ) ) {
+      print "sorry, no connection with serial port!\n";
   }
 
 print "Connected to Serial Port...\n";
@@ -132,6 +139,20 @@ while (1 == 1)
             get_bb_voltage();
           }
 
+    # now that we have line...quickly get some stats on link
+    sleep(1);
+    $modem->atsend('+++');
+    sleep(1);
+    $ans = $modem->answer();
+
+    # Get some stats
+    $modem->atsend("ATI7\r\n");
+    $ati7 = $modem->answer();
+    log_messages($ati7);
+
+    # Get out of this mode
+    $modem->atsend("ATO\r\n");
+    $ans = $modem->answer();
 
     $str = "DECODING Line: '" . $habline . "'\n" if $DEBUG;
     print $str if $DEBUG;
