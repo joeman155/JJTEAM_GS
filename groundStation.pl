@@ -233,7 +233,7 @@ while (1 == 1)
             }
             else
             {
-              $str = "HAB never started sending....perhaps it didn't get request to send image?\n";
+              $str = "HAB never started sending....perhaps it didnt get request to send image?\n";
               log_messages($str);
 	      print $str if $DEBUG;
             }
