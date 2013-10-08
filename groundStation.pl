@@ -145,10 +145,15 @@ while (1 == 1)
     sleep(1);
     $ans = $modem->answer();
 
-    # Get some stats
+    # Get some stats on link quality
     $modem->atsend("ATI7\r\n");
     $ati7 = $modem->answer();
     log_messages($ati7);
+
+    # Get SYNC status
+    $modem->atsend("ATI8\r\n");
+    $ati8 = $modem->answer();
+    log_messages($ati8);
 
     # Get out of this mode
     $modem->atsend("ATO\r\n");
