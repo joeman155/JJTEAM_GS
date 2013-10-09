@@ -87,7 +87,6 @@ my $serial_port = "/dev/ttyO1";
 my $serial_speed = 57600;
 
 my $port=Device::SerialPort->new($serial_port);
-my $modem = new Device::Modem(port => $serial_port);
 my $STALL_DEFAULT=10; # how many seconds to wait for new input
 my $timeout=$STALL_DEFAULT;
 
@@ -106,9 +105,6 @@ if (my $e = $@)
    exit;
   }
 
-  if( ! $modem->connect( baudrate => $serial_speed ) ) {
-      print "sorry, no connection with serial port!\n";
-  }
 
 print "Connected to Serial Port...\n";
 print "Listening for HOPE...\n";
@@ -196,7 +192,7 @@ while (1 == 1)
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
-            warn "write incomplete\n" if ($count_out != length("i2\r\n") );
+            warn "write incomplete\n" if ($count_out != length("2\r\n") );
 
             my $gotit = "";
             until ("" ne $gotit) {
