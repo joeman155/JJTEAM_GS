@@ -17,9 +17,12 @@ use POSIX;
 
 
 
+
 #get the port to bind to or default to 8000 - which remote.pl connects to
 my $tcpPort = 8000;
 
+# Stats var
+my $radio_stats_count = 0;
 my $i = 1;
 
 
@@ -133,31 +136,13 @@ while (1 == 1)
           until ("" ne $habline) {
             $habline = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $habline);
-            sleep 1;                          # polling sample time
+	    sleep 1;                          # polling sample time
 
             # Get BBB voltage supply reading and put into table
+	    
             get_bb_voltage();
           }
 
-    # now that we have line...quickly get some stats on link
-    sleep(1);
-    $modem->atsend('+++');
-    sleep(1);
-    $ans = $modem->answer();
-
-    # Get some stats on link quality
-    $modem->atsend("ATI7\r\n");
-    $ati7 = $modem->answer();
-    log_messages($ati7);
-
-    # Get SYNC status
-    $modem->atsend("ATI8\r\n");
-    $ati8 = $modem->answer();
-    log_messages($ati8);
-
-    # Get out of this mode
-    $modem->atsend("ATO\r\n");
-    $ans = $modem->answer();
 
     $str = "DECODING Line: '" . $habline . "'\n" if $DEBUG;
     print $str if $DEBUG;
@@ -211,7 +196,7 @@ while (1 == 1)
             $port->lookclear;
             $count_out = $port->write("2\r\n");
             warn "write failed\n"   unless ($count_out);
-            warn "write incomplete\n" if ($count_out != length("2\r\n") );
+            warn "write incomplete\n" if ($count_out != length("i2\r\n") );
 
             my $gotit = "";
             until ("" ne $gotit) {
@@ -336,6 +321,21 @@ sub decode_line()
   } elsif ($p_line =~ /^H:([0-9]+)$/)
   {
     $v_result = "Heartbeat Count: " . $1;
+
+    # We have 3 second delay after getting heartbeat.... so we quickly get
+    # stats on state of lik
+    # Every 6 iterations...get stats
+    print "Iterations = $radio_stats_count \n";
+    if ($radio_stats_count > 2) {
+	    get_radio_stats();
+        $radio_stats_count = 0;
+    } else {
+        ++$radio_stats_count;
+    }
+
+  } elsif ($p_line =~ /^L\/R(.*$)/)
+  {
+    $v_result = "Radio Signal: L/R: " . $1;
   } elsif ($p_line =~ /^S$/)
   {
     $v_result = "Powering up HOPE";
@@ -525,7 +525,7 @@ close($kml_file);
 
 
 
-sub log_messages()
+sub log_messages($)
 {
   local($message) = @_;
 
@@ -608,5 +608,75 @@ sub get_bb_voltage()
  $sth->execute();
 
  $dbh->disconnect(); 
+
+}
+
+
+sub get_radio_stats()
+{
+    # now that we have line...quickly get some stats on link
+    select(undef,undef,undef,0.5);
+    $port->write("+++");
+    select(undef,undef,undef,0.5);
+
+    my $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+
+
+    # Get some stats on link quality
+    $port->write("ATI7\r\n");
+
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+    log_messages($ans);
+
+
+
+#    $port->write("RTI7\r\n");
+#    my $ans = "";
+#    until ("" ne $ans) {
+#       $ans = $port->lookfor;       # poll until data ready
+#       die "Aborted without match\n" unless (defined $ans);
+#       sleep 1;                          # polling sample time
+#     }
+#
+#    $ans = "";
+#    until ("" ne $ans) {
+#       $ans = $port->lookfor;       # poll until data ready
+#       die "Aborted without match\n" unless (defined $ans);
+#       sleep 1;                          # polling sample time
+#     }
+#    log_messages($ans);
+
+
+# Only supported for rfd900 firmware version 2.3
+#    # Get SYNC status
+#    $modem->atsend("ATI8\r\n");
+#    $ati8 = $modem->answer();
+#    log_messages($ati8);
+
+    # Get out of this mode
+    $port->write("ATO\r\n");
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
 
 }
