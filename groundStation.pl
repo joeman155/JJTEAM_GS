@@ -321,7 +321,7 @@ sub decode_line()
     # We have 3 second delay after getting heartbeat.... so we quickly get
     # stats on state of lik
     # Every 6 iterations...get stats
-    print "Iterations = $radio_stats_count \n";
+    # print "Iterations = $radio_stats_count \n";
     if ($radio_stats_count > 2) {
 	    get_radio_stats();
         $radio_stats_count = 0;
@@ -616,6 +616,7 @@ sub get_radio_stats()
     select(undef,undef,undef,0.5);
 
     my $ans = "";
+    # First one is to skip past the 'echo'
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
@@ -627,6 +628,7 @@ sub get_radio_stats()
     $port->write("ATI7\r\n");
 
     $ans = "";
+    # First one is to skip past the 'echo'
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
@@ -643,21 +645,22 @@ sub get_radio_stats()
 
 
 
-#    $port->write("RTI7\r\n");
-#    my $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       sleep 1;                          # polling sample time
-#     }
-#
-#    $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       sleep 1;                          # polling sample time
-#     }
-#    log_messages($ans);
+    $port->write("RTI7\r\n");
+    # First one is to skip past the 'echo'
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+    log_messages($ans);
 
 
 # Only supported for rfd900 firmware version 2.3
@@ -668,6 +671,7 @@ sub get_radio_stats()
 
     # Get out of this mode
     $port->write("ATO\r\n");
+    # First one is to skip past the 'echo'
     $ans = "";
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
