@@ -232,9 +232,9 @@ while (1 == 1)
               log_messages($str);
 	      print $str if $DEBUG;
             }
-            elsif ($gotit =~ /Q/)
+            elsif ($gotit =~ /^Q:(.*)$/)
             {
-              $str = "Did not recognise response from station.\n";
+              $str = "Did not recognise response from station. Response was: " . $1 . "\n";
               log_messages($str);
 	      print $str if $DEBUG;
             }
@@ -386,9 +386,9 @@ sub decode_line()
   } elsif ($p_line =~ /^E4$/)
   {
     $v_result = "Error opening file for pressure/temp measurements on SD";
-  } elsif ($p_line =~ /^Q$/)
+  } elsif ($p_line =~ /^Q:(.*)$/)
   {
-    $v_result = "Did not recognise response from station.";
+    $v_result = "Did not recognise response from station. Response: " . $1;
   } elsif ($p_line =~ /^W$/)
   {
     $v_result = "Timeout while waiting for user menu option to be made.";
