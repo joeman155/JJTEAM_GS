@@ -322,7 +322,7 @@ sub decode_line()
     # stats on state of lik
     # Every 6 iterations...get stats
     # print "Iterations = $radio_stats_count \n";
-    if ($radio_stats_count > 2) {
+    if ($radio_stats_count > 12) {
 	    get_radio_stats();
         $radio_stats_count = 0;
     } else {
