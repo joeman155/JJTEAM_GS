@@ -321,8 +321,8 @@ sub decode_line()
     # We have 3 second delay after getting heartbeat.... so we quickly get
     # stats on state of lik
     # Every 6 iterations...get stats
-    # print "Iterations = $radio_stats_count \n";
-    if ($radio_stats_count > 12) {
+    print "Iterations = $radio_stats_count \n";
+    if ($radio_stats_count > 4) {
 	    get_radio_stats();
         $radio_stats_count = 0;
     } else {
