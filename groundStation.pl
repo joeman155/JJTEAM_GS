@@ -754,7 +754,7 @@ sub get_radio_stats()
        die "Aborted without match\n" unless (defined $ans);
        select(undef,undef,undef,0.15);
      }
-    log_messages($ans);
+    log_messages("Ground: " . $ans);
 
 
 
@@ -773,7 +773,7 @@ sub get_radio_stats()
        die "Aborted without match\n" unless (defined $ans);
        select(undef,undef,undef,0.15);
      }
-    log_messages($ans);
+    log_messages("HAB: " . $ans);
 
 
 # Only supported for rfd900 firmware version 2.3
