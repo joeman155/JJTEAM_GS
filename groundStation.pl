@@ -135,7 +135,6 @@ while (1 == 1)
 	    sleep 1;                          # polling sample time
 
             # Get BBB voltage supply reading and put into table
-	    
             get_bb_voltage();
           }
 
