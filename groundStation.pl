@@ -297,7 +297,7 @@ while (1 == 1)
 
             if ($gotit =~ /K/)
             {
-              $str = "HAB got request to skip d/l of the image";
+              $str = "HAB got request to skip d/l of the image.\n";
               log_messages($str);
               print $str if $DEBUG;
             }
