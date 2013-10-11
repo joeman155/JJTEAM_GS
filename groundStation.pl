@@ -60,15 +60,15 @@ if ($param1)
 {
   if ($param1 =~ /^T$/) 
     {
-     $mode = 1;
+     $mode = 1; # TESTING
     }
   elsif ($param1 =~ /^N$/)
     {
-     $mode = 2;
+     $mode = 2; # NORMAL
     }
   elsif ($param1 =~ /^C$/)
     {
-     $mode = 3;
+     $mode = 3;  # CUTDOWN
     }
   else 
     {
@@ -158,9 +158,18 @@ while (1 == 1)
 	      $image_error = 1;
       }
     
+
+## SEE IF MENU BEING PRESENTED
       if ($result =~ /Menu/)
       {
-        # We don't want to d/l EACH time we are offered...just occasionly
+        # IF mode = 3...then groundstation was started with flag to cutdown
+        #
+        # OR
+        #
+        # If cutdown request file exists...the initiate cutdown
+        #
+
+## MODE 3 - INITIATE CUTDOWN CHECKS
 	if ($mode == 3 || (-f $cutdown_req_file && $cutdown_initiated == 0))
 	{
 	  $cutdown_initiated = 1;
@@ -180,10 +189,32 @@ while (1 == 1)
             $str = "HOPE cutdown initiated!\n";
             log_messages($str);
           }
+          elsif ($gotit =~ /W/)
+          {
+            $str = "(trying to initiate cutdown) - Timeout waiting for response from ground station.\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          elsif ($gotit =~ /^Q:(.*)$/)
+          {
+            $str = "(trying to initiate cutdown) - Did not recognise response from station. Response was: " . $1 . "\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          else
+          {
+            $str = "HAB never started sending....perhaps it didnt get request to initiate CUTDOWN?\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+
 	}
         elsif ($mode == 0)
         {
 
+# MODE 0 - NORMAL OPERATION
+# SEE IF WE WANT TO DOWNLOAD PIC
+          # We don't want to d/l EACH time we are offered...just occasionly
           if ($pic_count % $pic_dl_freq == 0 && $image_error == 0)
           {
             $str = "Sending request to download image\n";
@@ -228,13 +259,13 @@ while (1 == 1)
             } 
             elsif ($gotit =~ /W/)
             {
-              $str = "Timeout waiting for response from ground station.\n";
+              $str = "(Trying to initiate img tfr) - Timeout waiting for response from ground station.\n";
               log_messages($str);
 	      print $str if $DEBUG;
             }
             elsif ($gotit =~ /^Q:(.*)$/)
             {
-              $str = "Did not recognise response from station. Response was: " . $1 . "\n";
+              $str = "(Trying to initiate img tfr) - Did not recognise response from station. Response was: " . $1 . "\n";
               log_messages($str);
 	      print $str if $DEBUG;
             }
@@ -247,9 +278,48 @@ while (1 == 1)
           }
           else
           {
-            $str = "Skipping d/l of image this time.\n";
+# WE DO NOT WANT TO DOWNLOAD THIS IMAGE
+# SEND COMMAND TO HAB TO EXIT MENU
+            $str = "Sending request to skip d/l of image this time.\n";
             log_messages($str);
-	    print $str if $DEBUG;
+            print $str if $DEBUG;
+            $port->lookclear;
+            $count_out = $port->write("9\r\n");
+            warn "write failed\n"   unless ($count_out);
+            warn "write incomplete\n" if ($count_out != length("2\r\n") );
+
+            my $gotit = "";
+            until ("" ne $gotit) {
+              $gotit = $port->lookfor;       # poll until data ready
+              die "Aborted without match\n" unless (defined $gotit);
+              sleep 1;                          # polling sample time
+            }
+
+            if ($gotit =~ /K/)
+            {
+              $str = "HAB got request to skip d/l of the image";
+              log_messages($str);
+              print $str if $DEBUG;
+            }
+            elsif ($gotit =~ /W/)
+            {
+              $str = "(Trying to initiate SKIP of img tfr) - Timeout waiting for response from ground station.\n";
+              log_messages($str);
+              print $str if $DEBUG;
+            }
+            elsif ($gotit =~ /^Q:(.*)$/)
+            {
+              $str = "(Trying to initiate SKIP of img tfr) - Did not recognise response from station. Response was: " . $1 . "\n";
+              log_messages($str);
+              print $str if $DEBUG;
+            }
+            else
+            {
+              $str = "HAB never started sending....perhaps it didnt get request to skip sending image?\n";
+              log_messages($str);
+              print $str if $DEBUG;
+            }
+
           }
 
 	  # If no error...then imcrement count.
@@ -259,6 +329,8 @@ while (1 == 1)
         }
         elsif ($mode == 1)
         {
+# MODE 1 - PUT IN TEST MODE
+# WHICH MEANS NOT TOO MANY PICS
           $count_out = $port->write("1\r\n");
           $str = "Sent request put in test mode\n";
           log_messages($str);
@@ -275,9 +347,30 @@ while (1 == 1)
             $str = "HOPE is now in Test mode\n";
             log_messages($str);
           }
+          elsif ($gotit =~ /W/)
+          {
+            $str = "(Trying to put in Test mode) - Timeout waiting for response from ground station.\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          elsif ($gotit =~ /^Q:(.*)$/)
+          {
+            $str = "(Trying to put in Test mode) - Did not recognise response from station. Response was: " . $1 . "\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          else
+          {
+            $str = "HAB never started sending....perhaps it didnt get request to put in TEST mode?\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+
         }
         elsif ($mode == 2)
         {
+# MODE 2 - PUT IN NORMAL MODE
+# WHICH MEANS TAKE NORMAL # OF PICS
           $count_out = $port->write("3\r\n");
           $str = "Sent request put in normal mode\n";
           log_messages($str);
@@ -294,6 +387,26 @@ while (1 == 1)
             $str = "HOPE is now in Normal mode\n";
             log_messages($str);
           }
+          elsif ($gotit =~ /W/)
+          {
+            $str = "(Trying to put in Normal mode) - Timeout waiting for response from ground station.\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          elsif ($gotit =~ /^Q:(.*)$/)
+          {
+            $str = "(Trying to put in Normal mode) - Did not recognise response from station. Response was: " . $1 . "\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+          else
+          {
+            $str = "HAB never started sending....perhaps it didnt get request to put in NORMAL mode\n";
+            log_messages($str);
+            print $str if $DEBUG;
+          }
+
+
         }
       }
     }
@@ -319,8 +432,8 @@ sub decode_line()
     $v_result = "Heartbeat Count: " . $1;
 
     # We have 3 second delay after getting heartbeat.... so we quickly get
-    # stats on state of lik
-    # Every 6 iterations...get stats
+    # stats on state of link
+    # Every 5 iterations...get stats
     print "Iterations = $radio_stats_count \n";
     if ($radio_stats_count > 4) {
 	    get_radio_stats();
