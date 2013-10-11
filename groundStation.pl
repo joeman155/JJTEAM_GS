@@ -203,7 +203,7 @@ while (1 == 1)
           }
           else
           {
-            $str = "HAB never started sending....perhaps it didnt get request to initiate CUTDOWN?\n";
+            $str = "HAB never responded as expected....perhaps it didnt get request to initiate CUTDOWN. Got $gotit \n";
             log_messages($str);
             print $str if $DEBUG;
           }
@@ -271,7 +271,7 @@ while (1 == 1)
             }
             else
             {
-              $str = "HAB never started sending....perhaps it didnt get request to send image?\n";
+              $str = "HAB never responded as expected....perhaps it didnt get request to send image Got $gotit \n";
               log_messages($str);
 	      print $str if $DEBUG;
             }
@@ -286,7 +286,7 @@ while (1 == 1)
             $port->lookclear;
             $count_out = $port->write("9\r\n");
             warn "write failed\n"   unless ($count_out);
-            warn "write incomplete\n" if ($count_out != length("2\r\n") );
+            warn "write incomplete\n" if ($count_out != length("9\r\n") );
 
             my $gotit = "";
             until ("" ne $gotit) {
@@ -315,7 +315,7 @@ while (1 == 1)
             }
             else
             {
-              $str = "HAB never started sending....perhaps it didnt get request to skip sending image?\n";
+              $str = "HAB never responded as expected....perhaps it didnt get request to skip sending image. Got $gotit \n";
               log_messages($str);
               print $str if $DEBUG;
             }
@@ -361,7 +361,7 @@ while (1 == 1)
           }
           else
           {
-            $str = "HAB never started sending....perhaps it didnt get request to put in TEST mode?\n";
+            $str = "HAB never responded as expected....perhaps it didnt get request to put in TEST mode. Got $gotit\n";
             log_messages($str);
             print $str if $DEBUG;
           }
@@ -401,7 +401,7 @@ while (1 == 1)
           }
           else
           {
-            $str = "HAB never started sending....perhaps it didnt get request to put in NORMAL mode\n";
+            $str = "HAB never responded as expected....perhaps it didnt get request to put in NORMAL mode. Got $gotit\n";
             log_messages($str);
             print $str if $DEBUG;
           }
