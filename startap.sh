@@ -26,4 +26,5 @@ nohup hostapd /home/root/hope/etc/hostapd.conf &
 
 
 echo Starting groundstation...
-/home/root/hope/groundStation.pl >> /home/root/hope/groundStation.log 2>&1 
+# /home/root/hope/groundStation.pl >> /home/root/hope/groundStation.log 2>&1 
+/home/root/hope/gs.sh start
