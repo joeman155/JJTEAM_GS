@@ -723,9 +723,9 @@ sub get_bb_voltage()
 sub get_radio_stats()
 {
     # now that we have line...quickly get some stats on link
-    select(undef,undef,undef,0.5);
+    select(undef,undef,undef,0.75);
     $port->write("+++");
-    select(undef,undef,undef,0.5);
+    select(undef,undef,undef,0.75);
 
     my $ans = "";
     # First one is to skip past the 'echo'
