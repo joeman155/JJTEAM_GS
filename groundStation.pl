@@ -224,6 +224,9 @@ while (1 == 1)
             warn "write failed\n"   unless ($count_out);
             warn "write incomplete\n" if ($count_out != length("2\r\n") );
 
+	    $str = "Finished sending request to download image\n";
+            log_messages($str);
+
             my $gotit = "";
             until ("" ne $gotit) {
               $gotit = $port->lookfor;       # poll until data ready
@@ -723,16 +726,16 @@ sub get_bb_voltage()
 sub get_radio_stats()
 {
     # now that we have line...quickly get some stats on link
-    select(undef,undef,undef,0.75);
+    select(undef,undef,undef,1);
     $port->write("+++");
-    select(undef,undef,undef,0.75);
+    select(undef,undef,undef,1);
 
     my $ans = "";
     # First one is to skip past the 'echo'
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.25);
      }
 
 
@@ -744,36 +747,36 @@ sub get_radio_stats()
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.25);
      }
 
     $ans = "";
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.25);
      }
     log_messages("Ground: " . $ans);
 
 
 
-    $port->write("RTI7\r\n");
-    # First one is to skip past the 'echo'
-    $ans = "";
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
-     }
-
-    $ans = "";
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
-     }
-    log_messages("HAB: " . $ans);
-
+#    $port->write("RTI7\r\n");
+#    # First one is to skip past the 'echo'
+#    $ans = "";
+#    until ("" ne $ans) {
+#       $ans = $port->lookfor;       # poll until data ready
+#       die "Aborted without match\n" unless (defined $ans);
+#       select(undef,undef,undef,0.15);
+#     }
+#
+#    $ans = "";
+#    until ("" ne $ans) {
+#       $ans = $port->lookfor;       # poll until data ready
+#       die "Aborted without match\n" unless (defined $ans);
+#       select(undef,undef,undef,0.15);
+#     }
+#    log_messages("HAB: " . $ans);
+#
 
 # Only supported for rfd900 firmware version 2.3
 #    # Get SYNC status
