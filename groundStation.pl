@@ -761,23 +761,23 @@ sub get_radio_stats()
 
 
 
-#    $port->write("RTI7\r\n");
-#    # First one is to skip past the 'echo'
-#    $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       select(undef,undef,undef,0.15);
-#     }
-#
-#    $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       select(undef,undef,undef,0.15);
-#     }
-#    log_messages("HAB: " . $ans);
-#
+    $port->write("RTI7\r\n");
+    # First one is to skip past the 'echo'
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+
+    $ans = "";
+    until ("" ne $ans) {
+       $ans = $port->lookfor;       # poll until data ready
+       die "Aborted without match\n" unless (defined $ans);
+       select(undef,undef,undef,0.15);
+     }
+    log_messages("HAB: " . $ans);
+
 
 # Only supported for rfd900 firmware version 2.3
 #    # Get SYNC status
