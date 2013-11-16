@@ -147,9 +147,12 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	cache: false,
 	async: false,
 	success: function(s,x) {
-	$("#datetime").html('<h2>' + s + '</h2>');
+		$('body').css('background', 'white');
+		$("#datetime").html('<h2>' + s + '</h2>');
+		},
+	error: function() {
+		$('body').css('background', 'red');
 		}
-
 	});
 	}
 
