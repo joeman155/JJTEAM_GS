@@ -1,0 +1,5 @@
+.//obj/rf50/radio~rf50/parameters.rel: radio/parameters.c radio/radio.h include/board.h \
+ include/board_rf50.h include/compiler_defs.h include/cdt.h \
+ include/Si1000_defs.h include/compiler_defs.h radio/serial.h \
+ include/board_info.h radio/parameters.h radio/at.h radio/flash.h \
+ radio/rtc.h radio/tdm.h radio/crc.h include/flash_layout.h

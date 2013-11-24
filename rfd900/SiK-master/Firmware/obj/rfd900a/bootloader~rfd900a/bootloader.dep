@@ -1,0 +1,5 @@
+.//obj/rfd900a/bootloader~rfd900a/bootloader.rel: bootloader/bootloader.c include/compiler_defs.h \
+ include/cdt.h include/Si1000_defs.h include/compiler_defs.h \
+ include/board.h include/board_rfd900a.h bootloader/bootloader.h \
+ include/cdt.h include/board_info.h bootloader/flash.h \
+ include/flash_layout.h bootloader/util.h

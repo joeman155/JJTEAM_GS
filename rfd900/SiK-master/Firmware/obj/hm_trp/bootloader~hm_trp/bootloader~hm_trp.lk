@@ -1,0 +1,17 @@
+-muwx
+-i obj/hm_trp/bootloader~hm_trp/bootloader~hm_trp.ihx
+-M
+-Y
+-I 0x0100
+-S 0x40
+-X 0x1000
+-b HOME = 0x0000
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-bHIGHCSEG=0xf800
+.//obj/hm_trp/bootloader~hm_trp/crtstart.rel
+.//obj/hm_trp/bootloader~hm_trp/bootloader.rel
+.//obj/hm_trp/bootloader~hm_trp/flash.rel
+.//obj/hm_trp/bootloader~hm_trp/util.rel
+
+-e

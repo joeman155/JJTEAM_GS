@@ -1,0 +1,35 @@
+-muwx
+-i obj/rf50/radio~rf50/radio~rf50.ihx
+-M
+-Y
+-I 0x0100
+-S 0x40
+-X 0x1000
+-C 0xf400
+-b HOME = 0x0400
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-k /usr/local/sdcc/bin/../share/sdcc/lib/large
+-k /usr/local/share/sdcc/lib/large
+-l mcs51
+-l libsdcc
+-l libint
+-l liblong
+-l libfloat
+.//obj/rf50/radio~rf50/at.rel
+.//obj/rf50/radio~rf50/crc.rel
+.//obj/rf50/radio~rf50/flash.rel
+.//obj/rf50/radio~rf50/freq_hopping.rel
+.//obj/rf50/radio~rf50/golay.rel
+.//obj/rf50/radio~rf50/main.rel
+.//obj/rf50/radio~rf50/mavlink.rel
+.//obj/rf50/radio~rf50/packet.rel
+.//obj/rf50/radio~rf50/parameters.rel
+.//obj/rf50/radio~rf50/printfl.rel
+.//obj/rf50/radio~rf50/radio.rel
+.//obj/rf50/radio~rf50/rtc.rel
+.//obj/rf50/radio~rf50/serial.rel
+.//obj/rf50/radio~rf50/tdm.rel
+.//obj/rf50/radio~rf50/timer.rel
+
+-e

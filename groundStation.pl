@@ -748,14 +748,14 @@ sub get_radio_stats()
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.3);
      }
 
     $ans = "";
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.3);
      }
      log_messages("Ground: " . $ans);
 
@@ -767,14 +767,14 @@ sub get_radio_stats()
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.3);
      }
 
     $ans = "";
     until ("" ne $ans) {
        $ans = $port->lookfor;       # poll until data ready
        die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.15);
+       select(undef,undef,undef,0.3);
      }
     log_messages("HAB: " . $ans);
 

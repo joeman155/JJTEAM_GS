@@ -1,0 +1,2137 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (Linux)
+                              4 ; This file was generated Sun Nov 24 17:43:09 2013
+                              5 ;--------------------------------------------------------
+                              6 	.module packet
+                              7 	.optsdcc -mmcs51 --model-large
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _timer2_tick
+                             13 	.globl _serial_read_available
+                             14 	.globl _serial_read_buf
+                             15 	.globl _serial_peek2
+                             16 	.globl _serial_peek
+                             17 	.globl _serial_read
+                             18 	.globl _memcmp
+                             19 	.globl _memcpy
+                             20 	.globl _NSS1
+                             21 	.globl _IRQ
+                             22 	.globl _PA_ENABLE
+                             23 	.globl _PIN_ENABLE
+                             24 	.globl _PIN_CONFIG
+                             25 	.globl _LED_GREEN
+                             26 	.globl _LED_RED
+                             27 	.globl _SPI0EN
+                             28 	.globl _TXBMT0
+                             29 	.globl _NSS0MD0
+                             30 	.globl _NSS0MD1
+                             31 	.globl _RXOVRN0
+                             32 	.globl _MODF0
+                             33 	.globl _WCOL0
+                             34 	.globl _SPIF0
+                             35 	.globl _AD0CM0
+                             36 	.globl _AD0CM1
+                             37 	.globl _AD0CM2
+                             38 	.globl _AD0WINT
+                             39 	.globl _AD0BUSY
+                             40 	.globl _AD0INT
+                             41 	.globl _BURSTEN
+                             42 	.globl _AD0EN
+                             43 	.globl _CCF0
+                             44 	.globl _CCF1
+                             45 	.globl _CCF2
+                             46 	.globl _CCF3
+                             47 	.globl _CCF4
+                             48 	.globl _CCF5
+                             49 	.globl _CR
+                             50 	.globl _CF
+                             51 	.globl _P
+                             52 	.globl _F1
+                             53 	.globl _OV
+                             54 	.globl _RS0
+                             55 	.globl _RS1
+                             56 	.globl _F0
+                             57 	.globl _AC
+                             58 	.globl _CY
+                             59 	.globl _T2XCLK
+                             60 	.globl _T2RCLK
+                             61 	.globl _TR2
+                             62 	.globl _T2SPLIT
+                             63 	.globl _TF2CEN
+                             64 	.globl _TF2LEN
+                             65 	.globl _TF2L
+                             66 	.globl _TF2H
+                             67 	.globl _SI
+                             68 	.globl _ACK
+                             69 	.globl _ARBLOST
+                             70 	.globl _ACKRQ
+                             71 	.globl _STO
+                             72 	.globl _STA
+                             73 	.globl _TXMODE
+                             74 	.globl _MASTER
+                             75 	.globl _PX0
+                             76 	.globl _PT0
+                             77 	.globl _PX1
+                             78 	.globl _PT1
+                             79 	.globl _PS0
+                             80 	.globl _PT2
+                             81 	.globl _PSPI0
+                             82 	.globl _SPI1EN
+                             83 	.globl _TXBMT1
+                             84 	.globl _NSS1MD0
+                             85 	.globl _NSS1MD1
+                             86 	.globl _RXOVRN1
+                             87 	.globl _MODF1
+                             88 	.globl _WCOL1
+                             89 	.globl _SPIF1
+                             90 	.globl _EX0
+                             91 	.globl _ET0
+                             92 	.globl _EX1
+                             93 	.globl _ET1
+                             94 	.globl _ES0
+                             95 	.globl _ET2
+                             96 	.globl _ESPI0
+                             97 	.globl _EA
+                             98 	.globl _RI0
+                             99 	.globl _TI0
+                            100 	.globl _RB80
+                            101 	.globl _TB80
+                            102 	.globl _REN0
+                            103 	.globl _MCE0
+                            104 	.globl _S0MODE
+                            105 	.globl _CRC0VAL
+                            106 	.globl _CRC0INIT
+                            107 	.globl _CRC0SEL
+                            108 	.globl _IT0
+                            109 	.globl _IE0
+                            110 	.globl _IT1
+                            111 	.globl _IE1
+                            112 	.globl _TR0
+                            113 	.globl _TF0
+                            114 	.globl _TR1
+                            115 	.globl _TF1
+                            116 	.globl _PCA0CP4
+                            117 	.globl _PCA0CP0
+                            118 	.globl _PCA0
+                            119 	.globl _PCA0CP3
+                            120 	.globl _PCA0CP2
+                            121 	.globl _PCA0CP1
+                            122 	.globl _PCA0CP5
+                            123 	.globl _TMR2
+                            124 	.globl _TMR2RL
+                            125 	.globl _ADC0LT
+                            126 	.globl _ADC0GT
+                            127 	.globl _ADC0
+                            128 	.globl _TMR3
+                            129 	.globl _TMR3RL
+                            130 	.globl _TOFF
+                            131 	.globl _DP
+                            132 	.globl _VDM0CN
+                            133 	.globl _PCA0CPH4
+                            134 	.globl _PCA0CPL4
+                            135 	.globl _PCA0CPH0
+                            136 	.globl _PCA0CPL0
+                            137 	.globl _PCA0H
+                            138 	.globl _PCA0L
+                            139 	.globl _SPI0CN
+                            140 	.globl _EIP2
+                            141 	.globl _EIP1
+                            142 	.globl _SMB0ADM
+                            143 	.globl _SMB0ADR
+                            144 	.globl _P2MDIN
+                            145 	.globl _P1MDIN
+                            146 	.globl _P0MDIN
+                            147 	.globl _B
+                            148 	.globl _RSTSRC
+                            149 	.globl _PCA0CPH3
+                            150 	.globl _PCA0CPL3
+                            151 	.globl _PCA0CPH2
+                            152 	.globl _PCA0CPL2
+                            153 	.globl _PCA0CPH1
+                            154 	.globl _PCA0CPL1
+                            155 	.globl _ADC0CN
+                            156 	.globl _EIE2
+                            157 	.globl _EIE1
+                            158 	.globl _FLWR
+                            159 	.globl _IT01CF
+                            160 	.globl _XBR2
+                            161 	.globl _XBR1
+                            162 	.globl _XBR0
+                            163 	.globl _ACC
+                            164 	.globl _PCA0PWM
+                            165 	.globl _PCA0CPM4
+                            166 	.globl _PCA0CPM3
+                            167 	.globl _PCA0CPM2
+                            168 	.globl _PCA0CPM1
+                            169 	.globl _PCA0CPM0
+                            170 	.globl _PCA0MD
+                            171 	.globl _PCA0CN
+                            172 	.globl _P0MAT
+                            173 	.globl _P2SKIP
+                            174 	.globl _P1SKIP
+                            175 	.globl _P0SKIP
+                            176 	.globl _PCA0CPH5
+                            177 	.globl _PCA0CPL5
+                            178 	.globl _REF0CN
+                            179 	.globl _PSW
+                            180 	.globl _P1MAT
+                            181 	.globl _PCA0CPM5
+                            182 	.globl _TMR2H
+                            183 	.globl _TMR2L
+                            184 	.globl _TMR2RLH
+                            185 	.globl _TMR2RLL
+                            186 	.globl _REG0CN
+                            187 	.globl _TMR2CN
+                            188 	.globl _P0MASK
+                            189 	.globl _ADC0LTH
+                            190 	.globl _ADC0LTL
+                            191 	.globl _ADC0GTH
+                            192 	.globl _ADC0GTL
+                            193 	.globl _SMB0DAT
+                            194 	.globl _SMB0CF
+                            195 	.globl _SMB0CN
+                            196 	.globl _P1MASK
+                            197 	.globl _ADC0H
+                            198 	.globl _ADC0L
+                            199 	.globl _ADC0TK
+                            200 	.globl _ADC0CF
+                            201 	.globl _ADC0MX
+                            202 	.globl _ADC0PWR
+                            203 	.globl _ADC0AC
+                            204 	.globl _IREF0CN
+                            205 	.globl _IP
+                            206 	.globl _FLKEY
+                            207 	.globl _FLSCL
+                            208 	.globl _PMU0CF
+                            209 	.globl _OSCICL
+                            210 	.globl _OSCICN
+                            211 	.globl _OSCXCN
+                            212 	.globl _SPI1CN
+                            213 	.globl _ONESHOT
+                            214 	.globl _EMI0TC
+                            215 	.globl _RTC0KEY
+                            216 	.globl _RTC0DAT
+                            217 	.globl _RTC0ADR
+                            218 	.globl _EMI0CF
+                            219 	.globl _EMI0CN
+                            220 	.globl _CLKSEL
+                            221 	.globl _IE
+                            222 	.globl _SFRPAGE
+                            223 	.globl _P2DRV
+                            224 	.globl _P2MDOUT
+                            225 	.globl _P1DRV
+                            226 	.globl _P1MDOUT
+                            227 	.globl _P0DRV
+                            228 	.globl _P0MDOUT
+                            229 	.globl _SPI0DAT
+                            230 	.globl _SPI0CKR
+                            231 	.globl _SPI0CFG
+                            232 	.globl _P2
+                            233 	.globl _CPT0MX
+                            234 	.globl _CPT1MX
+                            235 	.globl _CPT0MD
+                            236 	.globl _CPT1MD
+                            237 	.globl _CPT0CN
+                            238 	.globl _CPT1CN
+                            239 	.globl _SBUF0
+                            240 	.globl _SCON0
+                            241 	.globl _CRC0CNT
+                            242 	.globl _DC0CN
+                            243 	.globl _CRC0AUTO
+                            244 	.globl _DC0CF
+                            245 	.globl _TMR3H
+                            246 	.globl _CRC0FLIP
+                            247 	.globl _TMR3L
+                            248 	.globl _CRC0IN
+                            249 	.globl _TMR3RLH
+                            250 	.globl _CRC0CN
+                            251 	.globl _TMR3RLL
+                            252 	.globl _CRC0DAT
+                            253 	.globl _TMR3CN
+                            254 	.globl _P1
+                            255 	.globl _PSCTL
+                            256 	.globl _CKCON
+                            257 	.globl _TH1
+                            258 	.globl _TH0
+                            259 	.globl _TL1
+                            260 	.globl _TL0
+                            261 	.globl _TMOD
+                            262 	.globl _TCON
+                            263 	.globl _PCON
+                            264 	.globl _TOFFH
+                            265 	.globl _SPI1DAT
+                            266 	.globl _TOFFL
+                            267 	.globl _SPI1CKR
+                            268 	.globl _SPI1CFG
+                            269 	.globl _DPH
+                            270 	.globl _DPL
+                            271 	.globl _SP
+                            272 	.globl _P0
+                            273 	.globl _packet_inject_PARM_2
+                            274 	.globl _packet_is_duplicate_PARM_2
+                            275 	.globl _packet_get_next_PARM_2
+                            276 	.globl _packet_is_duplicate_PARM_3
+                            277 	.globl _using_mavlink_10
+                            278 	.globl _seen_mavlink
+                            279 	.globl _packet_get_next
+                            280 	.globl _packet_is_resend
+                            281 	.globl _packet_is_injected
+                            282 	.globl _packet_force_resend
+                            283 	.globl _packet_set_max_xmit
+                            284 	.globl _packet_set_serial_speed
+                            285 	.globl _packet_is_duplicate
+                            286 	.globl _packet_inject
+                            287 ;--------------------------------------------------------
+                            288 ; special function registers
+                            289 ;--------------------------------------------------------
+                            290 	.area RSEG    (ABS,DATA)
+   0000                     291 	.org 0x0000
+                     0080   292 _P0	=	0x0080
+                     0081   293 _SP	=	0x0081
+                     0082   294 _DPL	=	0x0082
+                     0083   295 _DPH	=	0x0083
+                     0084   296 _SPI1CFG	=	0x0084
+                     0085   297 _SPI1CKR	=	0x0085
+                     0085   298 _TOFFL	=	0x0085
+                     0086   299 _SPI1DAT	=	0x0086
+                     0086   300 _TOFFH	=	0x0086
+                     0087   301 _PCON	=	0x0087
+                     0088   302 _TCON	=	0x0088
+                     0089   303 _TMOD	=	0x0089
+                     008A   304 _TL0	=	0x008a
+                     008B   305 _TL1	=	0x008b
+                     008C   306 _TH0	=	0x008c
+                     008D   307 _TH1	=	0x008d
+                     008E   308 _CKCON	=	0x008e
+                     008F   309 _PSCTL	=	0x008f
+                     0090   310 _P1	=	0x0090
+                     0091   311 _TMR3CN	=	0x0091
+                     0091   312 _CRC0DAT	=	0x0091
+                     0092   313 _TMR3RLL	=	0x0092
+                     0092   314 _CRC0CN	=	0x0092
+                     0093   315 _TMR3RLH	=	0x0093
+                     0093   316 _CRC0IN	=	0x0093
+                     0094   317 _TMR3L	=	0x0094
+                     0095   318 _CRC0FLIP	=	0x0095
+                     0095   319 _TMR3H	=	0x0095
+                     0096   320 _DC0CF	=	0x0096
+                     0096   321 _CRC0AUTO	=	0x0096
+                     0097   322 _DC0CN	=	0x0097
+                     0097   323 _CRC0CNT	=	0x0097
+                     0098   324 _SCON0	=	0x0098
+                     0099   325 _SBUF0	=	0x0099
+                     009A   326 _CPT1CN	=	0x009a
+                     009B   327 _CPT0CN	=	0x009b
+                     009C   328 _CPT1MD	=	0x009c
+                     009D   329 _CPT0MD	=	0x009d
+                     009E   330 _CPT1MX	=	0x009e
+                     009F   331 _CPT0MX	=	0x009f
+                     00A0   332 _P2	=	0x00a0
+                     00A1   333 _SPI0CFG	=	0x00a1
+                     00A2   334 _SPI0CKR	=	0x00a2
+                     00A3   335 _SPI0DAT	=	0x00a3
+                     00A4   336 _P0MDOUT	=	0x00a4
+                     00A4   337 _P0DRV	=	0x00a4
+                     00A5   338 _P1MDOUT	=	0x00a5
+                     00A5   339 _P1DRV	=	0x00a5
+                     00A6   340 _P2MDOUT	=	0x00a6
+                     00A6   341 _P2DRV	=	0x00a6
+                     00A7   342 _SFRPAGE	=	0x00a7
+                     00A8   343 _IE	=	0x00a8
+                     00A9   344 _CLKSEL	=	0x00a9
+                     00AA   345 _EMI0CN	=	0x00aa
+                     00AB   346 _EMI0CF	=	0x00ab
+                     00AC   347 _RTC0ADR	=	0x00ac
+                     00AD   348 _RTC0DAT	=	0x00ad
+                     00AE   349 _RTC0KEY	=	0x00ae
+                     00AF   350 _EMI0TC	=	0x00af
+                     00AF   351 _ONESHOT	=	0x00af
+                     00B0   352 _SPI1CN	=	0x00b0
+                     00B1   353 _OSCXCN	=	0x00b1
+                     00B2   354 _OSCICN	=	0x00b2
+                     00B3   355 _OSCICL	=	0x00b3
+                     00B5   356 _PMU0CF	=	0x00b5
+                     00B6   357 _FLSCL	=	0x00b6
+                     00B7   358 _FLKEY	=	0x00b7
+                     00B8   359 _IP	=	0x00b8
+                     00B9   360 _IREF0CN	=	0x00b9
+                     00BA   361 _ADC0AC	=	0x00ba
+                     00BA   362 _ADC0PWR	=	0x00ba
+                     00BB   363 _ADC0MX	=	0x00bb
+                     00BC   364 _ADC0CF	=	0x00bc
+                     00BD   365 _ADC0TK	=	0x00bd
+                     00BD   366 _ADC0L	=	0x00bd
+                     00BE   367 _ADC0H	=	0x00be
+                     00BF   368 _P1MASK	=	0x00bf
+                     00C0   369 _SMB0CN	=	0x00c0
+                     00C1   370 _SMB0CF	=	0x00c1
+                     00C2   371 _SMB0DAT	=	0x00c2
+                     00C3   372 _ADC0GTL	=	0x00c3
+                     00C4   373 _ADC0GTH	=	0x00c4
+                     00C5   374 _ADC0LTL	=	0x00c5
+                     00C6   375 _ADC0LTH	=	0x00c6
+                     00C7   376 _P0MASK	=	0x00c7
+                     00C8   377 _TMR2CN	=	0x00c8
+                     00C9   378 _REG0CN	=	0x00c9
+                     00CA   379 _TMR2RLL	=	0x00ca
+                     00CB   380 _TMR2RLH	=	0x00cb
+                     00CC   381 _TMR2L	=	0x00cc
+                     00CD   382 _TMR2H	=	0x00cd
+                     00CE   383 _PCA0CPM5	=	0x00ce
+                     00CF   384 _P1MAT	=	0x00cf
+                     00D0   385 _PSW	=	0x00d0
+                     00D1   386 _REF0CN	=	0x00d1
+                     00D2   387 _PCA0CPL5	=	0x00d2
+                     00D3   388 _PCA0CPH5	=	0x00d3
+                     00D4   389 _P0SKIP	=	0x00d4
+                     00D5   390 _P1SKIP	=	0x00d5
+                     00D6   391 _P2SKIP	=	0x00d6
+                     00D7   392 _P0MAT	=	0x00d7
+                     00D8   393 _PCA0CN	=	0x00d8
+                     00D9   394 _PCA0MD	=	0x00d9
+                     00DA   395 _PCA0CPM0	=	0x00da
+                     00DB   396 _PCA0CPM1	=	0x00db
+                     00DC   397 _PCA0CPM2	=	0x00dc
+                     00DD   398 _PCA0CPM3	=	0x00dd
+                     00DE   399 _PCA0CPM4	=	0x00de
+                     00DF   400 _PCA0PWM	=	0x00df
+                     00E0   401 _ACC	=	0x00e0
+                     00E1   402 _XBR0	=	0x00e1
+                     00E2   403 _XBR1	=	0x00e2
+                     00E3   404 _XBR2	=	0x00e3
+                     00E4   405 _IT01CF	=	0x00e4
+                     00E5   406 _FLWR	=	0x00e5
+                     00E6   407 _EIE1	=	0x00e6
+                     00E7   408 _EIE2	=	0x00e7
+                     00E8   409 _ADC0CN	=	0x00e8
+                     00E9   410 _PCA0CPL1	=	0x00e9
+                     00EA   411 _PCA0CPH1	=	0x00ea
+                     00EB   412 _PCA0CPL2	=	0x00eb
+                     00EC   413 _PCA0CPH2	=	0x00ec
+                     00ED   414 _PCA0CPL3	=	0x00ed
+                     00EE   415 _PCA0CPH3	=	0x00ee
+                     00EF   416 _RSTSRC	=	0x00ef
+                     00F0   417 _B	=	0x00f0
+                     00F1   418 _P0MDIN	=	0x00f1
+                     00F2   419 _P1MDIN	=	0x00f2
+                     00F3   420 _P2MDIN	=	0x00f3
+                     00F4   421 _SMB0ADR	=	0x00f4
+                     00F5   422 _SMB0ADM	=	0x00f5
+                     00F6   423 _EIP1	=	0x00f6
+                     00F7   424 _EIP2	=	0x00f7
+                     00F8   425 _SPI0CN	=	0x00f8
+                     00F9   426 _PCA0L	=	0x00f9
+                     00FA   427 _PCA0H	=	0x00fa
+                     00FB   428 _PCA0CPL0	=	0x00fb
+                     00FC   429 _PCA0CPH0	=	0x00fc
+                     00FD   430 _PCA0CPL4	=	0x00fd
+                     00FE   431 _PCA0CPH4	=	0x00fe
+                     00FF   432 _VDM0CN	=	0x00ff
+                     8382   433 _DP	=	0x8382
+                     8685   434 _TOFF	=	0x8685
+                     9392   435 _TMR3RL	=	0x9392
+                     9594   436 _TMR3	=	0x9594
+                     BEBD   437 _ADC0	=	0xbebd
+                     C4C3   438 _ADC0GT	=	0xc4c3
+                     C6C5   439 _ADC0LT	=	0xc6c5
+                     CBCA   440 _TMR2RL	=	0xcbca
+                     CDCC   441 _TMR2	=	0xcdcc
+                     D3D2   442 _PCA0CP5	=	0xd3d2
+                     EAE9   443 _PCA0CP1	=	0xeae9
+                     ECEB   444 _PCA0CP2	=	0xeceb
+                     EEED   445 _PCA0CP3	=	0xeeed
+                     FAF9   446 _PCA0	=	0xfaf9
+                     FCFB   447 _PCA0CP0	=	0xfcfb
+                     FEFD   448 _PCA0CP4	=	0xfefd
+                            449 ;--------------------------------------------------------
+                            450 ; special function bits
+                            451 ;--------------------------------------------------------
+                            452 	.area RSEG    (ABS,DATA)
+   0000                     453 	.org 0x0000
+                     008F   454 _TF1	=	0x008f
+                     008E   455 _TR1	=	0x008e
+                     008D   456 _TF0	=	0x008d
+                     008C   457 _TR0	=	0x008c
+                     008B   458 _IE1	=	0x008b
+                     008A   459 _IT1	=	0x008a
+                     0089   460 _IE0	=	0x0089
+                     0088   461 _IT0	=	0x0088
+                     0096   462 _CRC0SEL	=	0x0096
+                     0095   463 _CRC0INIT	=	0x0095
+                     0094   464 _CRC0VAL	=	0x0094
+                     009F   465 _S0MODE	=	0x009f
+                     009D   466 _MCE0	=	0x009d
+                     009C   467 _REN0	=	0x009c
+                     009B   468 _TB80	=	0x009b
+                     009A   469 _RB80	=	0x009a
+                     0099   470 _TI0	=	0x0099
+                     0098   471 _RI0	=	0x0098
+                     00AF   472 _EA	=	0x00af
+                     00AE   473 _ESPI0	=	0x00ae
+                     00AD   474 _ET2	=	0x00ad
+                     00AC   475 _ES0	=	0x00ac
+                     00AB   476 _ET1	=	0x00ab
+                     00AA   477 _EX1	=	0x00aa
+                     00A9   478 _ET0	=	0x00a9
+                     00A8   479 _EX0	=	0x00a8
+                     00B7   480 _SPIF1	=	0x00b7
+                     00B6   481 _WCOL1	=	0x00b6
+                     00B5   482 _MODF1	=	0x00b5
+                     00B4   483 _RXOVRN1	=	0x00b4
+                     00B3   484 _NSS1MD1	=	0x00b3
+                     00B2   485 _NSS1MD0	=	0x00b2
+                     00B1   486 _TXBMT1	=	0x00b1
+                     00B0   487 _SPI1EN	=	0x00b0
+                     00BE   488 _PSPI0	=	0x00be
+                     00BD   489 _PT2	=	0x00bd
+                     00BC   490 _PS0	=	0x00bc
+                     00BB   491 _PT1	=	0x00bb
+                     00BA   492 _PX1	=	0x00ba
+                     00B9   493 _PT0	=	0x00b9
+                     00B8   494 _PX0	=	0x00b8
+                     00C7   495 _MASTER	=	0x00c7
+                     00C6   496 _TXMODE	=	0x00c6
+                     00C5   497 _STA	=	0x00c5
+                     00C4   498 _STO	=	0x00c4
+                     00C3   499 _ACKRQ	=	0x00c3
+                     00C2   500 _ARBLOST	=	0x00c2
+                     00C1   501 _ACK	=	0x00c1
+                     00C0   502 _SI	=	0x00c0
+                     00CF   503 _TF2H	=	0x00cf
+                     00CE   504 _TF2L	=	0x00ce
+                     00CD   505 _TF2LEN	=	0x00cd
+                     00CC   506 _TF2CEN	=	0x00cc
+                     00CB   507 _T2SPLIT	=	0x00cb
+                     00CA   508 _TR2	=	0x00ca
+                     00C9   509 _T2RCLK	=	0x00c9
+                     00C8   510 _T2XCLK	=	0x00c8
+                     00D7   511 _CY	=	0x00d7
+                     00D6   512 _AC	=	0x00d6
+                     00D5   513 _F0	=	0x00d5
+                     00D4   514 _RS1	=	0x00d4
+                     00D3   515 _RS0	=	0x00d3
+                     00D2   516 _OV	=	0x00d2
+                     00D1   517 _F1	=	0x00d1
+                     00D0   518 _P	=	0x00d0
+                     00DF   519 _CF	=	0x00df
+                     00DE   520 _CR	=	0x00de
+                     00DD   521 _CCF5	=	0x00dd
+                     00DC   522 _CCF4	=	0x00dc
+                     00DB   523 _CCF3	=	0x00db
+                     00DA   524 _CCF2	=	0x00da
+                     00D9   525 _CCF1	=	0x00d9
+                     00D8   526 _CCF0	=	0x00d8
+                     00EF   527 _AD0EN	=	0x00ef
+                     00EE   528 _BURSTEN	=	0x00ee
+                     00ED   529 _AD0INT	=	0x00ed
+                     00EC   530 _AD0BUSY	=	0x00ec
+                     00EB   531 _AD0WINT	=	0x00eb
+                     00EA   532 _AD0CM2	=	0x00ea
+                     00E9   533 _AD0CM1	=	0x00e9
+                     00E8   534 _AD0CM0	=	0x00e8
+                     00FF   535 _SPIF0	=	0x00ff
+                     00FE   536 _WCOL0	=	0x00fe
+                     00FD   537 _MODF0	=	0x00fd
+                     00FC   538 _RXOVRN0	=	0x00fc
+                     00FB   539 _NSS0MD1	=	0x00fb
+                     00FA   540 _NSS0MD0	=	0x00fa
+                     00F9   541 _TXBMT0	=	0x00f9
+                     00F8   542 _SPI0EN	=	0x00f8
+                     0096   543 _LED_RED	=	0x0096
+                     0095   544 _LED_GREEN	=	0x0095
+                     0082   545 _PIN_CONFIG	=	0x0082
+                     0083   546 _PIN_ENABLE	=	0x0083
+                     00A5   547 _PA_ENABLE	=	0x00a5
+                     0087   548 _IRQ	=	0x0087
+                     0094   549 _NSS1	=	0x0094
+                            550 ;--------------------------------------------------------
+                            551 ; overlayable register banks
+                            552 ;--------------------------------------------------------
+                            553 	.area REG_BANK_0	(REL,OVR,DATA)
+   0000                     554 	.ds 8
+                            555 ;--------------------------------------------------------
+                            556 ; internal ram data
+                            557 ;--------------------------------------------------------
+                            558 	.area DSEG    (DATA)
+   0000                     559 _mavlink_frame_slen_1_140:
+   0000                     560 	.ds 2
+   0002                     561 _mavlink_frame_c_2_141:
+   0002                     562 	.ds 1
+   0003                     563 _mavlink_frame_sloc0_1_0:
+   0003                     564 	.ds 1
+   0004                     565 _mavlink_frame_sloc1_1_0:
+   0004                     566 	.ds 2
+   0006                     567 _packet_get_next_max_xmit_1_145:
+   0006                     568 	.ds 1
+   0007                     569 _packet_get_next_slen_1_146:
+   0007                     570 	.ds 2
+   0009                     571 _packet_get_next_sloc0_1_0:
+   0009                     572 	.ds 2
+                            573 ;--------------------------------------------------------
+                            574 ; overlayable items in internal ram 
+                            575 ;--------------------------------------------------------
+                            576 ;--------------------------------------------------------
+                            577 ; indirectly addressable internal ram data
+                            578 ;--------------------------------------------------------
+                            579 	.area ISEG    (DATA)
+                            580 ;--------------------------------------------------------
+                            581 ; absolute internal ram data
+                            582 ;--------------------------------------------------------
+                            583 	.area IABS    (ABS,DATA)
+                            584 	.area IABS    (ABS,DATA)
+                            585 ;--------------------------------------------------------
+                            586 ; bit data
+                            587 ;--------------------------------------------------------
+                            588 	.area BSEG    (BIT)
+   0000                     589 _last_sent_is_resend:
+   0000                     590 	.ds 1
+   0001                     591 _last_sent_is_injected:
+   0001                     592 	.ds 1
+   0002                     593 _last_recv_is_resend:
+   0002                     594 	.ds 1
+   0003                     595 _force_resend:
+   0003                     596 	.ds 1
+   0004                     597 _injected_packet:
+   0004                     598 	.ds 1
+   0005                     599 _seen_mavlink::
+   0005                     600 	.ds 1
+   0006                     601 _using_mavlink_10::
+   0006                     602 	.ds 1
+   0007                     603 _packet_is_duplicate_PARM_3:
+   0007                     604 	.ds 1
+                            605 ;--------------------------------------------------------
+                            606 ; paged external ram data
+                            607 ;--------------------------------------------------------
+                            608 	.area PSEG    (PAG,XDATA)
+   0000                     609 _last_sent_len:
+   0000                     610 	.ds 1
+   0001                     611 _last_recv_len:
+   0001                     612 	.ds 1
+   0002                     613 _serial_rate:
+   0002                     614 	.ds 2
+   0004                     615 _mav_pkt_len:
+   0004                     616 	.ds 1
+   0005                     617 _mav_pkt_start_time:
+   0005                     618 	.ds 2
+   0007                     619 _mav_pkt_max_time:
+   0007                     620 	.ds 2
+   0009                     621 _mav_max_xmit:
+   0009                     622 	.ds 1
+   000A                     623 _mavlink_frame_PARM_2:
+   000A                     624 	.ds 2
+   000C                     625 _packet_get_next_PARM_2:
+   000C                     626 	.ds 2
+   000E                     627 _packet_is_duplicate_PARM_2:
+   000E                     628 	.ds 2
+   0010                     629 _packet_inject_PARM_2:
+   0010                     630 	.ds 1
+                            631 ;--------------------------------------------------------
+                            632 ; external ram data
+                            633 ;--------------------------------------------------------
+                            634 	.area XSEG    (XDATA)
+   0000                     635 _last_received:
+   0000                     636 	.ds 252
+   00FC                     637 _last_sent:
+   00FC                     638 	.ds 252
+   01F8                     639 _mavlink_frame_max_xmit_1_139:
+   01F8                     640 	.ds 1
+   01F9                     641 _packet_set_max_xmit_max_1_177:
+   01F9                     642 	.ds 1
+   01FA                     643 _packet_set_serial_speed_speed_1_179:
+   01FA                     644 	.ds 2
+   01FC                     645 _packet_is_duplicate_len_1_181:
+   01FC                     646 	.ds 1
+                            647 ;--------------------------------------------------------
+                            648 ; absolute external ram data
+                            649 ;--------------------------------------------------------
+                            650 	.area XABS    (ABS,XDATA)
+                            651 ;--------------------------------------------------------
+                            652 ; external initialized ram data
+                            653 ;--------------------------------------------------------
+                            654 	.area XISEG   (XDATA)
+                            655 	.area HOME    (CODE)
+                            656 	.area GSINIT0 (CODE)
+                            657 	.area GSINIT1 (CODE)
+                            658 	.area GSINIT2 (CODE)
+                            659 	.area GSINIT3 (CODE)
+                            660 	.area GSINIT4 (CODE)
+                            661 	.area GSINIT5 (CODE)
+                            662 	.area GSINIT  (CODE)
+                            663 	.area GSFINAL (CODE)
+                            664 	.area CSEG    (CODE)
+                            665 ;--------------------------------------------------------
+                            666 ; global & static initialisations
+                            667 ;--------------------------------------------------------
+                            668 	.area HOME    (CODE)
+                            669 	.area GSINIT  (CODE)
+                            670 	.area GSFINAL (CODE)
+                            671 	.area GSINIT  (CODE)
+                            672 ;--------------------------------------------------------
+                            673 ; Home
+                            674 ;--------------------------------------------------------
+                            675 	.area HOME    (CODE)
+                            676 	.area HOME    (CODE)
+                            677 ;--------------------------------------------------------
+                            678 ; code
+                            679 ;--------------------------------------------------------
+                            680 	.area CSEG    (CODE)
+                            681 ;------------------------------------------------------------
+                            682 ;Allocation info for local variables in function 'check_heartbeat'
+                            683 ;------------------------------------------------------------
+                            684 ;	radio/packet.c:81: static void check_heartbeat(__xdata uint8_t * __pdata buf)
+                            685 ;	-----------------------------------------
+                            686 ;	 function check_heartbeat
+                            687 ;	-----------------------------------------
+   0000                     688 _check_heartbeat:
+                     0007   689 	ar7 = 0x07
+                     0006   690 	ar6 = 0x06
+                     0005   691 	ar5 = 0x05
+                     0004   692 	ar4 = 0x04
+                     0003   693 	ar3 = 0x03
+                     0002   694 	ar2 = 0x02
+                     0001   695 	ar1 = 0x01
+                     0000   696 	ar0 = 0x00
+                            697 ;	radio/packet.c:83: if (buf[0] == MAVLINK09_STX &&
+   0000 AE 82         [24]  698 	mov	r6,dpl
+   0002 AF 83         [24]  699 	mov  r7,dph
+   0004 E0            [24]  700 	movx	a,@dptr
+   0005 FD            [12]  701 	mov	r5,a
+   0006 BD 55 1D      [24]  702 	cjne	r5,#0x55,00106$
+                            703 ;	radio/packet.c:84: buf[1] == 3 && buf[5] == 0) {
+   0009 8E 82         [24]  704 	mov	dpl,r6
+   000B 8F 83         [24]  705 	mov	dph,r7
+   000D A3            [24]  706 	inc	dptr
+   000E E0            [24]  707 	movx	a,@dptr
+   000F FC            [12]  708 	mov	r4,a
+   0010 BC 03 13      [24]  709 	cjne	r4,#0x03,00106$
+   0013 74 05         [12]  710 	mov	a,#0x05
+   0015 2E            [12]  711 	add	a,r6
+   0016 FB            [12]  712 	mov	r3,a
+   0017 E4            [12]  713 	clr	a
+   0018 3F            [12]  714 	addc	a,r7
+   0019 FC            [12]  715 	mov	r4,a
+   001A 8B 82         [24]  716 	mov	dpl,r3
+   001C 8C 83         [24]  717 	mov	dph,r4
+   001E E0            [24]  718 	movx	a,@dptr
+   001F 70 05         [24]  719 	jnz	00106$
+                            720 ;	radio/packet.c:86: using_mavlink_10 = false;
+   0021 C2*06         [12]  721 	clr	_using_mavlink_10
+                            722 ;	radio/packet.c:87: seen_mavlink = true;
+   0023 D2*05         [12]  723 	setb	_seen_mavlink
+   0025 22            [24]  724 	ret
+   0026                     725 00106$:
+                            726 ;	radio/packet.c:88: } else if (buf[0] == MAVLINK10_STX &&
+   0026 BD FE 1C      [24]  727 	cjne	r5,#0xFE,00110$
+                            728 ;	radio/packet.c:89: buf[1] == 9 && buf[5] == 0) {
+   0029 8E 82         [24]  729 	mov	dpl,r6
+   002B 8F 83         [24]  730 	mov	dph,r7
+   002D A3            [24]  731 	inc	dptr
+   002E E0            [24]  732 	movx	a,@dptr
+   002F FD            [12]  733 	mov	r5,a
+   0030 BD 09 12      [24]  734 	cjne	r5,#0x09,00110$
+   0033 74 05         [12]  735 	mov	a,#0x05
+   0035 2E            [12]  736 	add	a,r6
+   0036 FE            [12]  737 	mov	r6,a
+   0037 E4            [12]  738 	clr	a
+   0038 3F            [12]  739 	addc	a,r7
+   0039 FF            [12]  740 	mov	r7,a
+   003A 8E 82         [24]  741 	mov	dpl,r6
+   003C 8F 83         [24]  742 	mov	dph,r7
+   003E E0            [24]  743 	movx	a,@dptr
+   003F 70 04         [24]  744 	jnz	00110$
+                            745 ;	radio/packet.c:91: using_mavlink_10 = true;
+   0041 D2*06         [12]  746 	setb	_using_mavlink_10
+                            747 ;	radio/packet.c:92: seen_mavlink = true;
+   0043 D2*05         [12]  748 	setb	_seen_mavlink
+   0045                     749 00110$:
+   0045 22            [24]  750 	ret
+                            751 ;------------------------------------------------------------
+                            752 ;Allocation info for local variables in function 'mavlink_frame'
+                            753 ;------------------------------------------------------------
+                            754 ;slen                      Allocated with name '_mavlink_frame_slen_1_140'
+                            755 ;c                         Allocated with name '_mavlink_frame_c_2_141'
+                            756 ;sloc0                     Allocated with name '_mavlink_frame_sloc0_1_0'
+                            757 ;sloc1                     Allocated with name '_mavlink_frame_sloc1_1_0'
+                            758 ;max_xmit                  Allocated with name '_mavlink_frame_max_xmit_1_139'
+                            759 ;------------------------------------------------------------
+                            760 ;	radio/packet.c:99: uint8_t mavlink_frame(uint8_t max_xmit, __xdata uint8_t * __pdata buf)
+                            761 ;	-----------------------------------------
+                            762 ;	 function mavlink_frame
+                            763 ;	-----------------------------------------
+   0046                     764 _mavlink_frame:
+   0046 E5 82         [12]  765 	mov	a,dpl
+   0048 90r01rF8      [24]  766 	mov	dptr,#_mavlink_frame_max_xmit_1_139
+   004B F0            [24]  767 	movx	@dptr,a
+                            768 ;	radio/packet.c:103: serial_read_buf(last_sent, mav_pkt_len);
+   004C 78r04         [12]  769 	mov	r0,#_mav_pkt_len
+   004E 79r00         [12]  770 	mov	r1,#_serial_read_buf_PARM_2
+   0050 E2            [24]  771 	movx	a,@r0
+   0051 F3            [24]  772 	movx	@r1,a
+   0052 90r00rFC      [24]  773 	mov	dptr,#_last_sent
+   0055 12r00r00      [24]  774 	lcall	_serial_read_buf
+                            775 ;	radio/packet.c:104: last_sent_len = mav_pkt_len;
+   0058 78r04         [12]  776 	mov	r0,#_mav_pkt_len
+   005A E2            [24]  777 	movx	a,@r0
+   005B FF            [12]  778 	mov	r7,a
+   005C 78r00         [12]  779 	mov	r0,#_last_sent_len
+   005E F2            [24]  780 	movx	@r0,a
+                            781 ;	radio/packet.c:105: memcpy(buf, last_sent, last_sent_len);
+   005F 78r0A         [12]  782 	mov	r0,#_mavlink_frame_PARM_2
+   0061 E2            [24]  783 	movx	a,@r0
+   0062 FC            [12]  784 	mov	r4,a
+   0063 08            [12]  785 	inc	r0
+   0064 E2            [24]  786 	movx	a,@r0
+   0065 FD            [12]  787 	mov	r5,a
+   0066 7E 00         [12]  788 	mov	r6,#0x00
+   0068 90r00r00      [24]  789 	mov	dptr,#_memcpy_PARM_2
+   006B 74rFC         [12]  790 	mov	a,#_last_sent
+   006D F0            [24]  791 	movx	@dptr,a
+   006E 74s00         [12]  792 	mov	a,#(_last_sent >> 8)
+   0070 A3            [24]  793 	inc	dptr
+   0071 F0            [24]  794 	movx	@dptr,a
+   0072 E4            [12]  795 	clr	a
+   0073 A3            [24]  796 	inc	dptr
+   0074 F0            [24]  797 	movx	@dptr,a
+   0075 90r00r00      [24]  798 	mov	dptr,#_memcpy_PARM_3
+   0078 EF            [12]  799 	mov	a,r7
+   0079 F0            [24]  800 	movx	@dptr,a
+   007A E4            [12]  801 	clr	a
+   007B A3            [24]  802 	inc	dptr
+   007C F0            [24]  803 	movx	@dptr,a
+   007D 8C 82         [24]  804 	mov	dpl,r4
+   007F 8D 83         [24]  805 	mov	dph,r5
+   0081 8E F0         [24]  806 	mov	b,r6
+   0083 12r00r00      [24]  807 	lcall	_memcpy
+                            808 ;	radio/packet.c:106: mav_pkt_len = 0;
+   0086 78r04         [12]  809 	mov	r0,#_mav_pkt_len
+   0088 E4            [12]  810 	clr	a
+   0089 F2            [24]  811 	movx	@r0,a
+                            812 ;	radio/packet.c:108: check_heartbeat(buf);
+   008A 78r0A         [12]  813 	mov	r0,#_mavlink_frame_PARM_2
+   008C E2            [24]  814 	movx	a,@r0
+   008D F5 82         [12]  815 	mov	dpl,a
+   008F 08            [12]  816 	inc	r0
+   0090 E2            [24]  817 	movx	a,@r0
+   0091 F5 83         [12]  818 	mov	dph,a
+   0093 12r00r00      [24]  819 	lcall	_check_heartbeat
+                            820 ;	radio/packet.c:110: slen = serial_read_available();
+   0096 12r00r00      [24]  821 	lcall	_serial_read_available
+   0099 85 82*00      [24]  822 	mov	_mavlink_frame_slen_1_140,dpl
+   009C 85 83*01      [24]  823 	mov	(_mavlink_frame_slen_1_140 + 1),dph
+                            824 ;	radio/packet.c:114: while (slen >= 8) {
+   009F 90r01rF8      [24]  825 	mov	dptr,#_mavlink_frame_max_xmit_1_139
+   00A2 E0            [24]  826 	movx	a,@dptr
+   00A3 F5*03         [12]  827 	mov	_mavlink_frame_sloc0_1_0,a
+   00A5                     828 00109$:
+   00A5 C3            [12]  829 	clr	c
+   00A6 E5*00         [12]  830 	mov	a,_mavlink_frame_slen_1_140
+   00A8 94 08         [12]  831 	subb	a,#0x08
+   00AA E5*01         [12]  832 	mov	a,(_mavlink_frame_slen_1_140 + 1)
+   00AC 94 00         [12]  833 	subb	a,#0x00
+   00AE 50 03         [24]  834 	jnc	00135$
+   00B0 02r01rA5      [24]  835 	ljmp	00111$
+   00B3                     836 00135$:
+                            837 ;	radio/packet.c:115: register uint8_t c = serial_peek();
+   00B3 12r00r00      [24]  838 	lcall	_serial_peek
+   00B6 85 82*02      [24]  839 	mov	_mavlink_frame_c_2_141,dpl
+                            840 ;	radio/packet.c:116: if (c != MAVLINK09_STX && c != MAVLINK10_STX) {
+   00B9 74 55         [12]  841 	mov	a,#0x55
+   00BB B5*02 02      [24]  842 	cjne	a,_mavlink_frame_c_2_141,00136$
+   00BE 80 0D         [24]  843 	sjmp	00102$
+   00C0                     844 00136$:
+   00C0 74 FE         [12]  845 	mov	a,#0xFE
+   00C2 B5*02 02      [24]  846 	cjne	a,_mavlink_frame_c_2_141,00137$
+   00C5 80 06         [24]  847 	sjmp	00102$
+   00C7                     848 00137$:
+                            849 ;	radio/packet.c:118: return last_sent_len;			
+   00C7 78r00         [12]  850 	mov	r0,#_last_sent_len
+   00C9 E2            [24]  851 	movx	a,@r0
+   00CA F5 82         [12]  852 	mov	dpl,a
+   00CC 22            [24]  853 	ret
+   00CD                     854 00102$:
+                            855 ;	radio/packet.c:120: c = serial_peek2();
+   00CD 12r00r00      [24]  856 	lcall	_serial_peek2
+   00D0 85 82*02      [24]  857 	mov	_mavlink_frame_c_2_141,dpl
+                            858 ;	radio/packet.c:121: if (c >= 255 - 8 || 
+   00D3 74 09         [12]  859 	mov	a,#0x100 - 0xF7
+   00D5 25*02         [12]  860 	add	a,_mavlink_frame_c_2_141
+   00D7 50 03         [24]  861 	jnc	00138$
+   00D9 02r01rA5      [24]  862 	ljmp	00111$
+   00DC                     863 00138$:
+                            864 ;	radio/packet.c:122: c+8 > max_xmit - last_sent_len) {
+   00DC AA*02         [24]  865 	mov	r2,_mavlink_frame_c_2_141
+   00DE 7B 00         [12]  866 	mov	r3,#0x00
+   00E0 74 08         [12]  867 	mov	a,#0x08
+   00E2 2A            [12]  868 	add	a,r2
+   00E3 FE            [12]  869 	mov	r6,a
+   00E4 E4            [12]  870 	clr	a
+   00E5 3B            [12]  871 	addc	a,r3
+   00E6 FF            [12]  872 	mov	r7,a
+   00E7 85*03*04      [24]  873 	mov	_mavlink_frame_sloc1_1_0,_mavlink_frame_sloc0_1_0
+   00EA 75*05 00      [24]  874 	mov	(_mavlink_frame_sloc1_1_0 + 1),#0x00
+   00ED 78r00         [12]  875 	mov	r0,#_last_sent_len
+   00EF E2            [24]  876 	movx	a,@r0
+   00F0 FC            [12]  877 	mov	r4,a
+   00F1 7D 00         [12]  878 	mov	r5,#0x00
+   00F3 E5*04         [12]  879 	mov	a,_mavlink_frame_sloc1_1_0
+   00F5 C3            [12]  880 	clr	c
+   00F6 9C            [12]  881 	subb	a,r4
+   00F7 FC            [12]  882 	mov	r4,a
+   00F8 E5*05         [12]  883 	mov	a,(_mavlink_frame_sloc1_1_0 + 1)
+   00FA 9D            [12]  884 	subb	a,r5
+   00FB FD            [12]  885 	mov	r5,a
+   00FC C3            [12]  886 	clr	c
+   00FD EC            [12]  887 	mov	a,r4
+   00FE 9E            [12]  888 	subb	a,r6
+   00FF ED            [12]  889 	mov	a,r5
+   0100 64 80         [12]  890 	xrl	a,#0x80
+   0102 8F F0         [24]  891 	mov	b,r7
+   0104 63 F0 80      [24]  892 	xrl	b,#0x80
+   0107 95 F0         [12]  893 	subb	a,b
+   0109 50 03         [24]  894 	jnc	00139$
+   010B 02r01rA5      [24]  895 	ljmp	00111$
+   010E                     896 00139$:
+                            897 ;	radio/packet.c:126: if (c+8 > slen) {
+   010E 74 08         [12]  898 	mov	a,#0x08
+   0110 2A            [12]  899 	add	a,r2
+   0111 FA            [12]  900 	mov	r2,a
+   0112 E4            [12]  901 	clr	a
+   0113 3B            [12]  902 	addc	a,r3
+   0114 FB            [12]  903 	mov	r3,a
+   0115 C3            [12]  904 	clr	c
+   0116 E5*00         [12]  905 	mov	a,_mavlink_frame_slen_1_140
+   0118 9A            [12]  906 	subb	a,r2
+   0119 E5*01         [12]  907 	mov	a,(_mavlink_frame_slen_1_140 + 1)
+   011B 9B            [12]  908 	subb	a,r3
+   011C 50 03         [24]  909 	jnc	00140$
+   011E 02r01rA5      [24]  910 	ljmp	00111$
+   0121                     911 00140$:
+                            912 ;	radio/packet.c:132: c += 8;
+   0121 74 08         [12]  913 	mov	a,#0x08
+   0123 25*02         [12]  914 	add	a,_mavlink_frame_c_2_141
+   0125 F5*02         [12]  915 	mov	_mavlink_frame_c_2_141,a
+                            916 ;	radio/packet.c:135: serial_read_buf(&last_sent[last_sent_len], c);
+   0127 78r00         [12]  917 	mov	r0,#_last_sent_len
+   0129 E2            [24]  918 	movx	a,@r0
+   012A 24rFC         [12]  919 	add	a,#_last_sent
+   012C FE            [12]  920 	mov	r6,a
+   012D E4            [12]  921 	clr	a
+   012E 34s00         [12]  922 	addc	a,#(_last_sent >> 8)
+   0130 FF            [12]  923 	mov	r7,a
+   0131 78r00         [12]  924 	mov	r0,#_serial_read_buf_PARM_2
+   0133 E5*02         [12]  925 	mov	a,_mavlink_frame_c_2_141
+   0135 F2            [24]  926 	movx	@r0,a
+   0136 8E 82         [24]  927 	mov	dpl,r6
+   0138 8F 83         [24]  928 	mov	dph,r7
+   013A 12r00r00      [24]  929 	lcall	_serial_read_buf
+                            930 ;	radio/packet.c:136: memcpy(&buf[last_sent_len], &last_sent[last_sent_len], c);
+   013D 78r0A         [12]  931 	mov	r0,#_mavlink_frame_PARM_2
+   013F 79r00         [12]  932 	mov	r1,#_last_sent_len
+   0141 E3            [24]  933 	movx	a,@r1
+   0142 C5 F0         [12]  934 	xch	a,b
+   0144 E2            [24]  935 	movx	a,@r0
+   0145 25 F0         [12]  936 	add	a,b
+   0147 FE            [12]  937 	mov	r6,a
+   0148 08            [12]  938 	inc	r0
+   0149 E2            [24]  939 	movx	a,@r0
+   014A 34 00         [12]  940 	addc	a,#0x00
+   014C FF            [12]  941 	mov	r7,a
+   014D 7D 00         [12]  942 	mov	r5,#0x00
+   014F 78r00         [12]  943 	mov	r0,#_last_sent_len
+   0151 E2            [24]  944 	movx	a,@r0
+   0152 24rFC         [12]  945 	add	a,#_last_sent
+   0154 FB            [12]  946 	mov	r3,a
+   0155 E4            [12]  947 	clr	a
+   0156 34s00         [12]  948 	addc	a,#(_last_sent >> 8)
+   0158 FC            [12]  949 	mov	r4,a
+   0159 90r00r00      [24]  950 	mov	dptr,#_memcpy_PARM_2
+   015C EB            [12]  951 	mov	a,r3
+   015D F0            [24]  952 	movx	@dptr,a
+   015E EC            [12]  953 	mov	a,r4
+   015F A3            [24]  954 	inc	dptr
+   0160 F0            [24]  955 	movx	@dptr,a
+   0161 E4            [12]  956 	clr	a
+   0162 A3            [24]  957 	inc	dptr
+   0163 F0            [24]  958 	movx	@dptr,a
+   0164 90r00r00      [24]  959 	mov	dptr,#_memcpy_PARM_3
+   0167 E5*02         [12]  960 	mov	a,_mavlink_frame_c_2_141
+   0169 F0            [24]  961 	movx	@dptr,a
+   016A E4            [12]  962 	clr	a
+   016B A3            [24]  963 	inc	dptr
+   016C F0            [24]  964 	movx	@dptr,a
+   016D 8E 82         [24]  965 	mov	dpl,r6
+   016F 8F 83         [24]  966 	mov	dph,r7
+   0171 8D F0         [24]  967 	mov	b,r5
+   0173 12r00r00      [24]  968 	lcall	_memcpy
+                            969 ;	radio/packet.c:138: check_heartbeat(buf+last_sent_len);
+   0176 78r0A         [12]  970 	mov	r0,#_mavlink_frame_PARM_2
+   0178 79r00         [12]  971 	mov	r1,#_last_sent_len
+   017A E3            [24]  972 	movx	a,@r1
+   017B C5 F0         [12]  973 	xch	a,b
+   017D E2            [24]  974 	movx	a,@r0
+   017E 25 F0         [12]  975 	add	a,b
+   0180 FE            [12]  976 	mov	r6,a
+   0181 08            [12]  977 	inc	r0
+   0182 E2            [24]  978 	movx	a,@r0
+   0183 34 00         [12]  979 	addc	a,#0x00
+   0185 FF            [12]  980 	mov	r7,a
+   0186 8E 82         [24]  981 	mov	dpl,r6
+   0188 8F 83         [24]  982 	mov	dph,r7
+   018A 12r00r00      [24]  983 	lcall	_check_heartbeat
+                            984 ;	radio/packet.c:140: last_sent_len += c;
+   018D 78r00         [12]  985 	mov	r0,#_last_sent_len
+   018F E2            [24]  986 	movx	a,@r0
+   0190 25*02         [12]  987 	add	a,_mavlink_frame_c_2_141
+   0192 F2            [24]  988 	movx	@r0,a
+                            989 ;	radio/packet.c:141: slen -= c;
+   0193 AC*02         [24]  990 	mov	r4,_mavlink_frame_c_2_141
+   0195 7F 00         [12]  991 	mov	r7,#0x00
+   0197 E5*00         [12]  992 	mov	a,_mavlink_frame_slen_1_140
+   0199 C3            [12]  993 	clr	c
+   019A 9C            [12]  994 	subb	a,r4
+   019B F5*00         [12]  995 	mov	_mavlink_frame_slen_1_140,a
+   019D E5*01         [12]  996 	mov	a,(_mavlink_frame_slen_1_140 + 1)
+   019F 9F            [12]  997 	subb	a,r7
+   01A0 F5*01         [12]  998 	mov	(_mavlink_frame_slen_1_140 + 1),a
+   01A2 02r00rA5      [24]  999 	ljmp	00109$
+   01A5                    1000 00111$:
+                           1001 ;	radio/packet.c:144: return last_sent_len;
+   01A5 78r00         [12] 1002 	mov	r0,#_last_sent_len
+   01A7 E2            [24] 1003 	movx	a,@r0
+   01A8 F5 82         [12] 1004 	mov	dpl,a
+   01AA 22            [24] 1005 	ret
+                           1006 ;------------------------------------------------------------
+                           1007 ;Allocation info for local variables in function 'packet_get_next'
+                           1008 ;------------------------------------------------------------
+                           1009 ;max_xmit                  Allocated with name '_packet_get_next_max_xmit_1_145'
+                           1010 ;slen                      Allocated with name '_packet_get_next_slen_1_146'
+                           1011 ;c                         Allocated to registers r7 
+                           1012 ;sloc0                     Allocated with name '_packet_get_next_sloc0_1_0'
+                           1013 ;------------------------------------------------------------
+                           1014 ;	radio/packet.c:150: packet_get_next(register uint8_t max_xmit, __xdata uint8_t * __pdata buf)
+                           1015 ;	-----------------------------------------
+                           1016 ;	 function packet_get_next
+                           1017 ;	-----------------------------------------
+   01AB                    1018 _packet_get_next:
+   01AB 85 82*06      [24] 1019 	mov	_packet_get_next_max_xmit_1_145,dpl
+                           1020 ;	radio/packet.c:154: slen = serial_read_available();
+   01AE 12r00r00      [24] 1021 	lcall	_serial_read_available
+   01B1 85 82*07      [24] 1022 	mov	_packet_get_next_slen_1_146,dpl
+   01B4 85 83*08      [24] 1023 	mov	(_packet_get_next_slen_1_146 + 1),dph
+                           1024 ;	radio/packet.c:155: if (force_resend ||
+   01B7 20*03 16      [24] 1025 	jb	_force_resend,00103$
+                           1026 ;	radio/packet.c:156: (feature_opportunistic_resend &&
+   01BA 30*00 65      [24] 1027 	jnb	_feature_opportunistic_resend,00104$
+   01BD 20*00 62      [24] 1028 	jb	_last_sent_is_resend,00104$
+                           1029 ;	radio/packet.c:158: last_sent_len != 0 && 
+   01C0 78r00         [12] 1030 	mov	r0,#_last_sent_len
+   01C2 E2            [24] 1031 	movx	a,@r0
+   01C3 60 5D         [24] 1032 	jz	00104$
+                           1033 ;	radio/packet.c:159: slen < PACKET_RESEND_THRESHOLD)) {
+   01C5 C3            [12] 1034 	clr	c
+   01C6 E5*07         [12] 1035 	mov	a,_packet_get_next_slen_1_146
+   01C8 94 20         [12] 1036 	subb	a,#0x20
+   01CA E5*08         [12] 1037 	mov	a,(_packet_get_next_slen_1_146 + 1)
+   01CC 94 00         [12] 1038 	subb	a,#0x00
+   01CE 50 52         [24] 1039 	jnc	00104$
+   01D0                    1040 00103$:
+                           1041 ;	radio/packet.c:160: if (max_xmit < last_sent_len) {
+   01D0 78r00         [12] 1042 	mov	r0,#_last_sent_len
+   01D2 C3            [12] 1043 	clr	c
+   01D3 E2            [24] 1044 	movx	a,@r0
+   01D4 F5 F0         [12] 1045 	mov	b,a
+   01D6 E5*06         [12] 1046 	mov	a,_packet_get_next_max_xmit_1_145
+   01D8 95 F0         [12] 1047 	subb	a,b
+   01DA 50 08         [24] 1048 	jnc	00102$
+                           1049 ;	radio/packet.c:161: last_sent_len = 0;
+   01DC 78r00         [12] 1050 	mov	r0,#_last_sent_len
+   01DE E4            [12] 1051 	clr	a
+   01DF F2            [24] 1052 	movx	@r0,a
+                           1053 ;	radio/packet.c:162: return 0;
+   01E0 75 82 00      [24] 1054 	mov	dpl,#0x00
+   01E3 22            [24] 1055 	ret
+   01E4                    1056 00102$:
+                           1057 ;	radio/packet.c:164: last_sent_is_resend = true;
+   01E4 D2*00         [12] 1058 	setb	_last_sent_is_resend
+                           1059 ;	radio/packet.c:165: force_resend = false;
+   01E6 C2*03         [12] 1060 	clr	_force_resend
+                           1061 ;	radio/packet.c:166: memcpy(buf, last_sent, last_sent_len);
+   01E8 78r0C         [12] 1062 	mov	r0,#_packet_get_next_PARM_2
+   01EA E2            [24] 1063 	movx	a,@r0
+   01EB FA            [12] 1064 	mov	r2,a
+   01EC 08            [12] 1065 	inc	r0
+   01ED E2            [24] 1066 	movx	a,@r0
+   01EE FB            [12] 1067 	mov	r3,a
+   01EF 7C 00         [12] 1068 	mov	r4,#0x00
+   01F1 90r00r00      [24] 1069 	mov	dptr,#_memcpy_PARM_2
+   01F4 74rFC         [12] 1070 	mov	a,#_last_sent
+   01F6 F0            [24] 1071 	movx	@dptr,a
+   01F7 74s00         [12] 1072 	mov	a,#(_last_sent >> 8)
+   01F9 A3            [24] 1073 	inc	dptr
+   01FA F0            [24] 1074 	movx	@dptr,a
+   01FB E4            [12] 1075 	clr	a
+   01FC A3            [24] 1076 	inc	dptr
+   01FD F0            [24] 1077 	movx	@dptr,a
+   01FE 78r00         [12] 1078 	mov	r0,#_last_sent_len
+   0200 90r00r00      [24] 1079 	mov	dptr,#_memcpy_PARM_3
+   0203 E2            [24] 1080 	movx	a,@r0
+   0204 F0            [24] 1081 	movx	@dptr,a
+   0205 E4            [12] 1082 	clr	a
+   0206 A3            [24] 1083 	inc	dptr
+   0207 F0            [24] 1084 	movx	@dptr,a
+   0208 8A 82         [24] 1085 	mov	dpl,r2
+   020A 8B 83         [24] 1086 	mov	dph,r3
+   020C 8C F0         [24] 1087 	mov	b,r4
+   020E 12r00r00      [24] 1088 	lcall	_memcpy
+                           1089 ;	radio/packet.c:167: slen = last_sent_len;
+   0211 78r00         [12] 1090 	mov	r0,#_last_sent_len
+   0213 E2            [24] 1091 	movx	a,@r0
+   0214 F5*07         [12] 1092 	mov	_packet_get_next_slen_1_146,a
+   0216 75*08 00      [24] 1093 	mov	(_packet_get_next_slen_1_146 + 1),#0x00
+                           1094 ;	radio/packet.c:168: last_sent_len = 0;
+   0219 78r00         [12] 1095 	mov	r0,#_last_sent_len
+   021B E4            [12] 1096 	clr	a
+   021C F2            [24] 1097 	movx	@r0,a
+                           1098 ;	radio/packet.c:169: return (slen & 0xFF);
+   021D AB*07         [24] 1099 	mov	r3,_packet_get_next_slen_1_146
+   021F 8B 82         [24] 1100 	mov	dpl,r3
+   0221 22            [24] 1101 	ret
+   0222                    1102 00104$:
+                           1103 ;	radio/packet.c:172: last_sent_is_resend = false;
+   0222 C2*00         [12] 1104 	clr	_last_sent_is_resend
+                           1105 ;	radio/packet.c:174: if (injected_packet) {
+   0224 20*04 03      [24] 1106 	jb	_injected_packet,00241$
+   0227 02r02rDB      [24] 1107 	ljmp	00112$
+   022A                    1108 00241$:
+                           1109 ;	radio/packet.c:176: slen = last_sent_len;
+   022A 78r00         [12] 1110 	mov	r0,#_last_sent_len
+   022C E2            [24] 1111 	movx	a,@r0
+   022D FB            [12] 1112 	mov	r3,a
+   022E 7C 00         [12] 1113 	mov	r4,#0x00
+   0230 8B*07         [24] 1114 	mov	_packet_get_next_slen_1_146,r3
+   0232 8C*08         [24] 1115 	mov	(_packet_get_next_slen_1_146 + 1),r4
+                           1116 ;	radio/packet.c:177: if (max_xmit < slen) {
+   0234 85*06*09      [24] 1117 	mov	_packet_get_next_sloc0_1_0,_packet_get_next_max_xmit_1_145
+   0237 75*0A 00      [24] 1118 	mov	(_packet_get_next_sloc0_1_0 + 1),#0x00
+   023A C3            [12] 1119 	clr	c
+   023B E5*09         [12] 1120 	mov	a,_packet_get_next_sloc0_1_0
+   023D 95*07         [12] 1121 	subb	a,_packet_get_next_slen_1_146
+   023F E5*0A         [12] 1122 	mov	a,(_packet_get_next_sloc0_1_0 + 1)
+   0241 95*08         [12] 1123 	subb	a,(_packet_get_next_slen_1_146 + 1)
+   0243 50 65         [24] 1124 	jnc	00110$
+                           1125 ;	radio/packet.c:179: memcpy(buf, last_sent, max_xmit);
+   0245 78r0C         [12] 1126 	mov	r0,#_packet_get_next_PARM_2
+   0247 E2            [24] 1127 	movx	a,@r0
+   0248 FA            [12] 1128 	mov	r2,a
+   0249 08            [12] 1129 	inc	r0
+   024A E2            [24] 1130 	movx	a,@r0
+   024B FE            [12] 1131 	mov	r6,a
+   024C 7F 00         [12] 1132 	mov	r7,#0x00
+   024E 90r00r00      [24] 1133 	mov	dptr,#_memcpy_PARM_2
+   0251 74rFC         [12] 1134 	mov	a,#_last_sent
+   0253 F0            [24] 1135 	movx	@dptr,a
+   0254 74s00         [12] 1136 	mov	a,#(_last_sent >> 8)
+   0256 A3            [24] 1137 	inc	dptr
+   0257 F0            [24] 1138 	movx	@dptr,a
+   0258 E4            [12] 1139 	clr	a
+   0259 A3            [24] 1140 	inc	dptr
+   025A F0            [24] 1141 	movx	@dptr,a
+   025B 90r00r00      [24] 1142 	mov	dptr,#_memcpy_PARM_3
+   025E E5*09         [12] 1143 	mov	a,_packet_get_next_sloc0_1_0
+   0260 F0            [24] 1144 	movx	@dptr,a
+   0261 E5*0A         [12] 1145 	mov	a,(_packet_get_next_sloc0_1_0 + 1)
+   0263 A3            [24] 1146 	inc	dptr
+   0264 F0            [24] 1147 	movx	@dptr,a
+   0265 8A 82         [24] 1148 	mov	dpl,r2
+   0267 8E 83         [24] 1149 	mov	dph,r6
+   0269 8F F0         [24] 1150 	mov	b,r7
+   026B 12r00r00      [24] 1151 	lcall	_memcpy
+                           1152 ;	radio/packet.c:180: memcpy(last_sent, &last_sent[max_xmit], slen - max_xmit);
+   026E E5*06         [12] 1153 	mov	a,_packet_get_next_max_xmit_1_145
+   0270 24rFC         [12] 1154 	add	a,#_last_sent
+   0272 FE            [12] 1155 	mov	r6,a
+   0273 E4            [12] 1156 	clr	a
+   0274 34s00         [12] 1157 	addc	a,#(_last_sent >> 8)
+   0276 FF            [12] 1158 	mov	r7,a
+   0277 90r00r00      [24] 1159 	mov	dptr,#_memcpy_PARM_2
+   027A EE            [12] 1160 	mov	a,r6
+   027B F0            [24] 1161 	movx	@dptr,a
+   027C EF            [12] 1162 	mov	a,r7
+   027D A3            [24] 1163 	inc	dptr
+   027E F0            [24] 1164 	movx	@dptr,a
+   027F E4            [12] 1165 	clr	a
+   0280 A3            [24] 1166 	inc	dptr
+   0281 F0            [24] 1167 	movx	@dptr,a
+   0282 AE*06         [24] 1168 	mov	r6,_packet_get_next_max_xmit_1_145
+   0284 7F 00         [12] 1169 	mov	r7,#0x00
+   0286 90r00r00      [24] 1170 	mov	dptr,#_memcpy_PARM_3
+   0289 E5*07         [12] 1171 	mov	a,_packet_get_next_slen_1_146
+   028B C3            [12] 1172 	clr	c
+   028C 9E            [12] 1173 	subb	a,r6
+   028D F0            [24] 1174 	movx	@dptr,a
+   028E E5*08         [12] 1175 	mov	a,(_packet_get_next_slen_1_146 + 1)
+   0290 9F            [12] 1176 	subb	a,r7
+   0291 A3            [24] 1177 	inc	dptr
+   0292 F0            [24] 1178 	movx	@dptr,a
+   0293 90r00rFC      [24] 1179 	mov	dptr,#_last_sent
+   0296 75 F0 00      [24] 1180 	mov	b,#0x00
+   0299 12r00r00      [24] 1181 	lcall	_memcpy
+                           1182 ;	radio/packet.c:181: last_sent_len = slen - max_xmit;
+   029C E5*07         [12] 1183 	mov	a,_packet_get_next_slen_1_146
+   029E C3            [12] 1184 	clr	c
+   029F 95*06         [12] 1185 	subb	a,_packet_get_next_max_xmit_1_145
+   02A1 78r00         [12] 1186 	mov	r0,#_last_sent_len
+   02A3 F2            [24] 1187 	movx	@r0,a
+                           1188 ;	radio/packet.c:182: last_sent_is_injected = true;
+   02A4 D2*01         [12] 1189 	setb	_last_sent_is_injected
+                           1190 ;	radio/packet.c:183: return max_xmit;
+   02A6 85*06 82      [24] 1191 	mov	dpl,_packet_get_next_max_xmit_1_145
+   02A9 22            [24] 1192 	ret
+   02AA                    1193 00110$:
+                           1194 ;	radio/packet.c:186: memcpy(buf, last_sent, last_sent_len);
+   02AA 78r0C         [12] 1195 	mov	r0,#_packet_get_next_PARM_2
+   02AC E2            [24] 1196 	movx	a,@r0
+   02AD FD            [12] 1197 	mov	r5,a
+   02AE 08            [12] 1198 	inc	r0
+   02AF E2            [24] 1199 	movx	a,@r0
+   02B0 FE            [12] 1200 	mov	r6,a
+   02B1 7F 00         [12] 1201 	mov	r7,#0x00
+   02B3 90r00r00      [24] 1202 	mov	dptr,#_memcpy_PARM_2
+   02B6 74rFC         [12] 1203 	mov	a,#_last_sent
+   02B8 F0            [24] 1204 	movx	@dptr,a
+   02B9 74s00         [12] 1205 	mov	a,#(_last_sent >> 8)
+   02BB A3            [24] 1206 	inc	dptr
+   02BC F0            [24] 1207 	movx	@dptr,a
+   02BD E4            [12] 1208 	clr	a
+   02BE A3            [24] 1209 	inc	dptr
+   02BF F0            [24] 1210 	movx	@dptr,a
+   02C0 90r00r00      [24] 1211 	mov	dptr,#_memcpy_PARM_3
+   02C3 EB            [12] 1212 	mov	a,r3
+   02C4 F0            [24] 1213 	movx	@dptr,a
+   02C5 EC            [12] 1214 	mov	a,r4
+   02C6 A3            [24] 1215 	inc	dptr
+   02C7 F0            [24] 1216 	movx	@dptr,a
+   02C8 8D 82         [24] 1217 	mov	dpl,r5
+   02CA 8E 83         [24] 1218 	mov	dph,r6
+   02CC 8F F0         [24] 1219 	mov	b,r7
+   02CE 12r00r00      [24] 1220 	lcall	_memcpy
+                           1221 ;	radio/packet.c:187: injected_packet = false;
+   02D1 C2*04         [12] 1222 	clr	_injected_packet
+                           1223 ;	radio/packet.c:188: last_sent_is_injected = true;
+   02D3 D2*01         [12] 1224 	setb	_last_sent_is_injected
+                           1225 ;	radio/packet.c:189: return last_sent_len;
+   02D5 78r00         [12] 1226 	mov	r0,#_last_sent_len
+   02D7 E2            [24] 1227 	movx	a,@r0
+   02D8 F5 82         [12] 1228 	mov	dpl,a
+   02DA 22            [24] 1229 	ret
+   02DB                    1230 00112$:
+                           1231 ;	radio/packet.c:192: last_sent_is_injected = false;
+   02DB C2*01         [12] 1232 	clr	_last_sent_is_injected
+                           1233 ;	radio/packet.c:196: if (slen > max_xmit) {
+   02DD AE*06         [24] 1234 	mov	r6,_packet_get_next_max_xmit_1_145
+   02DF 7F 00         [12] 1235 	mov	r7,#0x00
+   02E1 C3            [12] 1236 	clr	c
+   02E2 EE            [12] 1237 	mov	a,r6
+   02E3 95*07         [12] 1238 	subb	a,_packet_get_next_slen_1_146
+   02E5 EF            [12] 1239 	mov	a,r7
+   02E6 95*08         [12] 1240 	subb	a,(_packet_get_next_slen_1_146 + 1)
+   02E8 50 04         [24] 1241 	jnc	00114$
+                           1242 ;	radio/packet.c:197: slen = max_xmit;
+   02EA 8E*07         [24] 1243 	mov	_packet_get_next_slen_1_146,r6
+   02EC 8F*08         [24] 1244 	mov	(_packet_get_next_slen_1_146 + 1),r7
+   02EE                    1245 00114$:
+                           1246 ;	radio/packet.c:200: last_sent_len = 0;
+   02EE 78r00         [12] 1247 	mov	r0,#_last_sent_len
+   02F0 E4            [12] 1248 	clr	a
+   02F1 F2            [24] 1249 	movx	@r0,a
+                           1250 ;	radio/packet.c:202: if (slen == 0) {
+   02F2 E5*07         [12] 1251 	mov	a,_packet_get_next_slen_1_146
+   02F4 45*08         [12] 1252 	orl	a,(_packet_get_next_slen_1_146 + 1)
+                           1253 ;	radio/packet.c:204: return 0;
+   02F6 70 03         [24] 1254 	jnz	00116$
+   02F8 F5 82         [12] 1255 	mov	dpl,a
+   02FA 22            [24] 1256 	ret
+   02FB                    1257 00116$:
+                           1258 ;	radio/packet.c:207: if (!feature_mavlink_framing) {
+   02FB 20*00 53      [24] 1259 	jb	_feature_mavlink_framing,00122$
+                           1260 ;	radio/packet.c:209: if (slen > 0 && serial_read_buf(buf, slen)) {
+   02FE E5*07         [12] 1261 	mov	a,_packet_get_next_slen_1_146
+   0300 45*08         [12] 1262 	orl	a,(_packet_get_next_slen_1_146 + 1)
+   0302 60 43         [24] 1263 	jz	00118$
+   0304 AD*07         [24] 1264 	mov	r5,_packet_get_next_slen_1_146
+   0306 78r00         [12] 1265 	mov	r0,#_serial_read_buf_PARM_2
+   0308 ED            [12] 1266 	mov	a,r5
+   0309 F2            [24] 1267 	movx	@r0,a
+   030A 78r0C         [12] 1268 	mov	r0,#_packet_get_next_PARM_2
+   030C E2            [24] 1269 	movx	a,@r0
+   030D F5 82         [12] 1270 	mov	dpl,a
+   030F 08            [12] 1271 	inc	r0
+   0310 E2            [24] 1272 	movx	a,@r0
+   0311 F5 83         [12] 1273 	mov	dph,a
+   0313 C0 05         [24] 1274 	push	ar5
+   0315 12r00r00      [24] 1275 	lcall	_serial_read_buf
+   0318 D0 05         [24] 1276 	pop	ar5
+   031A 50 2B         [24] 1277 	jnc	00118$
+                           1278 ;	radio/packet.c:210: memcpy(last_sent, buf, slen);
+   031C 78r0C         [12] 1279 	mov	r0,#_packet_get_next_PARM_2
+   031E 90r00r00      [24] 1280 	mov	dptr,#_memcpy_PARM_2
+   0321 E2            [24] 1281 	movx	a,@r0
+   0322 F0            [24] 1282 	movx	@dptr,a
+   0323 08            [12] 1283 	inc	r0
+   0324 E2            [24] 1284 	movx	a,@r0
+   0325 A3            [24] 1285 	inc	dptr
+   0326 F0            [24] 1286 	movx	@dptr,a
+   0327 E4            [12] 1287 	clr	a
+   0328 A3            [24] 1288 	inc	dptr
+   0329 F0            [24] 1289 	movx	@dptr,a
+   032A 90r00r00      [24] 1290 	mov	dptr,#_memcpy_PARM_3
+   032D E5*07         [12] 1291 	mov	a,_packet_get_next_slen_1_146
+   032F F0            [24] 1292 	movx	@dptr,a
+   0330 E5*08         [12] 1293 	mov	a,(_packet_get_next_slen_1_146 + 1)
+   0332 A3            [24] 1294 	inc	dptr
+   0333 F0            [24] 1295 	movx	@dptr,a
+   0334 90r00rFC      [24] 1296 	mov	dptr,#_last_sent
+   0337 75 F0 00      [24] 1297 	mov	b,#0x00
+   033A C0 05         [24] 1298 	push	ar5
+   033C 12r00r00      [24] 1299 	lcall	_memcpy
+   033F D0 05         [24] 1300 	pop	ar5
+                           1301 ;	radio/packet.c:211: last_sent_len = slen;
+   0341 78r00         [12] 1302 	mov	r0,#_last_sent_len
+   0343 ED            [12] 1303 	mov	a,r5
+   0344 F2            [24] 1304 	movx	@r0,a
+   0345 80 04         [24] 1305 	sjmp	00119$
+   0347                    1306 00118$:
+                           1307 ;	radio/packet.c:213: last_sent_len = 0;
+   0347 78r00         [12] 1308 	mov	r0,#_last_sent_len
+   0349 E4            [12] 1309 	clr	a
+   034A F2            [24] 1310 	movx	@r0,a
+   034B                    1311 00119$:
+                           1312 ;	radio/packet.c:215: return last_sent_len;
+   034B 78r00         [12] 1313 	mov	r0,#_last_sent_len
+   034D E2            [24] 1314 	movx	a,@r0
+   034E F5 82         [12] 1315 	mov	dpl,a
+   0350 22            [24] 1316 	ret
+   0351                    1317 00122$:
+                           1318 ;	radio/packet.c:220: if (mav_pkt_len == 1) {
+   0351 78r04         [12] 1319 	mov	r0,#_mav_pkt_len
+   0353 E2            [24] 1320 	movx	a,@r0
+   0354 B4 01 02      [24] 1321 	cjne	a,#0x01,00248$
+   0357 80 03         [24] 1322 	sjmp	00249$
+   0359                    1323 00248$:
+   0359 02r03rE6      [24] 1324 	ljmp	00128$
+   035C                    1325 00249$:
+                           1326 ;	radio/packet.c:222: if (slen == 1) {
+   035C 74 01         [12] 1327 	mov	a,#0x01
+   035E B5*07 06      [24] 1328 	cjne	a,_packet_get_next_slen_1_146,00250$
+   0361 E4            [12] 1329 	clr	a
+   0362 B5*08 02      [24] 1330 	cjne	a,(_packet_get_next_slen_1_146 + 1),00250$
+   0365 80 02         [24] 1331 	sjmp	00251$
+   0367                    1332 00250$:
+   0367 80 79         [24] 1333 	sjmp	00126$
+   0369                    1334 00251$:
+                           1335 ;	radio/packet.c:223: if ((uint16_t)(timer2_tick() - mav_pkt_start_time) > mav_pkt_max_time) {
+   0369 12r00r00      [24] 1336 	lcall	_timer2_tick
+   036C AE 82         [24] 1337 	mov	r6,dpl
+   036E AF 83         [24] 1338 	mov	r7,dph
+   0370 78r05         [12] 1339 	mov	r0,#_mav_pkt_start_time
+   0372 D3            [12] 1340 	setb	c
+   0373 E2            [24] 1341 	movx	a,@r0
+   0374 9E            [12] 1342 	subb	a,r6
+   0375 F4            [12] 1343 	cpl	a
+   0376 B3            [12] 1344 	cpl	c
+   0377 FE            [12] 1345 	mov	r6,a
+   0378 B3            [12] 1346 	cpl	c
+   0379 08            [12] 1347 	inc	r0
+   037A E2            [24] 1348 	movx	a,@r0
+   037B 9F            [12] 1349 	subb	a,r7
+   037C F4            [12] 1350 	cpl	a
+   037D FF            [12] 1351 	mov	r7,a
+   037E 78r07         [12] 1352 	mov	r0,#_mav_pkt_max_time
+   0380 C3            [12] 1353 	clr	c
+   0381 E2            [24] 1354 	movx	a,@r0
+   0382 9E            [12] 1355 	subb	a,r6
+   0383 08            [12] 1356 	inc	r0
+   0384 E2            [24] 1357 	movx	a,@r0
+   0385 9F            [12] 1358 	subb	a,r7
+   0386 50 56         [24] 1359 	jnc	00124$
+                           1360 ;	radio/packet.c:225: last_sent[last_sent_len++] = serial_read();
+   0388 78r00         [12] 1361 	mov	r0,#_last_sent_len
+   038A E2            [24] 1362 	movx	a,@r0
+   038B FF            [12] 1363 	mov	r7,a
+   038C 78r00         [12] 1364 	mov	r0,#_last_sent_len
+   038E 04            [12] 1365 	inc	a
+   038F F2            [24] 1366 	movx	@r0,a
+   0390 EF            [12] 1367 	mov	a,r7
+   0391 24rFC         [12] 1368 	add	a,#_last_sent
+   0393 FF            [12] 1369 	mov	r7,a
+   0394 E4            [12] 1370 	clr	a
+   0395 34s00         [12] 1371 	addc	a,#(_last_sent >> 8)
+   0397 FE            [12] 1372 	mov	r6,a
+   0398 C0 07         [24] 1373 	push	ar7
+   039A C0 06         [24] 1374 	push	ar6
+   039C 12r00r00      [24] 1375 	lcall	_serial_read
+   039F AD 82         [24] 1376 	mov	r5,dpl
+   03A1 D0 06         [24] 1377 	pop	ar6
+   03A3 D0 07         [24] 1378 	pop	ar7
+   03A5 8F 82         [24] 1379 	mov	dpl,r7
+   03A7 8E 83         [24] 1380 	mov	dph,r6
+   03A9 ED            [12] 1381 	mov	a,r5
+   03AA F0            [24] 1382 	movx	@dptr,a
+                           1383 ;	radio/packet.c:226: memcpy(buf, last_sent, last_sent_len);				
+   03AB 78r0C         [12] 1384 	mov	r0,#_packet_get_next_PARM_2
+   03AD E2            [24] 1385 	movx	a,@r0
+   03AE FD            [12] 1386 	mov	r5,a
+   03AF 08            [12] 1387 	inc	r0
+   03B0 E2            [24] 1388 	movx	a,@r0
+   03B1 FE            [12] 1389 	mov	r6,a
+   03B2 7F 00         [12] 1390 	mov	r7,#0x00
+   03B4 90r00r00      [24] 1391 	mov	dptr,#_memcpy_PARM_2
+   03B7 74rFC         [12] 1392 	mov	a,#_last_sent
+   03B9 F0            [24] 1393 	movx	@dptr,a
+   03BA 74s00         [12] 1394 	mov	a,#(_last_sent >> 8)
+   03BC A3            [24] 1395 	inc	dptr
+   03BD F0            [24] 1396 	movx	@dptr,a
+   03BE E4            [12] 1397 	clr	a
+   03BF A3            [24] 1398 	inc	dptr
+   03C0 F0            [24] 1399 	movx	@dptr,a
+   03C1 78r00         [12] 1400 	mov	r0,#_last_sent_len
+   03C3 90r00r00      [24] 1401 	mov	dptr,#_memcpy_PARM_3
+   03C6 E2            [24] 1402 	movx	a,@r0
+   03C7 F0            [24] 1403 	movx	@dptr,a
+   03C8 E4            [12] 1404 	clr	a
+   03C9 A3            [24] 1405 	inc	dptr
+   03CA F0            [24] 1406 	movx	@dptr,a
+   03CB 8D 82         [24] 1407 	mov	dpl,r5
+   03CD 8E 83         [24] 1408 	mov	dph,r6
+   03CF 8F F0         [24] 1409 	mov	b,r7
+   03D1 12r00r00      [24] 1410 	lcall	_memcpy
+                           1411 ;	radio/packet.c:227: mav_pkt_len = 0;
+   03D4 78r04         [12] 1412 	mov	r0,#_mav_pkt_len
+   03D6 E4            [12] 1413 	clr	a
+   03D7 F2            [24] 1414 	movx	@r0,a
+                           1415 ;	radio/packet.c:228: return last_sent_len;
+   03D8 78r00         [12] 1416 	mov	r0,#_last_sent_len
+   03DA E2            [24] 1417 	movx	a,@r0
+   03DB F5 82         [12] 1418 	mov	dpl,a
+   03DD 22            [24] 1419 	ret
+   03DE                    1420 00124$:
+                           1421 ;	radio/packet.c:231: return 0;
+   03DE 75 82 00      [24] 1422 	mov	dpl,#0x00
+   03E1 22            [24] 1423 	ret
+   03E2                    1424 00126$:
+                           1425 ;	radio/packet.c:235: mav_pkt_len = 0;
+   03E2 78r04         [12] 1426 	mov	r0,#_mav_pkt_len
+   03E4 E4            [12] 1427 	clr	a
+   03E5 F2            [24] 1428 	movx	@r0,a
+   03E6                    1429 00128$:
+                           1430 ;	radio/packet.c:239: if (mav_pkt_len != 0) {
+   03E6 78r04         [12] 1431 	mov	r0,#_mav_pkt_len
+   03E8 E2            [24] 1432 	movx	a,@r0
+   03E9 70 03         [24] 1433 	jnz	00253$
+   03EB 02r04r75      [24] 1434 	ljmp	00180$
+   03EE                    1435 00253$:
+                           1436 ;	radio/packet.c:240: if (slen < mav_pkt_len) {
+   03EE 78r04         [12] 1437 	mov	r0,#_mav_pkt_len
+   03F0 E2            [24] 1438 	movx	a,@r0
+   03F1 FE            [12] 1439 	mov	r6,a
+   03F2 7F 00         [12] 1440 	mov	r7,#0x00
+   03F4 C3            [12] 1441 	clr	c
+   03F5 E5*07         [12] 1442 	mov	a,_packet_get_next_slen_1_146
+   03F7 9E            [12] 1443 	subb	a,r6
+   03F8 E5*08         [12] 1444 	mov	a,(_packet_get_next_slen_1_146 + 1)
+   03FA 9F            [12] 1445 	subb	a,r7
+   03FB 50 68         [24] 1446 	jnc	00132$
+                           1447 ;	radio/packet.c:241: if ((uint16_t)(timer2_tick() - mav_pkt_start_time) > mav_pkt_max_time) {
+   03FD 12r00r00      [24] 1448 	lcall	_timer2_tick
+   0400 AE 82         [24] 1449 	mov	r6,dpl
+   0402 AF 83         [24] 1450 	mov	r7,dph
+   0404 78r05         [12] 1451 	mov	r0,#_mav_pkt_start_time
+   0406 D3            [12] 1452 	setb	c
+   0407 E2            [24] 1453 	movx	a,@r0
+   0408 9E            [12] 1454 	subb	a,r6
+   0409 F4            [12] 1455 	cpl	a
+   040A B3            [12] 1456 	cpl	c
+   040B FE            [12] 1457 	mov	r6,a
+   040C B3            [12] 1458 	cpl	c
+   040D 08            [12] 1459 	inc	r0
+   040E E2            [24] 1460 	movx	a,@r0
+   040F 9F            [12] 1461 	subb	a,r7
+   0410 F4            [12] 1462 	cpl	a
+   0411 FF            [12] 1463 	mov	r7,a
+   0412 78r07         [12] 1464 	mov	r0,#_mav_pkt_max_time
+   0414 C3            [12] 1465 	clr	c
+   0415 E2            [24] 1466 	movx	a,@r0
+   0416 9E            [12] 1467 	subb	a,r6
+   0417 08            [12] 1468 	inc	r0
+   0418 E2            [24] 1469 	movx	a,@r0
+   0419 9F            [12] 1470 	subb	a,r7
+   041A 50 45         [24] 1471 	jnc	00130$
+                           1472 ;	radio/packet.c:244: serial_read_buf(last_sent, slen);
+   041C AD*07         [24] 1473 	mov	r5,_packet_get_next_slen_1_146
+   041E 78r00         [12] 1474 	mov	r0,#_serial_read_buf_PARM_2
+   0420 ED            [12] 1475 	mov	a,r5
+   0421 F2            [24] 1476 	movx	@r0,a
+   0422 90r00rFC      [24] 1477 	mov	dptr,#_last_sent
+   0425 C0 05         [24] 1478 	push	ar5
+   0427 12r00r00      [24] 1479 	lcall	_serial_read_buf
+   042A D0 05         [24] 1480 	pop	ar5
+                           1481 ;	radio/packet.c:245: last_sent_len = slen;
+   042C 78r00         [12] 1482 	mov	r0,#_last_sent_len
+   042E ED            [12] 1483 	mov	a,r5
+   042F F2            [24] 1484 	movx	@r0,a
+                           1485 ;	radio/packet.c:246: memcpy(buf, last_sent, last_sent_len);
+   0430 78r0C         [12] 1486 	mov	r0,#_packet_get_next_PARM_2
+   0432 E2            [24] 1487 	movx	a,@r0
+   0433 FC            [12] 1488 	mov	r4,a
+   0434 08            [12] 1489 	inc	r0
+   0435 E2            [24] 1490 	movx	a,@r0
+   0436 FE            [12] 1491 	mov	r6,a
+   0437 7F 00         [12] 1492 	mov	r7,#0x00
+   0439 90r00r00      [24] 1493 	mov	dptr,#_memcpy_PARM_2
+   043C 74rFC         [12] 1494 	mov	a,#_last_sent
+   043E F0            [24] 1495 	movx	@dptr,a
+   043F 74s00         [12] 1496 	mov	a,#(_last_sent >> 8)
+   0441 A3            [24] 1497 	inc	dptr
+   0442 F0            [24] 1498 	movx	@dptr,a
+   0443 E4            [12] 1499 	clr	a
+   0444 A3            [24] 1500 	inc	dptr
+   0445 F0            [24] 1501 	movx	@dptr,a
+   0446 90r00r00      [24] 1502 	mov	dptr,#_memcpy_PARM_3
+   0449 ED            [12] 1503 	mov	a,r5
+   044A F0            [24] 1504 	movx	@dptr,a
+   044B E4            [12] 1505 	clr	a
+   044C A3            [24] 1506 	inc	dptr
+   044D F0            [24] 1507 	movx	@dptr,a
+   044E 8C 82         [24] 1508 	mov	dpl,r4
+   0450 8E 83         [24] 1509 	mov	dph,r6
+   0452 8F F0         [24] 1510 	mov	b,r7
+   0454 12r00r00      [24] 1511 	lcall	_memcpy
+                           1512 ;	radio/packet.c:247: mav_pkt_len = 0;
+   0457 78r04         [12] 1513 	mov	r0,#_mav_pkt_len
+   0459 E4            [12] 1514 	clr	a
+   045A F2            [24] 1515 	movx	@r0,a
+                           1516 ;	radio/packet.c:248: return last_sent_len;
+   045B 78r00         [12] 1517 	mov	r0,#_last_sent_len
+   045D E2            [24] 1518 	movx	a,@r0
+   045E F5 82         [12] 1519 	mov	dpl,a
+   0460 22            [24] 1520 	ret
+   0461                    1521 00130$:
+                           1522 ;	radio/packet.c:252: return 0;
+   0461 75 82 00      [24] 1523 	mov	dpl,#0x00
+   0464 22            [24] 1524 	ret
+   0465                    1525 00132$:
+                           1526 ;	radio/packet.c:256: return mavlink_frame(max_xmit, buf);
+   0465 78r0C         [12] 1527 	mov	r0,#_packet_get_next_PARM_2
+   0467 79r0A         [12] 1528 	mov	r1,#_mavlink_frame_PARM_2
+   0469 E2            [24] 1529 	movx	a,@r0
+   046A F3            [24] 1530 	movx	@r1,a
+   046B 08            [12] 1531 	inc	r0
+   046C E2            [24] 1532 	movx	a,@r0
+   046D 09            [12] 1533 	inc	r1
+   046E F3            [24] 1534 	movx	@r1,a
+   046F 85*06 82      [24] 1535 	mov	dpl,_packet_get_next_max_xmit_1_145
+   0472 02r00r46      [24] 1536 	ljmp	_mavlink_frame
+                           1537 ;	radio/packet.c:259: while (slen > 0) {
+   0475                    1538 00180$:
+   0475                    1539 00152$:
+   0475 E5*07         [12] 1540 	mov	a,_packet_get_next_slen_1_146
+   0477 45*08         [12] 1541 	orl	a,(_packet_get_next_slen_1_146 + 1)
+   0479 70 03         [24] 1542 	jnz	00256$
+   047B 02r06r1B      [24] 1543 	ljmp	00154$
+   047E                    1544 00256$:
+                           1545 ;	radio/packet.c:260: register uint8_t c = serial_peek();
+   047E 12r00r00      [24] 1546 	lcall	_serial_peek
+   0481 AF 82         [24] 1547 	mov	r7,dpl
+                           1548 ;	radio/packet.c:261: if (c == MAVLINK09_STX || c == MAVLINK10_STX) {
+   0483 BF 55 02      [24] 1549 	cjne	r7,#0x55,00257$
+   0486 80 08         [24] 1550 	sjmp	00148$
+   0488                    1551 00257$:
+   0488 BF FE 02      [24] 1552 	cjne	r7,#0xFE,00258$
+   048B 80 03         [24] 1553 	sjmp	00259$
+   048D                    1554 00258$:
+   048D 02r05rEC      [24] 1555 	ljmp	00149$
+   0490                    1556 00259$:
+   0490                    1557 00148$:
+                           1558 ;	radio/packet.c:262: if (slen == 1) {
+   0490 74 01         [12] 1559 	mov	a,#0x01
+   0492 B5*07 06      [24] 1560 	cjne	a,_packet_get_next_slen_1_146,00260$
+   0495 E4            [12] 1561 	clr	a
+   0496 B5*08 02      [24] 1562 	cjne	a,(_packet_get_next_slen_1_146 + 1),00260$
+   0499 80 02         [24] 1563 	sjmp	00261$
+   049B                    1564 00260$:
+   049B 80 2E         [24] 1565 	sjmp	00138$
+   049D                    1566 00261$:
+                           1567 ;	radio/packet.c:264: if (last_sent_len == 0) {
+   049D 78r00         [12] 1568 	mov	r0,#_last_sent_len
+   049F E2            [24] 1569 	movx	a,@r0
+   04A0 60 03         [24] 1570 	jz	00262$
+   04A2 02r06r1B      [24] 1571 	ljmp	00154$
+   04A5                    1572 00262$:
+                           1573 ;	radio/packet.c:267: mav_pkt_len = 1;
+   04A5 78r04         [12] 1574 	mov	r0,#_mav_pkt_len
+   04A7 74 01         [12] 1575 	mov	a,#0x01
+   04A9 F2            [24] 1576 	movx	@r0,a
+                           1577 ;	radio/packet.c:268: mav_pkt_start_time = timer2_tick();
+   04AA 12r00r00      [24] 1578 	lcall	_timer2_tick
+   04AD E5 82         [12] 1579 	mov	a,dpl
+   04AF 85 83 F0      [24] 1580 	mov	b,dph
+   04B2 78r05         [12] 1581 	mov	r0,#_mav_pkt_start_time
+   04B4 F2            [24] 1582 	movx	@r0,a
+   04B5 08            [12] 1583 	inc	r0
+   04B6 E5 F0         [12] 1584 	mov	a,b
+   04B8 F2            [24] 1585 	movx	@r0,a
+                           1586 ;	radio/packet.c:269: mav_pkt_max_time = serial_rate;
+   04B9 78r02         [12] 1587 	mov	r0,#_serial_rate
+   04BB E2            [24] 1588 	movx	a,@r0
+   04BC FE            [12] 1589 	mov	r6,a
+   04BD 08            [12] 1590 	inc	r0
+   04BE E2            [24] 1591 	movx	a,@r0
+   04BF FF            [12] 1592 	mov	r7,a
+   04C0 78r07         [12] 1593 	mov	r0,#_mav_pkt_max_time
+   04C2 EE            [12] 1594 	mov	a,r6
+   04C3 F2            [24] 1595 	movx	@r0,a
+   04C4 08            [12] 1596 	inc	r0
+   04C5 EF            [12] 1597 	mov	a,r7
+   04C6 F2            [24] 1598 	movx	@r0,a
+                           1599 ;	radio/packet.c:270: return 0;
+   04C7 75 82 00      [24] 1600 	mov	dpl,#0x00
+   04CA 22            [24] 1601 	ret
+                           1602 ;	radio/packet.c:272: break;
+   04CB                    1603 00138$:
+                           1604 ;	radio/packet.c:274: mav_pkt_len = serial_peek2();
+   04CB 12r00r00      [24] 1605 	lcall	_serial_peek2
+   04CE AF 82         [24] 1606 	mov	r7,dpl
+   04D0 78r04         [12] 1607 	mov	r0,#_mav_pkt_len
+   04D2 EF            [12] 1608 	mov	a,r7
+   04D3 F2            [24] 1609 	movx	@r0,a
+                           1610 ;	radio/packet.c:275: if (mav_pkt_len >= 255-8 ||
+   04D4 BF F7 00      [24] 1611 	cjne	r7,#0xF7,00263$
+   04D7                    1612 00263$:
+   04D7 50 20         [24] 1613 	jnc	00139$
+                           1614 ;	radio/packet.c:276: mav_pkt_len+8 > mav_max_xmit) {
+   04D9 8F 05         [24] 1615 	mov	ar5,r7
+   04DB 7E 00         [12] 1616 	mov	r6,#0x00
+   04DD 74 08         [12] 1617 	mov	a,#0x08
+   04DF 2D            [12] 1618 	add	a,r5
+   04E0 FD            [12] 1619 	mov	r5,a
+   04E1 E4            [12] 1620 	clr	a
+   04E2 3E            [12] 1621 	addc	a,r6
+   04E3 FE            [12] 1622 	mov	r6,a
+   04E4 78r09         [12] 1623 	mov	r0,#_mav_max_xmit
+   04E6 E2            [24] 1624 	movx	a,@r0
+   04E7 FB            [12] 1625 	mov	r3,a
+   04E8 7C 00         [12] 1626 	mov	r4,#0x00
+   04EA C3            [12] 1627 	clr	c
+   04EB EB            [12] 1628 	mov	a,r3
+   04EC 9D            [12] 1629 	subb	a,r5
+   04ED EC            [12] 1630 	mov	a,r4
+   04EE 64 80         [12] 1631 	xrl	a,#0x80
+   04F0 8E F0         [24] 1632 	mov	b,r6
+   04F2 63 F0 80      [24] 1633 	xrl	b,#0x80
+   04F5 95 F0         [12] 1634 	subb	a,b
+   04F7 50 33         [24] 1635 	jnc	00140$
+   04F9                    1636 00139$:
+                           1637 ;	radio/packet.c:278: mav_pkt_len = 0;
+   04F9 78r04         [12] 1638 	mov	r0,#_mav_pkt_len
+   04FB E4            [12] 1639 	clr	a
+   04FC F2            [24] 1640 	movx	@r0,a
+                           1641 ;	radio/packet.c:279: last_sent[last_sent_len++] = serial_read();
+   04FD 78r00         [12] 1642 	mov	r0,#_last_sent_len
+   04FF E2            [24] 1643 	movx	a,@r0
+   0500 FE            [12] 1644 	mov	r6,a
+   0501 78r00         [12] 1645 	mov	r0,#_last_sent_len
+   0503 04            [12] 1646 	inc	a
+   0504 F2            [24] 1647 	movx	@r0,a
+   0505 EE            [12] 1648 	mov	a,r6
+   0506 24rFC         [12] 1649 	add	a,#_last_sent
+   0508 FE            [12] 1650 	mov	r6,a
+   0509 E4            [12] 1651 	clr	a
+   050A 34s00         [12] 1652 	addc	a,#(_last_sent >> 8)
+   050C FD            [12] 1653 	mov	r5,a
+   050D C0 06         [24] 1654 	push	ar6
+   050F C0 05         [24] 1655 	push	ar5
+   0511 12r00r00      [24] 1656 	lcall	_serial_read
+   0514 AC 82         [24] 1657 	mov	r4,dpl
+   0516 D0 05         [24] 1658 	pop	ar5
+   0518 D0 06         [24] 1659 	pop	ar6
+   051A 8E 82         [24] 1660 	mov	dpl,r6
+   051C 8D 83         [24] 1661 	mov	dph,r5
+   051E EC            [12] 1662 	mov	a,r4
+   051F F0            [24] 1663 	movx	@dptr,a
+                           1664 ;	radio/packet.c:280: slen--;				
+   0520 15*07         [12] 1665 	dec	_packet_get_next_slen_1_146
+   0522 74 FF         [12] 1666 	mov	a,#0xFF
+   0524 B5*07 02      [24] 1667 	cjne	a,_packet_get_next_slen_1_146,00266$
+   0527 15*08         [12] 1668 	dec	(_packet_get_next_slen_1_146 + 1)
+   0529                    1669 00266$:
+                           1670 ;	radio/packet.c:281: continue;
+   0529 02r04r75      [24] 1671 	ljmp	00152$
+   052C                    1672 00140$:
+                           1673 ;	radio/packet.c:286: mav_pkt_len += 8;
+   052C 74 08         [12] 1674 	mov	a,#0x08
+   052E 2F            [12] 1675 	add	a,r7
+   052F FF            [12] 1676 	mov	r7,a
+   0530 78r04         [12] 1677 	mov	r0,#_mav_pkt_len
+   0532 F2            [24] 1678 	movx	@r0,a
+                           1679 ;	radio/packet.c:288: if (last_sent_len != 0) {
+   0533 78r00         [12] 1680 	mov	r0,#_last_sent_len
+   0535 E2            [24] 1681 	movx	a,@r0
+   0536 60 62         [24] 1682 	jz	00146$
+                           1683 ;	radio/packet.c:292: memcpy(buf, last_sent, last_sent_len);
+   0538 78r0C         [12] 1684 	mov	r0,#_packet_get_next_PARM_2
+   053A E2            [24] 1685 	movx	a,@r0
+   053B FC            [12] 1686 	mov	r4,a
+   053C 08            [12] 1687 	inc	r0
+   053D E2            [24] 1688 	movx	a,@r0
+   053E FD            [12] 1689 	mov	r5,a
+   053F 7E 00         [12] 1690 	mov	r6,#0x00
+   0541 90r00r00      [24] 1691 	mov	dptr,#_memcpy_PARM_2
+   0544 74rFC         [12] 1692 	mov	a,#_last_sent
+   0546 F0            [24] 1693 	movx	@dptr,a
+   0547 74s00         [12] 1694 	mov	a,#(_last_sent >> 8)
+   0549 A3            [24] 1695 	inc	dptr
+   054A F0            [24] 1696 	movx	@dptr,a
+   054B E4            [12] 1697 	clr	a
+   054C A3            [24] 1698 	inc	dptr
+   054D F0            [24] 1699 	movx	@dptr,a
+   054E 78r00         [12] 1700 	mov	r0,#_last_sent_len
+   0550 90r00r00      [24] 1701 	mov	dptr,#_memcpy_PARM_3
+   0553 E2            [24] 1702 	movx	a,@r0
+   0554 F0            [24] 1703 	movx	@dptr,a
+   0555 E4            [12] 1704 	clr	a
+   0556 A3            [24] 1705 	inc	dptr
+   0557 F0            [24] 1706 	movx	@dptr,a
+   0558 8C 82         [24] 1707 	mov	dpl,r4
+   055A 8D 83         [24] 1708 	mov	dph,r5
+   055C 8E F0         [24] 1709 	mov	b,r6
+   055E 12r00r00      [24] 1710 	lcall	_memcpy
+                           1711 ;	radio/packet.c:293: mav_pkt_start_time = timer2_tick();
+   0561 12r00r00      [24] 1712 	lcall	_timer2_tick
+   0564 E5 82         [12] 1713 	mov	a,dpl
+   0566 85 83 F0      [24] 1714 	mov	b,dph
+   0569 78r05         [12] 1715 	mov	r0,#_mav_pkt_start_time
+   056B F2            [24] 1716 	movx	@r0,a
+   056C 08            [12] 1717 	inc	r0
+   056D E5 F0         [12] 1718 	mov	a,b
+   056F F2            [24] 1719 	movx	@r0,a
+                           1720 ;	radio/packet.c:294: mav_pkt_max_time = mav_pkt_len * serial_rate;
+   0570 78r04         [12] 1721 	mov	r0,#_mav_pkt_len
+   0572 E2            [24] 1722 	movx	a,@r0
+   0573 FD            [12] 1723 	mov	r5,a
+   0574 7E 00         [12] 1724 	mov	r6,#0x00
+   0576 78r02         [12] 1725 	mov	r0,#_serial_rate
+   0578 90r00r00      [24] 1726 	mov	dptr,#__mulint_PARM_2
+   057B E2            [24] 1727 	movx	a,@r0
+   057C F0            [24] 1728 	movx	@dptr,a
+   057D 08            [12] 1729 	inc	r0
+   057E E2            [24] 1730 	movx	a,@r0
+   057F A3            [24] 1731 	inc	dptr
+   0580 F0            [24] 1732 	movx	@dptr,a
+   0581 8D 82         [24] 1733 	mov	dpl,r5
+   0583 8E 83         [24] 1734 	mov	dph,r6
+   0585 12r00r00      [24] 1735 	lcall	__mulint
+   0588 E5 82         [12] 1736 	mov	a,dpl
+   058A 85 83 F0      [24] 1737 	mov	b,dph
+   058D 78r07         [12] 1738 	mov	r0,#_mav_pkt_max_time
+   058F F2            [24] 1739 	movx	@r0,a
+   0590 08            [12] 1740 	inc	r0
+   0591 E5 F0         [12] 1741 	mov	a,b
+   0593 F2            [24] 1742 	movx	@r0,a
+                           1743 ;	radio/packet.c:295: return last_sent_len;
+   0594 78r00         [12] 1744 	mov	r0,#_last_sent_len
+   0596 E2            [24] 1745 	movx	a,@r0
+   0597 F5 82         [12] 1746 	mov	dpl,a
+   0599 22            [24] 1747 	ret
+   059A                    1748 00146$:
+                           1749 ;	radio/packet.c:296: } else if (mav_pkt_len > slen) {
+   059A 7E 00         [12] 1750 	mov	r6,#0x00
+   059C C3            [12] 1751 	clr	c
+   059D E5*07         [12] 1752 	mov	a,_packet_get_next_slen_1_146
+   059F 9F            [12] 1753 	subb	a,r7
+   05A0 E5*08         [12] 1754 	mov	a,(_packet_get_next_slen_1_146 + 1)
+   05A2 9E            [12] 1755 	subb	a,r6
+   05A3 50 37         [24] 1756 	jnc	00143$
+                           1757 ;	radio/packet.c:299: mav_pkt_start_time = timer2_tick();
+   05A5 12r00r00      [24] 1758 	lcall	_timer2_tick
+   05A8 E5 82         [12] 1759 	mov	a,dpl
+   05AA 85 83 F0      [24] 1760 	mov	b,dph
+   05AD 78r05         [12] 1761 	mov	r0,#_mav_pkt_start_time
+   05AF F2            [24] 1762 	movx	@r0,a
+   05B0 08            [12] 1763 	inc	r0
+   05B1 E5 F0         [12] 1764 	mov	a,b
+   05B3 F2            [24] 1765 	movx	@r0,a
+                           1766 ;	radio/packet.c:300: mav_pkt_max_time = mav_pkt_len * serial_rate;
+   05B4 78r04         [12] 1767 	mov	r0,#_mav_pkt_len
+   05B6 E2            [24] 1768 	movx	a,@r0
+   05B7 FE            [12] 1769 	mov	r6,a
+   05B8 7F 00         [12] 1770 	mov	r7,#0x00
+   05BA 78r02         [12] 1771 	mov	r0,#_serial_rate
+   05BC 90r00r00      [24] 1772 	mov	dptr,#__mulint_PARM_2
+   05BF E2            [24] 1773 	movx	a,@r0
+   05C0 F0            [24] 1774 	movx	@dptr,a
+   05C1 08            [12] 1775 	inc	r0
+   05C2 E2            [24] 1776 	movx	a,@r0
+   05C3 A3            [24] 1777 	inc	dptr
+   05C4 F0            [24] 1778 	movx	@dptr,a
+   05C5 8E 82         [24] 1779 	mov	dpl,r6
+   05C7 8F 83         [24] 1780 	mov	dph,r7
+   05C9 12r00r00      [24] 1781 	lcall	__mulint
+   05CC E5 82         [12] 1782 	mov	a,dpl
+   05CE 85 83 F0      [24] 1783 	mov	b,dph
+   05D1 78r07         [12] 1784 	mov	r0,#_mav_pkt_max_time
+   05D3 F2            [24] 1785 	movx	@r0,a
+   05D4 08            [12] 1786 	inc	r0
+   05D5 E5 F0         [12] 1787 	mov	a,b
+   05D7 F2            [24] 1788 	movx	@r0,a
+                           1789 ;	radio/packet.c:301: return 0;					
+   05D8 75 82 00      [24] 1790 	mov	dpl,#0x00
+   05DB 22            [24] 1791 	ret
+   05DC                    1792 00143$:
+                           1793 ;	radio/packet.c:305: return mavlink_frame(max_xmit, buf);
+   05DC 78r0C         [12] 1794 	mov	r0,#_packet_get_next_PARM_2
+   05DE 79r0A         [12] 1795 	mov	r1,#_mavlink_frame_PARM_2
+   05E0 E2            [24] 1796 	movx	a,@r0
+   05E1 F3            [24] 1797 	movx	@r1,a
+   05E2 08            [12] 1798 	inc	r0
+   05E3 E2            [24] 1799 	movx	a,@r0
+   05E4 09            [12] 1800 	inc	r1
+   05E5 F3            [24] 1801 	movx	@r1,a
+   05E6 85*06 82      [24] 1802 	mov	dpl,_packet_get_next_max_xmit_1_145
+   05E9 02r00r46      [24] 1803 	ljmp	_mavlink_frame
+   05EC                    1804 00149$:
+                           1805 ;	radio/packet.c:308: last_sent[last_sent_len++] = serial_read();
+   05EC 78r00         [12] 1806 	mov	r0,#_last_sent_len
+   05EE E2            [24] 1807 	movx	a,@r0
+   05EF FF            [12] 1808 	mov	r7,a
+   05F0 78r00         [12] 1809 	mov	r0,#_last_sent_len
+   05F2 04            [12] 1810 	inc	a
+   05F3 F2            [24] 1811 	movx	@r0,a
+   05F4 EF            [12] 1812 	mov	a,r7
+   05F5 24rFC         [12] 1813 	add	a,#_last_sent
+   05F7 FF            [12] 1814 	mov	r7,a
+   05F8 E4            [12] 1815 	clr	a
+   05F9 34s00         [12] 1816 	addc	a,#(_last_sent >> 8)
+   05FB FE            [12] 1817 	mov	r6,a
+   05FC C0 07         [24] 1818 	push	ar7
+   05FE C0 06         [24] 1819 	push	ar6
+   0600 12r00r00      [24] 1820 	lcall	_serial_read
+   0603 AD 82         [24] 1821 	mov	r5,dpl
+   0605 D0 06         [24] 1822 	pop	ar6
+   0607 D0 07         [24] 1823 	pop	ar7
+   0609 8F 82         [24] 1824 	mov	dpl,r7
+   060B 8E 83         [24] 1825 	mov	dph,r6
+   060D ED            [12] 1826 	mov	a,r5
+   060E F0            [24] 1827 	movx	@dptr,a
+                           1828 ;	radio/packet.c:309: slen--;
+   060F 15*07         [12] 1829 	dec	_packet_get_next_slen_1_146
+   0611 74 FF         [12] 1830 	mov	a,#0xFF
+   0613 B5*07 02      [24] 1831 	cjne	a,_packet_get_next_slen_1_146,00269$
+   0616 15*08         [12] 1832 	dec	(_packet_get_next_slen_1_146 + 1)
+   0618                    1833 00269$:
+   0618 02r04r75      [24] 1834 	ljmp	00152$
+   061B                    1835 00154$:
+                           1836 ;	radio/packet.c:313: memcpy(buf, last_sent, last_sent_len);
+   061B 78r0C         [12] 1837 	mov	r0,#_packet_get_next_PARM_2
+   061D E2            [24] 1838 	movx	a,@r0
+   061E FD            [12] 1839 	mov	r5,a
+   061F 08            [12] 1840 	inc	r0
+   0620 E2            [24] 1841 	movx	a,@r0
+   0621 FE            [12] 1842 	mov	r6,a
+   0622 7F 00         [12] 1843 	mov	r7,#0x00
+   0624 90r00r00      [24] 1844 	mov	dptr,#_memcpy_PARM_2
+   0627 74rFC         [12] 1845 	mov	a,#_last_sent
+   0629 F0            [24] 1846 	movx	@dptr,a
+   062A 74s00         [12] 1847 	mov	a,#(_last_sent >> 8)
+   062C A3            [24] 1848 	inc	dptr
+   062D F0            [24] 1849 	movx	@dptr,a
+   062E E4            [12] 1850 	clr	a
+   062F A3            [24] 1851 	inc	dptr
+   0630 F0            [24] 1852 	movx	@dptr,a
+   0631 78r00         [12] 1853 	mov	r0,#_last_sent_len
+   0633 90r00r00      [24] 1854 	mov	dptr,#_memcpy_PARM_3
+   0636 E2            [24] 1855 	movx	a,@r0
+   0637 F0            [24] 1856 	movx	@dptr,a
+   0638 E4            [12] 1857 	clr	a
+   0639 A3            [24] 1858 	inc	dptr
+   063A F0            [24] 1859 	movx	@dptr,a
+   063B 8D 82         [24] 1860 	mov	dpl,r5
+   063D 8E 83         [24] 1861 	mov	dph,r6
+   063F 8F F0         [24] 1862 	mov	b,r7
+   0641 12r00r00      [24] 1863 	lcall	_memcpy
+                           1864 ;	radio/packet.c:314: return last_sent_len;
+   0644 78r00         [12] 1865 	mov	r0,#_last_sent_len
+   0646 E2            [24] 1866 	movx	a,@r0
+   0647 F5 82         [12] 1867 	mov	dpl,a
+   0649 22            [24] 1868 	ret
+                           1869 ;------------------------------------------------------------
+                           1870 ;Allocation info for local variables in function 'packet_is_resend'
+                           1871 ;------------------------------------------------------------
+                           1872 ;	radio/packet.c:320: packet_is_resend(void)
+                           1873 ;	-----------------------------------------
+                           1874 ;	 function packet_is_resend
+                           1875 ;	-----------------------------------------
+   064A                    1876 _packet_is_resend:
+                           1877 ;	radio/packet.c:322: return last_sent_is_resend;
+   064A A2*00         [12] 1878 	mov	c,_last_sent_is_resend
+   064C 22            [24] 1879 	ret
+                           1880 ;------------------------------------------------------------
+                           1881 ;Allocation info for local variables in function 'packet_is_injected'
+                           1882 ;------------------------------------------------------------
+                           1883 ;	radio/packet.c:328: packet_is_injected(void)
+                           1884 ;	-----------------------------------------
+                           1885 ;	 function packet_is_injected
+                           1886 ;	-----------------------------------------
+   064D                    1887 _packet_is_injected:
+                           1888 ;	radio/packet.c:330: return last_sent_is_injected;
+   064D A2*01         [12] 1889 	mov	c,_last_sent_is_injected
+   064F 22            [24] 1890 	ret
+                           1891 ;------------------------------------------------------------
+                           1892 ;Allocation info for local variables in function 'packet_force_resend'
+                           1893 ;------------------------------------------------------------
+                           1894 ;	radio/packet.c:335: packet_force_resend(void)
+                           1895 ;	-----------------------------------------
+                           1896 ;	 function packet_force_resend
+                           1897 ;	-----------------------------------------
+   0650                    1898 _packet_force_resend:
+                           1899 ;	radio/packet.c:337: force_resend = true;
+   0650 D2*03         [12] 1900 	setb	_force_resend
+   0652 22            [24] 1901 	ret
+                           1902 ;------------------------------------------------------------
+                           1903 ;Allocation info for local variables in function 'packet_set_max_xmit'
+                           1904 ;------------------------------------------------------------
+                           1905 ;max                       Allocated with name '_packet_set_max_xmit_max_1_177'
+                           1906 ;------------------------------------------------------------
+                           1907 ;	radio/packet.c:342: packet_set_max_xmit(uint8_t max)
+                           1908 ;	-----------------------------------------
+                           1909 ;	 function packet_set_max_xmit
+                           1910 ;	-----------------------------------------
+   0653                    1911 _packet_set_max_xmit:
+   0653 E5 82         [12] 1912 	mov	a,dpl
+                           1913 ;	radio/packet.c:344: mav_max_xmit = max;
+   0655 90r01rF9      [24] 1914 	mov	dptr,#_packet_set_max_xmit_max_1_177
+   0658 F0            [24] 1915 	movx	@dptr,a
+   0659 78r09         [12] 1916 	mov	r0,#_mav_max_xmit
+   065B F2            [24] 1917 	movx	@r0,a
+   065C 22            [24] 1918 	ret
+                           1919 ;------------------------------------------------------------
+                           1920 ;Allocation info for local variables in function 'packet_set_serial_speed'
+                           1921 ;------------------------------------------------------------
+                           1922 ;speed                     Allocated with name '_packet_set_serial_speed_speed_1_179'
+                           1923 ;------------------------------------------------------------
+                           1924 ;	radio/packet.c:349: packet_set_serial_speed(uint16_t speed)
+                           1925 ;	-----------------------------------------
+                           1926 ;	 function packet_set_serial_speed
+                           1927 ;	-----------------------------------------
+   065D                    1928 _packet_set_serial_speed:
+   065D AF 83         [24] 1929 	mov	r7,dph
+   065F E5 82         [12] 1930 	mov	a,dpl
+   0661 90r01rFA      [24] 1931 	mov	dptr,#_packet_set_serial_speed_speed_1_179
+   0664 F0            [24] 1932 	movx	@dptr,a
+   0665 EF            [12] 1933 	mov	a,r7
+   0666 A3            [24] 1934 	inc	dptr
+   0667 F0            [24] 1935 	movx	@dptr,a
+                           1936 ;	radio/packet.c:352: serial_rate = (65536UL / speed) + 1;
+   0668 90r01rFA      [24] 1937 	mov	dptr,#_packet_set_serial_speed_speed_1_179
+   066B E0            [24] 1938 	movx	a,@dptr
+   066C FE            [12] 1939 	mov	r6,a
+   066D A3            [24] 1940 	inc	dptr
+   066E E0            [24] 1941 	movx	a,@dptr
+   066F FF            [12] 1942 	mov	r7,a
+   0670 90r00r00      [24] 1943 	mov	dptr,#__divulong_PARM_2
+   0673 EE            [12] 1944 	mov	a,r6
+   0674 F0            [24] 1945 	movx	@dptr,a
+   0675 EF            [12] 1946 	mov	a,r7
+   0676 A3            [24] 1947 	inc	dptr
+   0677 F0            [24] 1948 	movx	@dptr,a
+   0678 E4            [12] 1949 	clr	a
+   0679 A3            [24] 1950 	inc	dptr
+   067A F0            [24] 1951 	movx	@dptr,a
+   067B E4            [12] 1952 	clr	a
+   067C A3            [24] 1953 	inc	dptr
+   067D F0            [24] 1954 	movx	@dptr,a
+   067E 90 00 00      [24] 1955 	mov	dptr,#0x0000
+   0681 75 F0 01      [24] 1956 	mov	b,#0x01
+   0684 E4            [12] 1957 	clr	a
+   0685 12r00r00      [24] 1958 	lcall	__divulong
+   0688 AC 82         [24] 1959 	mov	r4,dpl
+   068A AD 83         [24] 1960 	mov	r5,dph
+   068C AE F0         [24] 1961 	mov	r6,b
+   068E FF            [12] 1962 	mov	r7,a
+   068F 0C            [12] 1963 	inc	r4
+   0690 BC 00 09      [24] 1964 	cjne	r4,#0x00,00103$
+   0693 0D            [12] 1965 	inc	r5
+   0694 BD 00 05      [24] 1966 	cjne	r5,#0x00,00103$
+   0697 0E            [12] 1967 	inc	r6
+   0698 BE 00 01      [24] 1968 	cjne	r6,#0x00,00103$
+   069B 0F            [12] 1969 	inc	r7
+   069C                    1970 00103$:
+   069C 78r02         [12] 1971 	mov	r0,#_serial_rate
+   069E EC            [12] 1972 	mov	a,r4
+   069F F2            [24] 1973 	movx	@r0,a
+   06A0 08            [12] 1974 	inc	r0
+   06A1 ED            [12] 1975 	mov	a,r5
+   06A2 F2            [24] 1976 	movx	@r0,a
+   06A3 22            [24] 1977 	ret
+                           1978 ;------------------------------------------------------------
+                           1979 ;Allocation info for local variables in function 'packet_is_duplicate'
+                           1980 ;------------------------------------------------------------
+                           1981 ;len                       Allocated with name '_packet_is_duplicate_len_1_181'
+                           1982 ;------------------------------------------------------------
+                           1983 ;	radio/packet.c:357: packet_is_duplicate(uint8_t len, __xdata uint8_t * __pdata buf, bool is_resend)
+                           1984 ;	-----------------------------------------
+                           1985 ;	 function packet_is_duplicate
+                           1986 ;	-----------------------------------------
+   06A4                    1987 _packet_is_duplicate:
+   06A4 E5 82         [12] 1988 	mov	a,dpl
+   06A6 90r01rFC      [24] 1989 	mov	dptr,#_packet_is_duplicate_len_1_181
+   06A9 F0            [24] 1990 	movx	@dptr,a
+                           1991 ;	radio/packet.c:359: if (!is_resend) {
+   06AA 20*07 39      [24] 1992 	jb	_packet_is_duplicate_PARM_3,00102$
+                           1993 ;	radio/packet.c:360: memcpy(last_received, buf, len);
+   06AD 78r0E         [12] 1994 	mov	r0,#_packet_is_duplicate_PARM_2
+   06AF E2            [24] 1995 	movx	a,@r0
+   06B0 FD            [12] 1996 	mov	r5,a
+   06B1 08            [12] 1997 	inc	r0
+   06B2 E2            [24] 1998 	movx	a,@r0
+   06B3 FE            [12] 1999 	mov	r6,a
+   06B4 7F 00         [12] 2000 	mov	r7,#0x00
+   06B6 90r01rFC      [24] 2001 	mov	dptr,#_packet_is_duplicate_len_1_181
+   06B9 E0            [24] 2002 	movx	a,@dptr
+   06BA FC            [12] 2003 	mov	r4,a
+   06BB FA            [12] 2004 	mov	r2,a
+   06BC 7B 00         [12] 2005 	mov	r3,#0x00
+   06BE 90r00r00      [24] 2006 	mov	dptr,#_memcpy_PARM_2
+   06C1 ED            [12] 2007 	mov	a,r5
+   06C2 F0            [24] 2008 	movx	@dptr,a
+   06C3 EE            [12] 2009 	mov	a,r6
+   06C4 A3            [24] 2010 	inc	dptr
+   06C5 F0            [24] 2011 	movx	@dptr,a
+   06C6 EF            [12] 2012 	mov	a,r7
+   06C7 A3            [24] 2013 	inc	dptr
+   06C8 F0            [24] 2014 	movx	@dptr,a
+   06C9 90r00r00      [24] 2015 	mov	dptr,#_memcpy_PARM_3
+   06CC EA            [12] 2016 	mov	a,r2
+   06CD F0            [24] 2017 	movx	@dptr,a
+   06CE EB            [12] 2018 	mov	a,r3
+   06CF A3            [24] 2019 	inc	dptr
+   06D0 F0            [24] 2020 	movx	@dptr,a
+   06D1 90r00r00      [24] 2021 	mov	dptr,#_last_received
+   06D4 75 F0 00      [24] 2022 	mov	b,#0x00
+   06D7 C0 04         [24] 2023 	push	ar4
+   06D9 12r00r00      [24] 2024 	lcall	_memcpy
+   06DC D0 04         [24] 2025 	pop	ar4
+                           2026 ;	radio/packet.c:361: last_recv_len = len;
+   06DE 78r01         [12] 2027 	mov	r0,#_last_recv_len
+   06E0 EC            [12] 2028 	mov	a,r4
+   06E1 F2            [24] 2029 	movx	@r0,a
+                           2030 ;	radio/packet.c:362: last_recv_is_resend = false;
+   06E2 C2*02         [12] 2031 	clr	_last_recv_is_resend
+                           2032 ;	radio/packet.c:363: return false;
+   06E4 C3            [12] 2033 	clr	c
+   06E5 22            [24] 2034 	ret
+   06E6                    2035 00102$:
+                           2036 ;	radio/packet.c:367: memcmp(last_received, buf, len) == 0) {
+   06E6 20*02 37      [24] 2037 	jb	_last_recv_is_resend,00104$
+                           2038 ;	radio/packet.c:366: len == last_recv_len &&
+   06E9 90r01rFC      [24] 2039 	mov	dptr,#_packet_is_duplicate_len_1_181
+   06EC E0            [24] 2040 	movx	a,@dptr
+   06ED FF            [12] 2041 	mov	r7,a
+   06EE 78r01         [12] 2042 	mov	r0,#_last_recv_len
+   06F0 E2            [24] 2043 	movx	a,@r0
+   06F1 B5 07 2C      [24] 2044 	cjne	a,ar7,00104$
+                           2045 ;	radio/packet.c:367: memcmp(last_received, buf, len) == 0) {
+   06F4 78r0E         [12] 2046 	mov	r0,#_packet_is_duplicate_PARM_2
+   06F6 90r00r00      [24] 2047 	mov	dptr,#_memcmp_PARM_2
+   06F9 E2            [24] 2048 	movx	a,@r0
+   06FA F0            [24] 2049 	movx	@dptr,a
+   06FB 08            [12] 2050 	inc	r0
+   06FC E2            [24] 2051 	movx	a,@r0
+   06FD A3            [24] 2052 	inc	dptr
+   06FE F0            [24] 2053 	movx	@dptr,a
+   06FF E4            [12] 2054 	clr	a
+   0700 A3            [24] 2055 	inc	dptr
+   0701 F0            [24] 2056 	movx	@dptr,a
+   0702 90r00r00      [24] 2057 	mov	dptr,#_memcmp_PARM_3
+   0705 EF            [12] 2058 	mov	a,r7
+   0706 F0            [24] 2059 	movx	@dptr,a
+   0707 E4            [12] 2060 	clr	a
+   0708 A3            [24] 2061 	inc	dptr
+   0709 F0            [24] 2062 	movx	@dptr,a
+   070A 90r00r00      [24] 2063 	mov	dptr,#_last_received
+   070D 75 F0 00      [24] 2064 	mov	b,#0x00
+   0710 12r00r00      [24] 2065 	lcall	_memcmp
+   0713 E5 82         [12] 2066 	mov	a,dpl
+   0715 85 83 F0      [24] 2067 	mov	b,dph
+   0718 45 F0         [12] 2068 	orl	a,b
+   071A 70 04         [24] 2069 	jnz	00104$
+                           2070 ;	radio/packet.c:368: last_recv_is_resend = false;
+   071C C2*02         [12] 2071 	clr	_last_recv_is_resend
+                           2072 ;	radio/packet.c:369: return true;
+   071E D3            [12] 2073 	setb	c
+   071F 22            [24] 2074 	ret
+   0720                    2075 00104$:
+                           2076 ;	radio/packet.c:377: last_recv_is_resend = true;
+   0720 D2*02         [12] 2077 	setb	_last_recv_is_resend
+                           2078 ;	radio/packet.c:378: return false;
+   0722 C3            [12] 2079 	clr	c
+   0723 22            [24] 2080 	ret
+                           2081 ;------------------------------------------------------------
+                           2082 ;Allocation info for local variables in function 'packet_inject'
+                           2083 ;------------------------------------------------------------
+                           2084 ;	radio/packet.c:383: packet_inject(__xdata uint8_t * __pdata buf, __pdata uint8_t len)
+                           2085 ;	-----------------------------------------
+                           2086 ;	 function packet_inject
+                           2087 ;	-----------------------------------------
+   0724                    2088 _packet_inject:
+   0724 AE 82         [24] 2089 	mov	r6,dpl
+   0726 AF 83         [24] 2090 	mov	r7,dph
+                           2091 ;	radio/packet.c:385: if (len > sizeof(last_sent)) {
+   0728 78r10         [12] 2092 	mov	r0,#_packet_inject_PARM_2
+   072A C3            [12] 2093 	clr	c
+   072B E2            [24] 2094 	movx	a,@r0
+   072C F5 F0         [12] 2095 	mov	b,a
+   072E 74 FC         [12] 2096 	mov	a,#0xFC
+   0730 95 F0         [12] 2097 	subb	a,b
+   0732 50 05         [24] 2098 	jnc	00102$
+                           2099 ;	radio/packet.c:386: len = sizeof(last_sent);
+   0734 78r10         [12] 2100 	mov	r0,#_packet_inject_PARM_2
+   0736 74 FC         [12] 2101 	mov	a,#0xFC
+   0738 F2            [24] 2102 	movx	@r0,a
+   0739                    2103 00102$:
+                           2104 ;	radio/packet.c:388: memcpy(last_sent, buf, len);
+   0739 90r00r00      [24] 2105 	mov	dptr,#_memcpy_PARM_2
+   073C EE            [12] 2106 	mov	a,r6
+   073D F0            [24] 2107 	movx	@dptr,a
+   073E EF            [12] 2108 	mov	a,r7
+   073F A3            [24] 2109 	inc	dptr
+   0740 F0            [24] 2110 	movx	@dptr,a
+   0741 E4            [12] 2111 	clr	a
+   0742 A3            [24] 2112 	inc	dptr
+   0743 F0            [24] 2113 	movx	@dptr,a
+   0744 78r10         [12] 2114 	mov	r0,#_packet_inject_PARM_2
+   0746 90r00r00      [24] 2115 	mov	dptr,#_memcpy_PARM_3
+   0749 E2            [24] 2116 	movx	a,@r0
+   074A F0            [24] 2117 	movx	@dptr,a
+   074B E4            [12] 2118 	clr	a
+   074C A3            [24] 2119 	inc	dptr
+   074D F0            [24] 2120 	movx	@dptr,a
+   074E 90r00rFC      [24] 2121 	mov	dptr,#_last_sent
+   0751 75 F0 00      [24] 2122 	mov	b,#0x00
+   0754 12r00r00      [24] 2123 	lcall	_memcpy
+                           2124 ;	radio/packet.c:389: last_sent_len = len;
+   0757 78r10         [12] 2125 	mov	r0,#_packet_inject_PARM_2
+   0759 E2            [24] 2126 	movx	a,@r0
+   075A 78r00         [12] 2127 	mov	r0,#_last_sent_len
+   075C F2            [24] 2128 	movx	@r0,a
+                           2129 ;	radio/packet.c:390: last_sent_is_resend = false;
+   075D C2*00         [12] 2130 	clr	_last_sent_is_resend
+                           2131 ;	radio/packet.c:391: injected_packet = true;
+   075F D2*04         [12] 2132 	setb	_injected_packet
+   0761 22            [24] 2133 	ret
+                           2134 	.area CSEG    (CODE)
+                           2135 	.area CONST   (CODE)
+                           2136 	.area XINIT   (CODE)
+                           2137 	.area CABS    (ABS,CODE)

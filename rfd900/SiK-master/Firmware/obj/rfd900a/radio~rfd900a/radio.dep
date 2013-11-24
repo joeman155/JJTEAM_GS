@@ -1,0 +1,5 @@
+.//obj/rfd900a/radio~rfd900a/radio.rel: radio/radio.c include/board.h include/board_rfd900a.h \
+ include/compiler_defs.h include/cdt.h include/Si1000_defs.h \
+ include/compiler_defs.h radio/radio.h radio/serial.h \
+ include/board_info.h radio/parameters.h radio/at.h radio/flash.h \
+ radio/rtc.h radio/timer.h radio/golay.h radio/crc.h

@@ -1,0 +1,1031 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (Linux)
+                              4 ; This file was generated Sun Nov 24 17:43:08 2013
+                              5 ;--------------------------------------------------------
+                              6 	.module freq_hopping
+                              7 	.optsdcc -mmcs51 --model-large
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _srand
+                             13 	.globl _rand
+                             14 	.globl _NSS1
+                             15 	.globl _IRQ
+                             16 	.globl _PA_ENABLE
+                             17 	.globl _PIN_ENABLE
+                             18 	.globl _PIN_CONFIG
+                             19 	.globl _LED_GREEN
+                             20 	.globl _LED_RED
+                             21 	.globl _SPI0EN
+                             22 	.globl _TXBMT0
+                             23 	.globl _NSS0MD0
+                             24 	.globl _NSS0MD1
+                             25 	.globl _RXOVRN0
+                             26 	.globl _MODF0
+                             27 	.globl _WCOL0
+                             28 	.globl _SPIF0
+                             29 	.globl _AD0CM0
+                             30 	.globl _AD0CM1
+                             31 	.globl _AD0CM2
+                             32 	.globl _AD0WINT
+                             33 	.globl _AD0BUSY
+                             34 	.globl _AD0INT
+                             35 	.globl _BURSTEN
+                             36 	.globl _AD0EN
+                             37 	.globl _CCF0
+                             38 	.globl _CCF1
+                             39 	.globl _CCF2
+                             40 	.globl _CCF3
+                             41 	.globl _CCF4
+                             42 	.globl _CCF5
+                             43 	.globl _CR
+                             44 	.globl _CF
+                             45 	.globl _P
+                             46 	.globl _F1
+                             47 	.globl _OV
+                             48 	.globl _RS0
+                             49 	.globl _RS1
+                             50 	.globl _F0
+                             51 	.globl _AC
+                             52 	.globl _CY
+                             53 	.globl _T2XCLK
+                             54 	.globl _T2RCLK
+                             55 	.globl _TR2
+                             56 	.globl _T2SPLIT
+                             57 	.globl _TF2CEN
+                             58 	.globl _TF2LEN
+                             59 	.globl _TF2L
+                             60 	.globl _TF2H
+                             61 	.globl _SI
+                             62 	.globl _ACK
+                             63 	.globl _ARBLOST
+                             64 	.globl _ACKRQ
+                             65 	.globl _STO
+                             66 	.globl _STA
+                             67 	.globl _TXMODE
+                             68 	.globl _MASTER
+                             69 	.globl _PX0
+                             70 	.globl _PT0
+                             71 	.globl _PX1
+                             72 	.globl _PT1
+                             73 	.globl _PS0
+                             74 	.globl _PT2
+                             75 	.globl _PSPI0
+                             76 	.globl _SPI1EN
+                             77 	.globl _TXBMT1
+                             78 	.globl _NSS1MD0
+                             79 	.globl _NSS1MD1
+                             80 	.globl _RXOVRN1
+                             81 	.globl _MODF1
+                             82 	.globl _WCOL1
+                             83 	.globl _SPIF1
+                             84 	.globl _EX0
+                             85 	.globl _ET0
+                             86 	.globl _EX1
+                             87 	.globl _ET1
+                             88 	.globl _ES0
+                             89 	.globl _ET2
+                             90 	.globl _ESPI0
+                             91 	.globl _EA
+                             92 	.globl _RI0
+                             93 	.globl _TI0
+                             94 	.globl _RB80
+                             95 	.globl _TB80
+                             96 	.globl _REN0
+                             97 	.globl _MCE0
+                             98 	.globl _S0MODE
+                             99 	.globl _CRC0VAL
+                            100 	.globl _CRC0INIT
+                            101 	.globl _CRC0SEL
+                            102 	.globl _IT0
+                            103 	.globl _IE0
+                            104 	.globl _IT1
+                            105 	.globl _IE1
+                            106 	.globl _TR0
+                            107 	.globl _TF0
+                            108 	.globl _TR1
+                            109 	.globl _TF1
+                            110 	.globl _PCA0CP4
+                            111 	.globl _PCA0CP0
+                            112 	.globl _PCA0
+                            113 	.globl _PCA0CP3
+                            114 	.globl _PCA0CP2
+                            115 	.globl _PCA0CP1
+                            116 	.globl _PCA0CP5
+                            117 	.globl _TMR2
+                            118 	.globl _TMR2RL
+                            119 	.globl _ADC0LT
+                            120 	.globl _ADC0GT
+                            121 	.globl _ADC0
+                            122 	.globl _TMR3
+                            123 	.globl _TMR3RL
+                            124 	.globl _TOFF
+                            125 	.globl _DP
+                            126 	.globl _VDM0CN
+                            127 	.globl _PCA0CPH4
+                            128 	.globl _PCA0CPL4
+                            129 	.globl _PCA0CPH0
+                            130 	.globl _PCA0CPL0
+                            131 	.globl _PCA0H
+                            132 	.globl _PCA0L
+                            133 	.globl _SPI0CN
+                            134 	.globl _EIP2
+                            135 	.globl _EIP1
+                            136 	.globl _SMB0ADM
+                            137 	.globl _SMB0ADR
+                            138 	.globl _P2MDIN
+                            139 	.globl _P1MDIN
+                            140 	.globl _P0MDIN
+                            141 	.globl _B
+                            142 	.globl _RSTSRC
+                            143 	.globl _PCA0CPH3
+                            144 	.globl _PCA0CPL3
+                            145 	.globl _PCA0CPH2
+                            146 	.globl _PCA0CPL2
+                            147 	.globl _PCA0CPH1
+                            148 	.globl _PCA0CPL1
+                            149 	.globl _ADC0CN
+                            150 	.globl _EIE2
+                            151 	.globl _EIE1
+                            152 	.globl _FLWR
+                            153 	.globl _IT01CF
+                            154 	.globl _XBR2
+                            155 	.globl _XBR1
+                            156 	.globl _XBR0
+                            157 	.globl _ACC
+                            158 	.globl _PCA0PWM
+                            159 	.globl _PCA0CPM4
+                            160 	.globl _PCA0CPM3
+                            161 	.globl _PCA0CPM2
+                            162 	.globl _PCA0CPM1
+                            163 	.globl _PCA0CPM0
+                            164 	.globl _PCA0MD
+                            165 	.globl _PCA0CN
+                            166 	.globl _P0MAT
+                            167 	.globl _P2SKIP
+                            168 	.globl _P1SKIP
+                            169 	.globl _P0SKIP
+                            170 	.globl _PCA0CPH5
+                            171 	.globl _PCA0CPL5
+                            172 	.globl _REF0CN
+                            173 	.globl _PSW
+                            174 	.globl _P1MAT
+                            175 	.globl _PCA0CPM5
+                            176 	.globl _TMR2H
+                            177 	.globl _TMR2L
+                            178 	.globl _TMR2RLH
+                            179 	.globl _TMR2RLL
+                            180 	.globl _REG0CN
+                            181 	.globl _TMR2CN
+                            182 	.globl _P0MASK
+                            183 	.globl _ADC0LTH
+                            184 	.globl _ADC0LTL
+                            185 	.globl _ADC0GTH
+                            186 	.globl _ADC0GTL
+                            187 	.globl _SMB0DAT
+                            188 	.globl _SMB0CF
+                            189 	.globl _SMB0CN
+                            190 	.globl _P1MASK
+                            191 	.globl _ADC0H
+                            192 	.globl _ADC0L
+                            193 	.globl _ADC0TK
+                            194 	.globl _ADC0CF
+                            195 	.globl _ADC0MX
+                            196 	.globl _ADC0PWR
+                            197 	.globl _ADC0AC
+                            198 	.globl _IREF0CN
+                            199 	.globl _IP
+                            200 	.globl _FLKEY
+                            201 	.globl _FLSCL
+                            202 	.globl _PMU0CF
+                            203 	.globl _OSCICL
+                            204 	.globl _OSCICN
+                            205 	.globl _OSCXCN
+                            206 	.globl _SPI1CN
+                            207 	.globl _ONESHOT
+                            208 	.globl _EMI0TC
+                            209 	.globl _RTC0KEY
+                            210 	.globl _RTC0DAT
+                            211 	.globl _RTC0ADR
+                            212 	.globl _EMI0CF
+                            213 	.globl _EMI0CN
+                            214 	.globl _CLKSEL
+                            215 	.globl _IE
+                            216 	.globl _SFRPAGE
+                            217 	.globl _P2DRV
+                            218 	.globl _P2MDOUT
+                            219 	.globl _P1DRV
+                            220 	.globl _P1MDOUT
+                            221 	.globl _P0DRV
+                            222 	.globl _P0MDOUT
+                            223 	.globl _SPI0DAT
+                            224 	.globl _SPI0CKR
+                            225 	.globl _SPI0CFG
+                            226 	.globl _P2
+                            227 	.globl _CPT0MX
+                            228 	.globl _CPT1MX
+                            229 	.globl _CPT0MD
+                            230 	.globl _CPT1MD
+                            231 	.globl _CPT0CN
+                            232 	.globl _CPT1CN
+                            233 	.globl _SBUF0
+                            234 	.globl _SCON0
+                            235 	.globl _CRC0CNT
+                            236 	.globl _DC0CN
+                            237 	.globl _CRC0AUTO
+                            238 	.globl _DC0CF
+                            239 	.globl _TMR3H
+                            240 	.globl _CRC0FLIP
+                            241 	.globl _TMR3L
+                            242 	.globl _CRC0IN
+                            243 	.globl _TMR3RLH
+                            244 	.globl _CRC0CN
+                            245 	.globl _TMR3RLL
+                            246 	.globl _CRC0DAT
+                            247 	.globl _TMR3CN
+                            248 	.globl _P1
+                            249 	.globl _PSCTL
+                            250 	.globl _CKCON
+                            251 	.globl _TH1
+                            252 	.globl _TH0
+                            253 	.globl _TL1
+                            254 	.globl _TL0
+                            255 	.globl _TMOD
+                            256 	.globl _TCON
+                            257 	.globl _PCON
+                            258 	.globl _TOFFH
+                            259 	.globl _SPI1DAT
+                            260 	.globl _TOFFL
+                            261 	.globl _SPI1CKR
+                            262 	.globl _SPI1CFG
+                            263 	.globl _DPH
+                            264 	.globl _DPL
+                            265 	.globl _SP
+                            266 	.globl _P0
+                            267 	.globl _num_fh_channels
+                            268 	.globl _fhop_set_locked_PARM_1
+                            269 	.globl _fhop_init
+                            270 	.globl _fhop_transmit_channel
+                            271 	.globl _fhop_receive_channel
+                            272 	.globl _fhop_window_change
+                            273 	.globl _fhop_set_locked
+                            274 ;--------------------------------------------------------
+                            275 ; special function registers
+                            276 ;--------------------------------------------------------
+                            277 	.area RSEG    (ABS,DATA)
+   0000                     278 	.org 0x0000
+                     0080   279 _P0	=	0x0080
+                     0081   280 _SP	=	0x0081
+                     0082   281 _DPL	=	0x0082
+                     0083   282 _DPH	=	0x0083
+                     0084   283 _SPI1CFG	=	0x0084
+                     0085   284 _SPI1CKR	=	0x0085
+                     0085   285 _TOFFL	=	0x0085
+                     0086   286 _SPI1DAT	=	0x0086
+                     0086   287 _TOFFH	=	0x0086
+                     0087   288 _PCON	=	0x0087
+                     0088   289 _TCON	=	0x0088
+                     0089   290 _TMOD	=	0x0089
+                     008A   291 _TL0	=	0x008a
+                     008B   292 _TL1	=	0x008b
+                     008C   293 _TH0	=	0x008c
+                     008D   294 _TH1	=	0x008d
+                     008E   295 _CKCON	=	0x008e
+                     008F   296 _PSCTL	=	0x008f
+                     0090   297 _P1	=	0x0090
+                     0091   298 _TMR3CN	=	0x0091
+                     0091   299 _CRC0DAT	=	0x0091
+                     0092   300 _TMR3RLL	=	0x0092
+                     0092   301 _CRC0CN	=	0x0092
+                     0093   302 _TMR3RLH	=	0x0093
+                     0093   303 _CRC0IN	=	0x0093
+                     0094   304 _TMR3L	=	0x0094
+                     0095   305 _CRC0FLIP	=	0x0095
+                     0095   306 _TMR3H	=	0x0095
+                     0096   307 _DC0CF	=	0x0096
+                     0096   308 _CRC0AUTO	=	0x0096
+                     0097   309 _DC0CN	=	0x0097
+                     0097   310 _CRC0CNT	=	0x0097
+                     0098   311 _SCON0	=	0x0098
+                     0099   312 _SBUF0	=	0x0099
+                     009A   313 _CPT1CN	=	0x009a
+                     009B   314 _CPT0CN	=	0x009b
+                     009C   315 _CPT1MD	=	0x009c
+                     009D   316 _CPT0MD	=	0x009d
+                     009E   317 _CPT1MX	=	0x009e
+                     009F   318 _CPT0MX	=	0x009f
+                     00A0   319 _P2	=	0x00a0
+                     00A1   320 _SPI0CFG	=	0x00a1
+                     00A2   321 _SPI0CKR	=	0x00a2
+                     00A3   322 _SPI0DAT	=	0x00a3
+                     00A4   323 _P0MDOUT	=	0x00a4
+                     00A4   324 _P0DRV	=	0x00a4
+                     00A5   325 _P1MDOUT	=	0x00a5
+                     00A5   326 _P1DRV	=	0x00a5
+                     00A6   327 _P2MDOUT	=	0x00a6
+                     00A6   328 _P2DRV	=	0x00a6
+                     00A7   329 _SFRPAGE	=	0x00a7
+                     00A8   330 _IE	=	0x00a8
+                     00A9   331 _CLKSEL	=	0x00a9
+                     00AA   332 _EMI0CN	=	0x00aa
+                     00AB   333 _EMI0CF	=	0x00ab
+                     00AC   334 _RTC0ADR	=	0x00ac
+                     00AD   335 _RTC0DAT	=	0x00ad
+                     00AE   336 _RTC0KEY	=	0x00ae
+                     00AF   337 _EMI0TC	=	0x00af
+                     00AF   338 _ONESHOT	=	0x00af
+                     00B0   339 _SPI1CN	=	0x00b0
+                     00B1   340 _OSCXCN	=	0x00b1
+                     00B2   341 _OSCICN	=	0x00b2
+                     00B3   342 _OSCICL	=	0x00b3
+                     00B5   343 _PMU0CF	=	0x00b5
+                     00B6   344 _FLSCL	=	0x00b6
+                     00B7   345 _FLKEY	=	0x00b7
+                     00B8   346 _IP	=	0x00b8
+                     00B9   347 _IREF0CN	=	0x00b9
+                     00BA   348 _ADC0AC	=	0x00ba
+                     00BA   349 _ADC0PWR	=	0x00ba
+                     00BB   350 _ADC0MX	=	0x00bb
+                     00BC   351 _ADC0CF	=	0x00bc
+                     00BD   352 _ADC0TK	=	0x00bd
+                     00BD   353 _ADC0L	=	0x00bd
+                     00BE   354 _ADC0H	=	0x00be
+                     00BF   355 _P1MASK	=	0x00bf
+                     00C0   356 _SMB0CN	=	0x00c0
+                     00C1   357 _SMB0CF	=	0x00c1
+                     00C2   358 _SMB0DAT	=	0x00c2
+                     00C3   359 _ADC0GTL	=	0x00c3
+                     00C4   360 _ADC0GTH	=	0x00c4
+                     00C5   361 _ADC0LTL	=	0x00c5
+                     00C6   362 _ADC0LTH	=	0x00c6
+                     00C7   363 _P0MASK	=	0x00c7
+                     00C8   364 _TMR2CN	=	0x00c8
+                     00C9   365 _REG0CN	=	0x00c9
+                     00CA   366 _TMR2RLL	=	0x00ca
+                     00CB   367 _TMR2RLH	=	0x00cb
+                     00CC   368 _TMR2L	=	0x00cc
+                     00CD   369 _TMR2H	=	0x00cd
+                     00CE   370 _PCA0CPM5	=	0x00ce
+                     00CF   371 _P1MAT	=	0x00cf
+                     00D0   372 _PSW	=	0x00d0
+                     00D1   373 _REF0CN	=	0x00d1
+                     00D2   374 _PCA0CPL5	=	0x00d2
+                     00D3   375 _PCA0CPH5	=	0x00d3
+                     00D4   376 _P0SKIP	=	0x00d4
+                     00D5   377 _P1SKIP	=	0x00d5
+                     00D6   378 _P2SKIP	=	0x00d6
+                     00D7   379 _P0MAT	=	0x00d7
+                     00D8   380 _PCA0CN	=	0x00d8
+                     00D9   381 _PCA0MD	=	0x00d9
+                     00DA   382 _PCA0CPM0	=	0x00da
+                     00DB   383 _PCA0CPM1	=	0x00db
+                     00DC   384 _PCA0CPM2	=	0x00dc
+                     00DD   385 _PCA0CPM3	=	0x00dd
+                     00DE   386 _PCA0CPM4	=	0x00de
+                     00DF   387 _PCA0PWM	=	0x00df
+                     00E0   388 _ACC	=	0x00e0
+                     00E1   389 _XBR0	=	0x00e1
+                     00E2   390 _XBR1	=	0x00e2
+                     00E3   391 _XBR2	=	0x00e3
+                     00E4   392 _IT01CF	=	0x00e4
+                     00E5   393 _FLWR	=	0x00e5
+                     00E6   394 _EIE1	=	0x00e6
+                     00E7   395 _EIE2	=	0x00e7
+                     00E8   396 _ADC0CN	=	0x00e8
+                     00E9   397 _PCA0CPL1	=	0x00e9
+                     00EA   398 _PCA0CPH1	=	0x00ea
+                     00EB   399 _PCA0CPL2	=	0x00eb
+                     00EC   400 _PCA0CPH2	=	0x00ec
+                     00ED   401 _PCA0CPL3	=	0x00ed
+                     00EE   402 _PCA0CPH3	=	0x00ee
+                     00EF   403 _RSTSRC	=	0x00ef
+                     00F0   404 _B	=	0x00f0
+                     00F1   405 _P0MDIN	=	0x00f1
+                     00F2   406 _P1MDIN	=	0x00f2
+                     00F3   407 _P2MDIN	=	0x00f3
+                     00F4   408 _SMB0ADR	=	0x00f4
+                     00F5   409 _SMB0ADM	=	0x00f5
+                     00F6   410 _EIP1	=	0x00f6
+                     00F7   411 _EIP2	=	0x00f7
+                     00F8   412 _SPI0CN	=	0x00f8
+                     00F9   413 _PCA0L	=	0x00f9
+                     00FA   414 _PCA0H	=	0x00fa
+                     00FB   415 _PCA0CPL0	=	0x00fb
+                     00FC   416 _PCA0CPH0	=	0x00fc
+                     00FD   417 _PCA0CPL4	=	0x00fd
+                     00FE   418 _PCA0CPH4	=	0x00fe
+                     00FF   419 _VDM0CN	=	0x00ff
+                     8382   420 _DP	=	0x8382
+                     8685   421 _TOFF	=	0x8685
+                     9392   422 _TMR3RL	=	0x9392
+                     9594   423 _TMR3	=	0x9594
+                     BEBD   424 _ADC0	=	0xbebd
+                     C4C3   425 _ADC0GT	=	0xc4c3
+                     C6C5   426 _ADC0LT	=	0xc6c5
+                     CBCA   427 _TMR2RL	=	0xcbca
+                     CDCC   428 _TMR2	=	0xcdcc
+                     D3D2   429 _PCA0CP5	=	0xd3d2
+                     EAE9   430 _PCA0CP1	=	0xeae9
+                     ECEB   431 _PCA0CP2	=	0xeceb
+                     EEED   432 _PCA0CP3	=	0xeeed
+                     FAF9   433 _PCA0	=	0xfaf9
+                     FCFB   434 _PCA0CP0	=	0xfcfb
+                     FEFD   435 _PCA0CP4	=	0xfefd
+                            436 ;--------------------------------------------------------
+                            437 ; special function bits
+                            438 ;--------------------------------------------------------
+                            439 	.area RSEG    (ABS,DATA)
+   0000                     440 	.org 0x0000
+                     008F   441 _TF1	=	0x008f
+                     008E   442 _TR1	=	0x008e
+                     008D   443 _TF0	=	0x008d
+                     008C   444 _TR0	=	0x008c
+                     008B   445 _IE1	=	0x008b
+                     008A   446 _IT1	=	0x008a
+                     0089   447 _IE0	=	0x0089
+                     0088   448 _IT0	=	0x0088
+                     0096   449 _CRC0SEL	=	0x0096
+                     0095   450 _CRC0INIT	=	0x0095
+                     0094   451 _CRC0VAL	=	0x0094
+                     009F   452 _S0MODE	=	0x009f
+                     009D   453 _MCE0	=	0x009d
+                     009C   454 _REN0	=	0x009c
+                     009B   455 _TB80	=	0x009b
+                     009A   456 _RB80	=	0x009a
+                     0099   457 _TI0	=	0x0099
+                     0098   458 _RI0	=	0x0098
+                     00AF   459 _EA	=	0x00af
+                     00AE   460 _ESPI0	=	0x00ae
+                     00AD   461 _ET2	=	0x00ad
+                     00AC   462 _ES0	=	0x00ac
+                     00AB   463 _ET1	=	0x00ab
+                     00AA   464 _EX1	=	0x00aa
+                     00A9   465 _ET0	=	0x00a9
+                     00A8   466 _EX0	=	0x00a8
+                     00B7   467 _SPIF1	=	0x00b7
+                     00B6   468 _WCOL1	=	0x00b6
+                     00B5   469 _MODF1	=	0x00b5
+                     00B4   470 _RXOVRN1	=	0x00b4
+                     00B3   471 _NSS1MD1	=	0x00b3
+                     00B2   472 _NSS1MD0	=	0x00b2
+                     00B1   473 _TXBMT1	=	0x00b1
+                     00B0   474 _SPI1EN	=	0x00b0
+                     00BE   475 _PSPI0	=	0x00be
+                     00BD   476 _PT2	=	0x00bd
+                     00BC   477 _PS0	=	0x00bc
+                     00BB   478 _PT1	=	0x00bb
+                     00BA   479 _PX1	=	0x00ba
+                     00B9   480 _PT0	=	0x00b9
+                     00B8   481 _PX0	=	0x00b8
+                     00C7   482 _MASTER	=	0x00c7
+                     00C6   483 _TXMODE	=	0x00c6
+                     00C5   484 _STA	=	0x00c5
+                     00C4   485 _STO	=	0x00c4
+                     00C3   486 _ACKRQ	=	0x00c3
+                     00C2   487 _ARBLOST	=	0x00c2
+                     00C1   488 _ACK	=	0x00c1
+                     00C0   489 _SI	=	0x00c0
+                     00CF   490 _TF2H	=	0x00cf
+                     00CE   491 _TF2L	=	0x00ce
+                     00CD   492 _TF2LEN	=	0x00cd
+                     00CC   493 _TF2CEN	=	0x00cc
+                     00CB   494 _T2SPLIT	=	0x00cb
+                     00CA   495 _TR2	=	0x00ca
+                     00C9   496 _T2RCLK	=	0x00c9
+                     00C8   497 _T2XCLK	=	0x00c8
+                     00D7   498 _CY	=	0x00d7
+                     00D6   499 _AC	=	0x00d6
+                     00D5   500 _F0	=	0x00d5
+                     00D4   501 _RS1	=	0x00d4
+                     00D3   502 _RS0	=	0x00d3
+                     00D2   503 _OV	=	0x00d2
+                     00D1   504 _F1	=	0x00d1
+                     00D0   505 _P	=	0x00d0
+                     00DF   506 _CF	=	0x00df
+                     00DE   507 _CR	=	0x00de
+                     00DD   508 _CCF5	=	0x00dd
+                     00DC   509 _CCF4	=	0x00dc
+                     00DB   510 _CCF3	=	0x00db
+                     00DA   511 _CCF2	=	0x00da
+                     00D9   512 _CCF1	=	0x00d9
+                     00D8   513 _CCF0	=	0x00d8
+                     00EF   514 _AD0EN	=	0x00ef
+                     00EE   515 _BURSTEN	=	0x00ee
+                     00ED   516 _AD0INT	=	0x00ed
+                     00EC   517 _AD0BUSY	=	0x00ec
+                     00EB   518 _AD0WINT	=	0x00eb
+                     00EA   519 _AD0CM2	=	0x00ea
+                     00E9   520 _AD0CM1	=	0x00e9
+                     00E8   521 _AD0CM0	=	0x00e8
+                     00FF   522 _SPIF0	=	0x00ff
+                     00FE   523 _WCOL0	=	0x00fe
+                     00FD   524 _MODF0	=	0x00fd
+                     00FC   525 _RXOVRN0	=	0x00fc
+                     00FB   526 _NSS0MD1	=	0x00fb
+                     00FA   527 _NSS0MD0	=	0x00fa
+                     00F9   528 _TXBMT0	=	0x00f9
+                     00F8   529 _SPI0EN	=	0x00f8
+                     0096   530 _LED_RED	=	0x0096
+                     0095   531 _LED_GREEN	=	0x0095
+                     0082   532 _PIN_CONFIG	=	0x0082
+                     0083   533 _PIN_ENABLE	=	0x0083
+                     00A5   534 _PA_ENABLE	=	0x00a5
+                     0087   535 _IRQ	=	0x0087
+                     0094   536 _NSS1	=	0x0094
+                            537 ;--------------------------------------------------------
+                            538 ; overlayable register banks
+                            539 ;--------------------------------------------------------
+                            540 	.area REG_BANK_0	(REL,OVR,DATA)
+   0000                     541 	.ds 8
+                            542 ;--------------------------------------------------------
+                            543 ; internal ram data
+                            544 ;--------------------------------------------------------
+                            545 	.area DSEG    (DATA)
+   000E                     546 _shuffle_sloc0_1_0:
+   000E                     547 	.ds 1
+   000F                     548 _fhop_init_sloc0_1_0:
+   000F                     549 	.ds 1
+                            550 ;--------------------------------------------------------
+                            551 ; overlayable items in internal ram 
+                            552 ;--------------------------------------------------------
+                            553 ;--------------------------------------------------------
+                            554 ; indirectly addressable internal ram data
+                            555 ;--------------------------------------------------------
+                            556 	.area ISEG    (DATA)
+                            557 ;--------------------------------------------------------
+                            558 ; absolute internal ram data
+                            559 ;--------------------------------------------------------
+                            560 	.area IABS    (ABS,DATA)
+                            561 	.area IABS    (ABS,DATA)
+                            562 ;--------------------------------------------------------
+                            563 ; bit data
+                            564 ;--------------------------------------------------------
+                            565 	.area BSEG    (BIT)
+   0003                     566 _have_radio_lock:
+   0003                     567 	.ds 1
+   0004                     568 _fhop_set_locked_PARM_1:
+   0004                     569 	.ds 1
+                            570 ;--------------------------------------------------------
+                            571 ; paged external ram data
+                            572 ;--------------------------------------------------------
+                            573 	.area PSEG    (PAG,XDATA)
+   001C                     574 _num_fh_channels::
+   001C                     575 	.ds 1
+   001D                     576 _transmit_channel:
+   001D                     577 	.ds 1
+   001E                     578 _receive_channel:
+   001E                     579 	.ds 1
+                            580 ;--------------------------------------------------------
+                            581 ; external ram data
+                            582 ;--------------------------------------------------------
+                            583 	.area XSEG    (XDATA)
+   00F1                     584 _channel_map:
+   00F1                     585 	.ds 50
+   0123                     586 _shuffle_PARM_2:
+   0123                     587 	.ds 1
+   0124                     588 _shuffle_array_1_123:
+   0124                     589 	.ds 2
+   0126                     590 _fhop_init_netid_1_126:
+   0126                     591 	.ds 2
+   0128                     592 _fhop_init_array_3_130:
+   0128                     593 	.ds 2
+                            594 ;--------------------------------------------------------
+                            595 ; absolute external ram data
+                            596 ;--------------------------------------------------------
+                            597 	.area XABS    (ABS,XDATA)
+                            598 ;--------------------------------------------------------
+                            599 ; external initialized ram data
+                            600 ;--------------------------------------------------------
+                            601 	.area XISEG   (XDATA)
+                            602 	.area HOME    (CODE)
+                            603 	.area GSINIT0 (CODE)
+                            604 	.area GSINIT1 (CODE)
+                            605 	.area GSINIT2 (CODE)
+                            606 	.area GSINIT3 (CODE)
+                            607 	.area GSINIT4 (CODE)
+                            608 	.area GSINIT5 (CODE)
+                            609 	.area GSINIT  (CODE)
+                            610 	.area GSFINAL (CODE)
+                            611 	.area CSEG    (CODE)
+                            612 ;--------------------------------------------------------
+                            613 ; global & static initialisations
+                            614 ;--------------------------------------------------------
+                            615 	.area HOME    (CODE)
+                            616 	.area GSINIT  (CODE)
+                            617 	.area GSFINAL (CODE)
+                            618 	.area GSINIT  (CODE)
+                            619 ;--------------------------------------------------------
+                            620 ; Home
+                            621 ;--------------------------------------------------------
+                            622 	.area HOME    (CODE)
+                            623 	.area HOME    (CODE)
+                            624 ;--------------------------------------------------------
+                            625 ; code
+                            626 ;--------------------------------------------------------
+                            627 	.area CSEG    (CODE)
+                            628 ;------------------------------------------------------------
+                            629 ;Allocation info for local variables in function 'shuffle'
+                            630 ;------------------------------------------------------------
+                            631 ;sloc0                     Allocated with name '_shuffle_sloc0_1_0'
+                            632 ;n                         Allocated with name '_shuffle_PARM_2'
+                            633 ;array                     Allocated with name '_shuffle_array_1_123'
+                            634 ;i                         Allocated with name '_shuffle_i_1_124'
+                            635 ;j                         Allocated with name '_shuffle_j_2_125'
+                            636 ;t                         Allocated with name '_shuffle_t_2_125'
+                            637 ;------------------------------------------------------------
+                            638 ;	radio/freq_hopping.c:63: static inline void shuffle(__xdata uint8_t *array, uint8_t n)
+                            639 ;	-----------------------------------------
+                            640 ;	 function shuffle
+                            641 ;	-----------------------------------------
+   0BFB                     642 _shuffle:
+                     0007   643 	ar7 = 0x07
+                     0006   644 	ar6 = 0x06
+                     0005   645 	ar5 = 0x05
+                     0004   646 	ar4 = 0x04
+                     0003   647 	ar3 = 0x03
+                     0002   648 	ar2 = 0x02
+                     0001   649 	ar1 = 0x01
+                     0000   650 	ar0 = 0x00
+   0BFB AF 83         [24]  651 	mov	r7,dph
+   0BFD E5 82         [12]  652 	mov	a,dpl
+   0BFF 90 01 24      [24]  653 	mov	dptr,#_shuffle_array_1_123
+   0C02 F0            [24]  654 	movx	@dptr,a
+   0C03 EF            [12]  655 	mov	a,r7
+   0C04 A3            [24]  656 	inc	dptr
+   0C05 F0            [24]  657 	movx	@dptr,a
+                            658 ;	radio/freq_hopping.c:66: for (i = 0; i < n - 1; i++) {
+   0C06 90 01 24      [24]  659 	mov	dptr,#_shuffle_array_1_123
+   0C09 E0            [24]  660 	movx	a,@dptr
+   0C0A FE            [12]  661 	mov	r6,a
+   0C0B A3            [24]  662 	inc	dptr
+   0C0C E0            [24]  663 	movx	a,@dptr
+   0C0D FF            [12]  664 	mov	r7,a
+   0C0E 90 01 23      [24]  665 	mov	dptr,#_shuffle_PARM_2
+   0C11 E0            [24]  666 	movx	a,@dptr
+   0C12 FD            [12]  667 	mov	r5,a
+   0C13 7C 00         [12]  668 	mov	r4,#0x00
+   0C15                     669 00103$:
+   0C15 8D 02         [24]  670 	mov	ar2,r5
+   0C17 7B 00         [12]  671 	mov	r3,#0x00
+   0C19 1A            [12]  672 	dec	r2
+   0C1A BA FF 01      [24]  673 	cjne	r2,#0xFF,00114$
+   0C1D 1B            [12]  674 	dec	r3
+   0C1E                     675 00114$:
+   0C1E 8C 00         [24]  676 	mov	ar0,r4
+   0C20 79 00         [12]  677 	mov	r1,#0x00
+   0C22 C3            [12]  678 	clr	c
+   0C23 E8            [12]  679 	mov	a,r0
+   0C24 9A            [12]  680 	subb	a,r2
+   0C25 E9            [12]  681 	mov	a,r1
+   0C26 64 80         [12]  682 	xrl	a,#0x80
+   0C28 8B F0         [24]  683 	mov	b,r3
+   0C2A 63 F0 80      [24]  684 	xrl	b,#0x80
+   0C2D 95 F0         [12]  685 	subb	a,b
+   0C2F 50 46         [24]  686 	jnc	00105$
+                            687 ;	radio/freq_hopping.c:67: uint8_t j = ((uint8_t)rand()) % n;
+   0C31 C0 07         [24]  688 	push	ar7
+   0C33 C0 06         [24]  689 	push	ar6
+   0C35 C0 05         [24]  690 	push	ar5
+   0C37 C0 04         [24]  691 	push	ar4
+   0C39 12 5D E7      [24]  692 	lcall	_rand
+   0C3C AA 82         [24]  693 	mov	r2,dpl
+   0C3E D0 04         [24]  694 	pop	ar4
+   0C40 D0 05         [24]  695 	pop	ar5
+   0C42 D0 06         [24]  696 	pop	ar6
+   0C44 D0 07         [24]  697 	pop	ar7
+   0C46 8D F0         [24]  698 	mov	b,r5
+   0C48 EA            [12]  699 	mov	a,r2
+   0C49 84            [48]  700 	div	ab
+                            701 ;	radio/freq_hopping.c:68: uint8_t t = array[j];
+   0C4A E5 F0         [12]  702 	mov	a,b
+   0C4C 2E            [12]  703 	add	a,r6
+   0C4D FA            [12]  704 	mov	r2,a
+   0C4E E4            [12]  705 	clr	a
+   0C4F 3F            [12]  706 	addc	a,r7
+   0C50 FB            [12]  707 	mov	r3,a
+   0C51 8A 82         [24]  708 	mov	dpl,r2
+   0C53 8B 83         [24]  709 	mov	dph,r3
+   0C55 E0            [24]  710 	movx	a,@dptr
+   0C56 F5 0E         [12]  711 	mov	_shuffle_sloc0_1_0,a
+                            712 ;	radio/freq_hopping.c:69: array[j] = array[i];
+   0C58 C0 05         [24]  713 	push	ar5
+   0C5A EC            [12]  714 	mov	a,r4
+   0C5B 2E            [12]  715 	add	a,r6
+   0C5C F8            [12]  716 	mov	r0,a
+   0C5D E4            [12]  717 	clr	a
+   0C5E 3F            [12]  718 	addc	a,r7
+   0C5F FD            [12]  719 	mov	r5,a
+   0C60 88 82         [24]  720 	mov	dpl,r0
+   0C62 8D 83         [24]  721 	mov	dph,r5
+   0C64 E0            [24]  722 	movx	a,@dptr
+   0C65 F9            [12]  723 	mov	r1,a
+   0C66 8A 82         [24]  724 	mov	dpl,r2
+   0C68 8B 83         [24]  725 	mov	dph,r3
+   0C6A F0            [24]  726 	movx	@dptr,a
+                            727 ;	radio/freq_hopping.c:70: array[i] = t;
+   0C6B 88 82         [24]  728 	mov	dpl,r0
+   0C6D 8D 83         [24]  729 	mov	dph,r5
+   0C6F E5 0E         [12]  730 	mov	a,_shuffle_sloc0_1_0
+   0C71 F0            [24]  731 	movx	@dptr,a
+                            732 ;	radio/freq_hopping.c:66: for (i = 0; i < n - 1; i++) {
+   0C72 0C            [12]  733 	inc	r4
+   0C73 D0 05         [24]  734 	pop	ar5
+   0C75 80 9E         [24]  735 	sjmp	00103$
+   0C77                     736 00105$:
+   0C77 22            [24]  737 	ret
+                            738 ;------------------------------------------------------------
+                            739 ;Allocation info for local variables in function 'fhop_init'
+                            740 ;------------------------------------------------------------
+                            741 ;sloc0                     Allocated with name '_fhop_init_sloc0_1_0'
+                            742 ;netid                     Allocated with name '_fhop_init_netid_1_126'
+                            743 ;i                         Allocated with name '_fhop_init_i_1_127'
+                            744 ;__00020001                Allocated with name '_fhop_init___00020001_3_130'
+                            745 ;__00020002                Allocated with name '_fhop_init___00020002_3_130'
+                            746 ;array                     Allocated with name '_fhop_init_array_3_130'
+                            747 ;n                         Allocated with name '_fhop_init_n_3_130'
+                            748 ;i                         Allocated with name '_fhop_init_i_4_131'
+                            749 ;j                         Allocated with name '_fhop_init_j_5_132'
+                            750 ;t                         Allocated with name '_fhop_init_t_5_132'
+                            751 ;------------------------------------------------------------
+                            752 ;	radio/freq_hopping.c:76: fhop_init(uint16_t netid)
+                            753 ;	-----------------------------------------
+                            754 ;	 function fhop_init
+                            755 ;	-----------------------------------------
+   0C78                     756 _fhop_init:
+   0C78 AF 83         [24]  757 	mov	r7,dph
+   0C7A E5 82         [12]  758 	mov	a,dpl
+   0C7C 90 01 26      [24]  759 	mov	dptr,#_fhop_init_netid_1_126
+   0C7F F0            [24]  760 	movx	@dptr,a
+   0C80 EF            [12]  761 	mov	a,r7
+   0C81 A3            [24]  762 	inc	dptr
+   0C82 F0            [24]  763 	movx	@dptr,a
+                            764 ;	radio/freq_hopping.c:81: for (i = 0; i < num_fh_channels; i++) {
+   0C83 7F 00         [12]  765 	mov	r7,#0x00
+   0C85                     766 00105$:
+   0C85 78 1C         [12]  767 	mov	r0,#_num_fh_channels
+   0C87 C3            [12]  768 	clr	c
+   0C88 E2            [24]  769 	movx	a,@r0
+   0C89 F5 F0         [12]  770 	mov	b,a
+   0C8B EF            [12]  771 	mov	a,r7
+   0C8C 95 F0         [12]  772 	subb	a,b
+   0C8E 50 0F         [24]  773 	jnc	00101$
+                            774 ;	radio/freq_hopping.c:82: channel_map[i] = i;
+   0C90 EF            [12]  775 	mov	a,r7
+   0C91 24 F1         [12]  776 	add	a,#_channel_map
+   0C93 F5 82         [12]  777 	mov	dpl,a
+   0C95 E4            [12]  778 	clr	a
+   0C96 34 00         [12]  779 	addc	a,#(_channel_map >> 8)
+   0C98 F5 83         [12]  780 	mov	dph,a
+   0C9A EF            [12]  781 	mov	a,r7
+   0C9B F0            [24]  782 	movx	@dptr,a
+                            783 ;	radio/freq_hopping.c:81: for (i = 0; i < num_fh_channels; i++) {
+   0C9C 0F            [12]  784 	inc	r7
+   0C9D 80 E6         [24]  785 	sjmp	00105$
+   0C9F                     786 00101$:
+                            787 ;	radio/freq_hopping.c:84: srand(netid);
+   0C9F 90 01 26      [24]  788 	mov	dptr,#_fhop_init_netid_1_126
+   0CA2 E0            [24]  789 	movx	a,@dptr
+   0CA3 FE            [12]  790 	mov	r6,a
+   0CA4 A3            [24]  791 	inc	dptr
+   0CA5 E0            [24]  792 	movx	a,@dptr
+   0CA6 FF            [12]  793 	mov	r7,a
+   0CA7 8E 82         [24]  794 	mov	dpl,r6
+   0CA9 8F 83         [24]  795 	mov	dph,r7
+   0CAB 12 5E 41      [24]  796 	lcall	_srand
+                            797 ;	radio/freq_hopping.c:85: shuffle(channel_map, num_fh_channels);
+   0CAE 78 1C         [12]  798 	mov	r0,#_num_fh_channels
+   0CB0 E2            [24]  799 	movx	a,@r0
+   0CB1 FF            [12]  800 	mov	r7,a
+                            801 ;	radio/freq_hopping.c:66: for (i = 0; i < n - 1; i++) {
+   0CB2 7E 00         [12]  802 	mov	r6,#0x00
+   0CB4                     803 00108$:
+   0CB4 8F 04         [24]  804 	mov	ar4,r7
+   0CB6 7D 00         [12]  805 	mov	r5,#0x00
+   0CB8 1C            [12]  806 	dec	r4
+   0CB9 BC FF 01      [24]  807 	cjne	r4,#0xFF,00127$
+   0CBC 1D            [12]  808 	dec	r5
+   0CBD                     809 00127$:
+   0CBD 8E 02         [24]  810 	mov	ar2,r6
+   0CBF 7B 00         [12]  811 	mov	r3,#0x00
+   0CC1 C3            [12]  812 	clr	c
+   0CC2 EA            [12]  813 	mov	a,r2
+   0CC3 9C            [12]  814 	subb	a,r4
+   0CC4 EB            [12]  815 	mov	a,r3
+   0CC5 64 80         [12]  816 	xrl	a,#0x80
+   0CC7 8D F0         [24]  817 	mov	b,r5
+   0CC9 63 F0 80      [24]  818 	xrl	b,#0x80
+   0CCC 95 F0         [12]  819 	subb	a,b
+   0CCE 50 42         [24]  820 	jnc	00110$
+                            821 ;	radio/freq_hopping.c:67: uint8_t j = ((uint8_t)rand()) % n;
+   0CD0 C0 07         [24]  822 	push	ar7
+   0CD2 C0 06         [24]  823 	push	ar6
+   0CD4 12 5D E7      [24]  824 	lcall	_rand
+   0CD7 AC 82         [24]  825 	mov	r4,dpl
+   0CD9 D0 06         [24]  826 	pop	ar6
+   0CDB D0 07         [24]  827 	pop	ar7
+   0CDD 8F F0         [24]  828 	mov	b,r7
+   0CDF EC            [12]  829 	mov	a,r4
+   0CE0 84            [48]  830 	div	ab
+                            831 ;	radio/freq_hopping.c:68: uint8_t t = array[j];
+   0CE1 E5 F0         [12]  832 	mov	a,b
+   0CE3 24 F1         [12]  833 	add	a,#_channel_map
+   0CE5 FC            [12]  834 	mov	r4,a
+   0CE6 E4            [12]  835 	clr	a
+   0CE7 34 00         [12]  836 	addc	a,#(_channel_map >> 8)
+   0CE9 FD            [12]  837 	mov	r5,a
+   0CEA 8C 82         [24]  838 	mov	dpl,r4
+   0CEC 8D 83         [24]  839 	mov	dph,r5
+   0CEE E0            [24]  840 	movx	a,@dptr
+   0CEF F5 0F         [12]  841 	mov	_fhop_init_sloc0_1_0,a
+                            842 ;	radio/freq_hopping.c:69: array[j] = array[i];
+   0CF1 C0 07         [24]  843 	push	ar7
+   0CF3 EE            [12]  844 	mov	a,r6
+   0CF4 24 F1         [12]  845 	add	a,#_channel_map
+   0CF6 FA            [12]  846 	mov	r2,a
+   0CF7 E4            [12]  847 	clr	a
+   0CF8 34 00         [12]  848 	addc	a,#(_channel_map >> 8)
+   0CFA FF            [12]  849 	mov	r7,a
+   0CFB 8A 82         [24]  850 	mov	dpl,r2
+   0CFD 8F 83         [24]  851 	mov	dph,r7
+   0CFF E0            [24]  852 	movx	a,@dptr
+   0D00 FB            [12]  853 	mov	r3,a
+   0D01 8C 82         [24]  854 	mov	dpl,r4
+   0D03 8D 83         [24]  855 	mov	dph,r5
+   0D05 F0            [24]  856 	movx	@dptr,a
+                            857 ;	radio/freq_hopping.c:70: array[i] = t;
+   0D06 8A 82         [24]  858 	mov	dpl,r2
+   0D08 8F 83         [24]  859 	mov	dph,r7
+   0D0A E5 0F         [12]  860 	mov	a,_fhop_init_sloc0_1_0
+   0D0C F0            [24]  861 	movx	@dptr,a
+                            862 ;	radio/freq_hopping.c:66: for (i = 0; i < n - 1; i++) {
+   0D0D 0E            [12]  863 	inc	r6
+   0D0E D0 07         [24]  864 	pop	ar7
+                            865 ;	radio/freq_hopping.c:85: shuffle(channel_map, num_fh_channels);
+   0D10 80 A2         [24]  866 	sjmp	00108$
+   0D12                     867 00110$:
+   0D12 22            [24]  868 	ret
+                            869 ;------------------------------------------------------------
+                            870 ;Allocation info for local variables in function 'fhop_transmit_channel'
+                            871 ;------------------------------------------------------------
+                            872 ;	radio/freq_hopping.c:90: fhop_transmit_channel(void)
+                            873 ;	-----------------------------------------
+                            874 ;	 function fhop_transmit_channel
+                            875 ;	-----------------------------------------
+   0D13                     876 _fhop_transmit_channel:
+                            877 ;	radio/freq_hopping.c:92: return channel_map[transmit_channel];
+   0D13 78 1D         [12]  878 	mov	r0,#_transmit_channel
+   0D15 E2            [24]  879 	movx	a,@r0
+   0D16 24 F1         [12]  880 	add	a,#_channel_map
+   0D18 F5 82         [12]  881 	mov	dpl,a
+   0D1A E4            [12]  882 	clr	a
+   0D1B 34 00         [12]  883 	addc	a,#(_channel_map >> 8)
+   0D1D F5 83         [12]  884 	mov	dph,a
+   0D1F E0            [24]  885 	movx	a,@dptr
+   0D20 F5 82         [12]  886 	mov	dpl,a
+   0D22 22            [24]  887 	ret
+                            888 ;------------------------------------------------------------
+                            889 ;Allocation info for local variables in function 'fhop_receive_channel'
+                            890 ;------------------------------------------------------------
+                            891 ;	radio/freq_hopping.c:97: fhop_receive_channel(void)
+                            892 ;	-----------------------------------------
+                            893 ;	 function fhop_receive_channel
+                            894 ;	-----------------------------------------
+   0D23                     895 _fhop_receive_channel:
+                            896 ;	radio/freq_hopping.c:99: return channel_map[receive_channel];
+   0D23 78 1E         [12]  897 	mov	r0,#_receive_channel
+   0D25 E2            [24]  898 	movx	a,@r0
+   0D26 24 F1         [12]  899 	add	a,#_channel_map
+   0D28 F5 82         [12]  900 	mov	dpl,a
+   0D2A E4            [12]  901 	clr	a
+   0D2B 34 00         [12]  902 	addc	a,#(_channel_map >> 8)
+   0D2D F5 83         [12]  903 	mov	dph,a
+   0D2F E0            [24]  904 	movx	a,@dptr
+   0D30 F5 82         [12]  905 	mov	dpl,a
+   0D32 22            [24]  906 	ret
+                            907 ;------------------------------------------------------------
+                            908 ;Allocation info for local variables in function 'fhop_window_change'
+                            909 ;------------------------------------------------------------
+                            910 ;	radio/freq_hopping.c:104: fhop_window_change(void)
+                            911 ;	-----------------------------------------
+                            912 ;	 function fhop_window_change
+                            913 ;	-----------------------------------------
+   0D33                     914 _fhop_window_change:
+                            915 ;	radio/freq_hopping.c:106: transmit_channel = (transmit_channel + 1) % num_fh_channels;
+   0D33 78 1D         [12]  916 	mov	r0,#_transmit_channel
+   0D35 E2            [24]  917 	movx	a,@r0
+   0D36 FE            [12]  918 	mov	r6,a
+   0D37 7F 00         [12]  919 	mov	r7,#0x00
+   0D39 0E            [12]  920 	inc	r6
+   0D3A BE 00 01      [24]  921 	cjne	r6,#0x00,00114$
+   0D3D 0F            [12]  922 	inc	r7
+   0D3E                     923 00114$:
+   0D3E 78 1C         [12]  924 	mov	r0,#_num_fh_channels
+   0D40 E2            [24]  925 	movx	a,@r0
+   0D41 FC            [12]  926 	mov	r4,a
+   0D42 7D 00         [12]  927 	mov	r5,#0x00
+   0D44 90 05 D6      [24]  928 	mov	dptr,#__modsint_PARM_2
+   0D47 EC            [12]  929 	mov	a,r4
+   0D48 F0            [24]  930 	movx	@dptr,a
+   0D49 ED            [12]  931 	mov	a,r5
+   0D4A A3            [24]  932 	inc	dptr
+   0D4B F0            [24]  933 	movx	@dptr,a
+   0D4C 8E 82         [24]  934 	mov	dpl,r6
+   0D4E 8F 83         [24]  935 	mov	dph,r7
+   0D50 C0 05         [24]  936 	push	ar5
+   0D52 C0 04         [24]  937 	push	ar4
+   0D54 12 61 86      [24]  938 	lcall	__modsint
+   0D57 AE 82         [24]  939 	mov	r6,dpl
+   0D59 AF 83         [24]  940 	mov	r7,dph
+   0D5B D0 04         [24]  941 	pop	ar4
+   0D5D D0 05         [24]  942 	pop	ar5
+   0D5F 78 1D         [12]  943 	mov	r0,#_transmit_channel
+   0D61 EE            [12]  944 	mov	a,r6
+   0D62 F2            [24]  945 	movx	@r0,a
+                            946 ;	radio/freq_hopping.c:107: if (have_radio_lock) {
+   0D63 30 03 07      [24]  947 	jnb	_have_radio_lock,00104$
+                            948 ;	radio/freq_hopping.c:110: receive_channel = transmit_channel;
+   0D66 78 1D         [12]  949 	mov	r0,#_transmit_channel
+   0D68 79 1E         [12]  950 	mov	r1,#_receive_channel
+   0D6A E2            [24]  951 	movx	a,@r0
+   0D6B F3            [24]  952 	movx	@r1,a
+   0D6C 22            [24]  953 	ret
+   0D6D                     954 00104$:
+                            955 ;	radio/freq_hopping.c:111: } else if (transmit_channel == 0) {
+   0D6D 78 1D         [12]  956 	mov	r0,#_transmit_channel
+   0D6F E2            [24]  957 	movx	a,@r0
+   0D70 70 22         [24]  958 	jnz	00106$
+                            959 ;	radio/freq_hopping.c:114: receive_channel = (receive_channel + 1) % num_fh_channels;
+   0D72 78 1E         [12]  960 	mov	r0,#_receive_channel
+   0D74 E2            [24]  961 	movx	a,@r0
+   0D75 FE            [12]  962 	mov	r6,a
+   0D76 7F 00         [12]  963 	mov	r7,#0x00
+   0D78 0E            [12]  964 	inc	r6
+   0D79 BE 00 01      [24]  965 	cjne	r6,#0x00,00117$
+   0D7C 0F            [12]  966 	inc	r7
+   0D7D                     967 00117$:
+   0D7D 90 05 D6      [24]  968 	mov	dptr,#__modsint_PARM_2
+   0D80 EC            [12]  969 	mov	a,r4
+   0D81 F0            [24]  970 	movx	@dptr,a
+   0D82 ED            [12]  971 	mov	a,r5
+   0D83 A3            [24]  972 	inc	dptr
+   0D84 F0            [24]  973 	movx	@dptr,a
+   0D85 8E 82         [24]  974 	mov	dpl,r6
+   0D87 8F 83         [24]  975 	mov	dph,r7
+   0D89 12 61 86      [24]  976 	lcall	__modsint
+   0D8C AE 82         [24]  977 	mov	r6,dpl
+   0D8E AF 83         [24]  978 	mov	r7,dph
+   0D90 78 1E         [12]  979 	mov	r0,#_receive_channel
+   0D92 EE            [12]  980 	mov	a,r6
+   0D93 F2            [24]  981 	movx	@r0,a
+   0D94                     982 00106$:
+   0D94 22            [24]  983 	ret
+                            984 ;------------------------------------------------------------
+                            985 ;Allocation info for local variables in function 'fhop_set_locked'
+                            986 ;------------------------------------------------------------
+                            987 ;	radio/freq_hopping.c:121: fhop_set_locked(bool locked)
+                            988 ;	-----------------------------------------
+                            989 ;	 function fhop_set_locked
+                            990 ;	-----------------------------------------
+   0D95                     991 _fhop_set_locked:
+                            992 ;	radio/freq_hopping.c:128: have_radio_lock = locked;
+   0D95 A2 04         [12]  993 	mov	c,_fhop_set_locked_PARM_1
+                            994 ;	radio/freq_hopping.c:129: if (have_radio_lock) {
+   0D97 92 03         [24]  995 	mov	_have_radio_lock,c
+   0D99 50 07         [24]  996 	jnc	00102$
+                            997 ;	radio/freq_hopping.c:133: transmit_channel = receive_channel;
+   0D9B 78 1E         [12]  998 	mov	r0,#_receive_channel
+   0D9D 79 1D         [12]  999 	mov	r1,#_transmit_channel
+   0D9F E2            [24] 1000 	movx	a,@r0
+   0DA0 F3            [24] 1001 	movx	@r1,a
+   0DA1 22            [24] 1002 	ret
+   0DA2                    1003 00102$:
+                           1004 ;	radio/freq_hopping.c:136: receive_channel = (receive_channel+1) % num_fh_channels;
+   0DA2 78 1E         [12] 1005 	mov	r0,#_receive_channel
+   0DA4 E2            [24] 1006 	movx	a,@r0
+   0DA5 FE            [12] 1007 	mov	r6,a
+   0DA6 7F 00         [12] 1008 	mov	r7,#0x00
+   0DA8 0E            [12] 1009 	inc	r6
+   0DA9 BE 00 01      [24] 1010 	cjne	r6,#0x00,00110$
+   0DAC 0F            [12] 1011 	inc	r7
+   0DAD                    1012 00110$:
+   0DAD 78 1C         [12] 1013 	mov	r0,#_num_fh_channels
+   0DAF 90 05 D6      [24] 1014 	mov	dptr,#__modsint_PARM_2
+   0DB2 E2            [24] 1015 	movx	a,@r0
+   0DB3 F0            [24] 1016 	movx	@dptr,a
+   0DB4 E4            [12] 1017 	clr	a
+   0DB5 A3            [24] 1018 	inc	dptr
+   0DB6 F0            [24] 1019 	movx	@dptr,a
+   0DB7 8E 82         [24] 1020 	mov	dpl,r6
+   0DB9 8F 83         [24] 1021 	mov	dph,r7
+   0DBB 12 61 86      [24] 1022 	lcall	__modsint
+   0DBE AE 82         [24] 1023 	mov	r6,dpl
+   0DC0 78 1E         [12] 1024 	mov	r0,#_receive_channel
+   0DC2 EE            [12] 1025 	mov	a,r6
+   0DC3 F2            [24] 1026 	movx	@r0,a
+   0DC4 22            [24] 1027 	ret
+                           1028 	.area CSEG    (CODE)
+                           1029 	.area CONST   (CODE)
+                           1030 	.area XINIT   (CODE)
+                           1031 	.area CABS    (ABS,CODE)

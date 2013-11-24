@@ -1,0 +1,17 @@
+-muwx
+-i obj/rf50/bootloader~rf50/bootloader~rf50.ihx
+-M
+-Y
+-I 0x0100
+-S 0x40
+-X 0x1000
+-b HOME = 0x0000
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-bHIGHCSEG=0xf800
+.//obj/rf50/bootloader~rf50/crtstart.rel
+.//obj/rf50/bootloader~rf50/bootloader.rel
+.//obj/rf50/bootloader~rf50/flash.rel
+.//obj/rf50/bootloader~rf50/util.rel
+
+-e

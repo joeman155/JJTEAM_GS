@@ -1,0 +1,35 @@
+-muwx
+-i obj/rfd900/radio~rfd900/radio~rfd900.ihx
+-M
+-Y
+-I 0x0100
+-S 0x40
+-X 0x1000
+-C 0xf400
+-b HOME = 0x0400
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-k /usr/local/sdcc/bin/../share/sdcc/lib/large
+-k /usr/local/share/sdcc/lib/large
+-l mcs51
+-l libsdcc
+-l libint
+-l liblong
+-l libfloat
+.//obj/rfd900/radio~rfd900/at.rel
+.//obj/rfd900/radio~rfd900/crc.rel
+.//obj/rfd900/radio~rfd900/flash.rel
+.//obj/rfd900/radio~rfd900/freq_hopping.rel
+.//obj/rfd900/radio~rfd900/golay.rel
+.//obj/rfd900/radio~rfd900/main.rel
+.//obj/rfd900/radio~rfd900/mavlink.rel
+.//obj/rfd900/radio~rfd900/packet.rel
+.//obj/rfd900/radio~rfd900/parameters.rel
+.//obj/rfd900/radio~rfd900/printfl.rel
+.//obj/rfd900/radio~rfd900/radio.rel
+.//obj/rfd900/radio~rfd900/rtc.rel
+.//obj/rfd900/radio~rfd900/serial.rel
+.//obj/rfd900/radio~rfd900/tdm.rel
+.//obj/rfd900/radio~rfd900/timer.rel
+
+-e
