@@ -1,5 +1,0 @@
-.//obj/rfd900/radio~rfd900/printfl.rel: radio/printfl.c radio/radio.h include/board.h \
- include/board_rfd900.h include/compiler_defs.h include/cdt.h \
- include/Si1000_defs.h include/compiler_defs.h radio/serial.h \
- include/board_info.h radio/parameters.h radio/at.h radio/flash.h \
- radio/rtc.h
