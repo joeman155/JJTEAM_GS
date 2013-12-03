@@ -438,7 +438,13 @@ sub decode_line()
     # Every 5 iterations...get stats
     print "Iterations = $radio_stats_count \n";
     if ($radio_stats_count > 4) {
-	    get_radio_stats();
+	    # Alternate between getting HAB stats and ground stats...because of delays involved
+            if ($alternate_end == 0) {
+	       $alternate_end = 1;  # HAB
+            } else  {
+               $alternate_end = 0;  # GROUND
+            }
+	    get_radio_stats($alternate_end);
         $radio_stats_count = 0;
     } else {
         ++$radio_stats_count;
@@ -723,75 +729,81 @@ sub get_bb_voltage()
 }
 
 
+sub run_at_command($)
+{
+ local($cmd, $delay) = @_;
+
+ if ($delay eq '') {
+    $delay = 2;
+ }
+
+ print "Running $cmd\n";
+ $port->write($cmd . "\r\n");
+
+
+ return get_modem_response($delay);
+
+}
+
+sub enter_at_mode()
+{
+   select(undef,undef,undef,1);
+   $port->write("+++");
+   select(undef,undef,undef,0.5);
+
+
+   return get_modem_response(0.5);
+}
+
+sub exit_at_mode()
+{
+ return run_at_command("ATO", 1);
+}
+
+sub get_modem_response()
+{
+ local ($delay) = @_;
+
+ if ($delay eq '') {
+    $delay = 2;
+ }
+
+  my $received = "";
+  my $receive_start_time = time;
+  my $done = 0;
+
+  do {
+    my $count_in_tmp = 0;
+    my $received_tmp;
+    ($count_in_tmp, $received_tmp) = $port->read(132);
+    $received .= $received_tmp;
+    $count_in += $count_in_tmp;
+
+  if (time > $receive_start_time + 2) {
+      # wait for timeout, give the message at least three second
+      $done = 1;
+    }
+
+  } while(!$done);
+
+ return $received;
+
+}
 
 sub get_radio_stats()
 {
-    # now that we have line...quickly get some stats on link
-    select(undef,undef,undef,1);
-    $port->write("+++");
-    select(undef,undef,undef,1);
+ local($alternate_end) = @_;
 
-    my $ans = "";
-    # First one is to skip past the 'echo'
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.25);
-     }
+    enter_at_mode();
 
+  if ($alternate_end == 0) {
+     $stats = run_at_command("ATI7");
+     log_messages("GND: " . $stats);
+  } else {
+     $stats = run_at_command("RTI7");
+     log_messages("HAB: " . $stats);
+  }
 
-    # Get some stats on link quality
-    $port->write("ATI7\r\n");
-
-    $ans = "";
-    # First one is to skip past the 'echo'
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.3);
-     }
-
-    $ans = "";
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.3);
-     }
-     log_messages("Ground: " . $ans);
-
-
-
-#    $port->write("RTI7\r\n");
-##    # First one is to skip past the 'echo'
-#    $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       select(undef,undef,undef,0.3);
-#     }
-
-#    $ans = "";
-#    until ("" ne $ans) {
-#       $ans = $port->lookfor;       # poll until data ready
-#       die "Aborted without match\n" unless (defined $ans);
-#       select(undef,undef,undef,0.3);
-#     }
-#    log_messages("HAB: " . $ans);
-
-# Only supported for rfd900 firmware version 2.3
-#    # Get SYNC status
-#    $modem->atsend("ATI8\r\n");
-#    $ati8 = $modem->answer();
-#    log_messages($ati8);
-
-    # Get out of this mode
-    $port->write("ATO\r\n");
-    # First one is to skip past the 'echo'
-    $ans = "";
-    until ("" ne $ans) {
-       $ans = $port->lookfor;       # poll until data ready
-       die "Aborted without match\n" unless (defined $ans);
-       select(undef,undef,undef,0.25);
-     }
+    exit_at_mode();
 
 }
