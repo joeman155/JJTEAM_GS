@@ -26,6 +26,8 @@ my $radio_stats_count = 0;
 my $i = 1;
 
 
+# Controls which end we get stats for
+my $alternate_end = 0;
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
