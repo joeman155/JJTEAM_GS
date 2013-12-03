@@ -796,11 +796,11 @@ sub get_modem_response()
 
 sub get_radio_stats()
 {
- local($alternate_end) = @_;
+ local($p_alternate_end) = @_;
 
     enter_at_mode();
 
-  if ($alternate_end == 0) {
+  if ($p_alternate_end == 0) {
      $stats = run_at_command("ATI7");
      log_messages("GND: " . $stats);
   } else {
