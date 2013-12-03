@@ -648,7 +648,7 @@ close($kml_file);
 
 # Place = 0 = Ground station
 #       = 1 = HAB
-log_radio_stats($$)
+sub log_radio_stats($$)
 {
  local ($p_place, $p_stats) = @_;
 
@@ -656,7 +656,7 @@ log_radio_stats($$)
     my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
     # Put in DB
-    $query = "INSERT INTO radio_stats_t (place, stats, creation_date) values ($v_place, '" . $p_stats . "', datetime('now', 'localtime'))";
+    $query = "INSERT INTO radio_stats_t (place, stats, creation_date) values ($p_place, '" . $p_stats . "', datetime('now', 'localtime'))";
 
     $sth = $dbh->prepare($query);
     $sth->execute();
