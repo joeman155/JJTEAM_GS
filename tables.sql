@@ -26,3 +26,10 @@ CREATE TABLE bb_voltage_t (id integer primary key autoincrement,
 	                   instance_id varchar2(100),
 			   voltage float,
 			   creation_date datetime);
+
+
+CREATE TABLE radio_stats_t (id integer primary key autoincrement,
+                             instance_id varchar2(100),
+			     place integer,
+                             stats text,
+                             creation_date datetime);

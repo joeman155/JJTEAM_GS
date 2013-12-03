@@ -17,6 +17,27 @@ catch (PDOException $e)
      echo $e->getMessage();
     }
 
+# Get latest Ground Radio Stats
+$sql = "select * from radio_stats_t where id = (select max(id) from radio_stats_t where place = 0)";
+$sth = $dbh->prepare($sql);
+$sth->execute();
+
+$row = $sth->fetch();
+$radio_stats_ground = $row['stats'];
+$radio_stats_ground_date =  date("d-m-y H:i:s", strtotime($row['creation_date']));
+
+
+# Get latest HAB Radio Stats
+$sql = "select * from radio_stats_t where id = (select max(id) from radio_stats_t where place = 1)";
+$sth = $dbh->prepare($sql);
+$sth->execute();
+
+$row = $sth->fetch();
+$radio_stats_hab = $row['stats'];
+$radio_stats_hab_date =  date("d-m-y H:i:s", strtotime($row['creation_date']));
+
+
+
 # Get latest beaglebone voltage
 $sql = "select * from bb_voltage_t where id = (select max(id) from bb_voltage_t)";
 $sth = $dbh->prepare($sql);
@@ -79,6 +100,24 @@ $external_temp = $row['external_temp'];
             });
         });
 </script>
+<h2>Ground Radio Stats (<?= $radio_stats_ground_date?>)</h2>
+<table id="radio_stats_ground">
+<tr>
+  <th>Stats</th>
+  <td><?= $radio_stats_ground?></td>
+</tr>
+</table>
+
+
+<h2>HAB Radio Stats (<?= $radio_stats_hab_date?>)</h2>
+<table id="radio_stats_hab">
+<tr>
+  <th>Stats</th>
+  <td><?= $radio_stats_hab?></td>
+</tr>
+</table>
+
+
 <h2>HAB GPS Information (<?= $gps_creation_date?>)</h2>
 <table id="gps">
 <tr>
