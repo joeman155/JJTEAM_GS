@@ -87,6 +87,8 @@ my $serial_port = "/dev/ttyO1";
 my $serial_speed = 57600;
 
 my $port=Device::SerialPort->new($serial_port);
+$port->read_const_time(2000);       # const time for read (milliseconds)
+$port->read_char_time(5);          # avg time between read char
 my $STALL_DEFAULT=10; # how many seconds to wait for new input
 my $timeout=$STALL_DEFAULT;
 
@@ -729,7 +731,7 @@ sub get_bb_voltage()
 }
 
 
-sub run_at_command($)
+sub run_at_command($;$)
 {
  local($cmd, $delay) = @_;
 
