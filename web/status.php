@@ -239,6 +239,28 @@ if ($cutdown_msg != "") {
 ?>
 
 
+<h2>X-Modem Download Progress</h2>
+<?
+if (file_exists($download_file_status)) {
+  $download_file_status = `cat $download_file_status`;
+} else {
+  $download_file_status = 0;
+}
+
+if ($download_file_status == 1) {
+  print "Download in process....<br>\n";
+} else {
+  print "NO download at present.<br>\n";
+}
+
+if ($download_file_status == 1) {
+   if (file_exists($x_modem_packet_file)) {
+     $packet_num = `cat $x_modem_packet_file`;
+   ?>
+     Packet: <?= $packet_num ?>
+   <? } 
+}
+?> 
 
 
 <?

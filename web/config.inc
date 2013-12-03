@@ -4,4 +4,5 @@ $home_dir = "/home/root/hope";
 $db_file = $home_dir . "/hope.db";
 $cutdown_req_file = $home_dir . "/run/cutdown_requested.txt";
 $cutdown_init_file = $home_dir . "/run/cutdown_initiated.txt";
-
+$x_modem_packet_file = $home_dir . "/run/x_modem_packet";
+$download_file_status = $home_dir . "/run/download_file_status";

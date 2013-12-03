@@ -37,6 +37,14 @@ my $rrmmdd =  $year+1900 . $month . $day;
 # gps_file
 $gps_file = "out/gps_data" . $rrmmdd . ".txt";
 
+# X-Modem packet file
+$download_file_status = "/home/root/hope/run/download_file_status";
+$x_modem_packet_num = "/home/root/hope/run/x_modem_packet";
+`echo "" > $x_modem_packet_num`;
+`echo 0 > $download_file_status`;
+
+
+
 # measurements_file
 $measurements_file = "out/measurements.txt";
 
@@ -248,6 +256,7 @@ while (1 == 1)
 
               sleep 5;
               $str = "Download started.\n";
+	      `echo 1 > $download_file_status`;
               log_messages($str);
 	      print $str if $DEBUG;
 
@@ -260,6 +269,7 @@ while (1 == 1)
               $receive->start();
               $i++;
               $str = "Finished Transmission\n";
+	      `echo 0 > $download_file_status`;
               log_messages($str);
 	      print $str if $DEBUG;
             } 

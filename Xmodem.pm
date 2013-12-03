@@ -8,6 +8,9 @@ our $VERSION = '1.03';
 
 package Device::SerialPort::Xmodem::Constants;
 
+my $left_over;
+my $blockid = 0;
+
 # Define constants used in xmodem blocks
 sub nul        () { 0x00 } # ^@
 sub soh        () { 0x01 } # ^A
@@ -361,8 +364,8 @@ sub receive_message {
 	# Receive answer
   do {
     my $count_in_tmp = 0;
-    my $received_tmp;
-    ($count_in_tmp, $received_tmp) = $self->port->read(1);
+    my $received_tmp = $left_over;
+    ($count_in_tmp, $received_tmp) = $self->port->read(132);
     $received .= $received_tmp;
     $count_in += $count_in_tmp;
     if ($count_in > 0) {
@@ -624,7 +627,7 @@ sub start {
         #
         if ($message{number} == $self->{current_block}->number())
           {
-           # Acknoledge we successfully received block
+           # Acknowledge we successfully received block
            # .....but ignore it....since we received this before...
            # but the sender didn't receive our ACK obviously
            $self->send_ack();
@@ -640,6 +643,10 @@ sub start {
 
            # Acknoledge we successfully received block
            $self->send_ack();
+
+	   # Update our little file with block id
+	   $blockid = $blockid + 1;
+    	   `echo $blockid > /home/root/hope/run/x_modem_packet`;
           }
 
       } else {
@@ -690,6 +697,11 @@ sub receive_message {
       $shortmessage = 1;
     } elsif ($count_in >= 132) {
       # this is a block
+      if ($count_in > 132) {
+	      $left_over = substr($received, 133);
+      } else {
+	      $left_over = "";
+      }
       $done = 1;
     } elsif (time > $receive_start_time + 3) {
       # wait for timeout, give the message at least two second
