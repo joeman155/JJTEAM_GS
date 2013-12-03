@@ -735,13 +735,10 @@ sub get_bb_voltage()
 
 sub run_at_command($;$)
 {
- local($cmd, $delay) = @_;
+ local($cmd, $p_delay) = @_;
 
- if ($delay eq '') {
-    $delay = 2;
- }
+ my $delay = (defined $p_delay) ? $p_delay : 2;
 
- print "Running $cmd\n";
  $port->write($cmd . "\r\n");
 
 
@@ -761,16 +758,14 @@ sub enter_at_mode()
 
 sub exit_at_mode()
 {
- return run_at_command("ATO", 1);
+ return run_at_command("ATO", 0.5);
 }
 
 sub get_modem_response()
 {
- local ($delay) = @_;
+ local ($p_delay) = @_;
 
- if ($delay eq '') {
-    $delay = 2;
- }
+ my $delay = (defined $p_delay) ? $p_delay : 2;
 
   my $received = "";
   my $receive_start_time = time;
@@ -801,10 +796,10 @@ sub get_radio_stats()
     enter_at_mode();
 
   if ($p_alternate_end == 0) {
-     $stats = run_at_command("ATI7");
+     $stats = run_at_command("ATI7", 1);
      log_messages("GND: " . $stats);
   } else {
-     $stats = run_at_command("RTI7");
+     $stats = run_at_command("RTI7", 1.5);
      log_messages("HAB: " . $stats);
   }
 
