@@ -26,9 +26,6 @@ my $radio_stats_count = 0;
 my $i = 1;
 
 
-# Controls which end we get stats for
-my $alternate_end = 0;
-
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
 $day   = sprintf '%02d', $day;
@@ -220,13 +217,13 @@ while (1 == 1)
           }
 
 	}
-        elsif ($mode == 0 && $result =~ /Menu_Image/)
+        elsif ($mode == 0)
         {
 
 # MODE 0 - NORMAL OPERATION
 # SEE IF WE WANT TO DOWNLOAD PIC
           # We don't want to d/l EACH time we are offered...just occasionly
-          if ($pic_count % $pic_dl_freq == 0 && $image_error == 0)
+          if ($pic_count % $pic_dl_freq == 0 && $image_error == 0 && $result =~ /Menu_Image/)
           {
             $str = "Sending request to download image\n";
             log_messages($str);
@@ -455,13 +452,7 @@ sub decode_line()
     # Every 5 iterations...get stats
     print "Iterations = $radio_stats_count \n";
     if ($radio_stats_count > 4) {
-	    # Alternate between getting HAB stats and ground stats...because of delays involved
-            if ($alternate_end == 0) {
-	       $alternate_end = 1;  # HAB
-            } else  {
-               $alternate_end = 0;  # GROUND
-            }
-	    get_radio_stats($alternate_end);
+	get_radio_stats();
         $radio_stats_count = 0;
     } else {
         ++$radio_stats_count;
@@ -824,26 +815,16 @@ sub get_modem_response()
 
 sub get_radio_stats()
 {
- local($p_alternate_end) = @_;
 
-    enter_at_mode();
+  enter_at_mode();
 
-    $stats = run_at_command("ATI7", 1);
-    log_messages("GND: " . $stats);
-    log_radio_stats (0, $stats);
+  $stats = run_at_command("ATI7", 1);
+  log_messages("GND: " . $stats);
+  log_radio_stats (0, $stats);
 
-    $stats = run_at_command("RTI7", 1.5);
-    log_messages("HAB: " . $stats);
-    log_radio_stats (1, $stats);
-
-
-#  if ($p_alternate_end == 0) {
-#     $stats = run_at_command("ATI7", 1);
-#     log_messages("GND: " . $stats);
-#  } else {
-#     $stats = run_at_command("RTI7", 1.5);
-#     log_messages("HAB: " . $stats);
-#  }
+  $stats = run_at_command("RTI7", 1.5);
+  log_messages("HAB: " . $stats);
+  log_radio_stats (1, $stats);
 
   exit_at_mode();
 
