@@ -220,7 +220,7 @@ while (1 == 1)
           }
 
 	}
-        elsif ($mode == 0)
+        elsif ($mode == 0 && $result =~ /Menu_Image/)
         {
 
 # MODE 0 - NORMAL OPERATION
@@ -440,9 +440,12 @@ sub decode_line()
   ($p_line) = @_;
 
   # See what data we have and respond to it
-  if ($p_line =~ /U/)
+  if ($p_line =~ /UI/)
   {
-    $v_result = "Menu";
+    $v_result = "Menu_Image";
+  } elsif ($p_line =~ /U/)
+  {
+    $v_result = "Menu_NoImage";
   } elsif ($p_line =~ /^H:([0-9]+)$/)
   {
     $v_result = "Heartbeat Count: " . $1;
