@@ -828,17 +828,23 @@ sub get_radio_stats()
 
     enter_at_mode();
 
-  if ($p_alternate_end == 0) {
-     $stats = run_at_command("ATI7", 1);
-     log_messages("GND: " . $stats);
-  } else {
-     $stats = run_at_command("RTI7", 1.5);
-     log_messages("HAB: " . $stats);
-  }
+    $stats = run_at_command("ATI7", 1);
+    log_messages("GND: " . $stats);
+    log_radio_stats (0, $stats);
+
+    $stats = run_at_command("RTI7", 1.5);
+    log_messages("HAB: " . $stats);
+    log_radio_stats (1, $stats);
+
+
+#  if ($p_alternate_end == 0) {
+#     $stats = run_at_command("ATI7", 1);
+#     log_messages("GND: " . $stats);
+#  } else {
+#     $stats = run_at_command("RTI7", 1.5);
+#     log_messages("HAB: " . $stats);
+#  }
 
   exit_at_mode();
-
-  # Insert stats in stats table
-  log_radio_stats ($p_alternate_end, $stats);
 
 }
