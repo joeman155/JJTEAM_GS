@@ -248,7 +248,7 @@ if (file_exists($download_file_status)) {
 }
 
 if ($download_file_status == 1) {
-  print "Download in process....<br>\n";
+  print "Download in progress....<br>\n";
 } else {
   print "NO download at present.<br>\n";
 }
