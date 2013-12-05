@@ -223,7 +223,6 @@ while (1 == 1)
 # MODE 0 - NORMAL OPERATION
 # SEE IF WE WANT TO DOWNLOAD PIC
           # We don't want to d/l EACH time we are offered...just occasionly
-print "RESULT: $result\n";
           if ($pic_count % $pic_dl_freq == 0 && $image_error == 0 && $result =~ /Menu_Image/)
           {
             $str = "Sending request to download image\n";
@@ -311,7 +310,7 @@ print "RESULT: $result\n";
 
             if ($gotit =~ /K/)
             {
-              $str = "HAB got request to skip d/l of the image.\n";
+              $str = "HAB got request to skip d/l of the image - exit menu\n";
               log_messages($str);
               print $str if $DEBUG;
             }
