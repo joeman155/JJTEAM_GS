@@ -223,6 +223,7 @@ while (1 == 1)
 # MODE 0 - NORMAL OPERATION
 # SEE IF WE WANT TO DOWNLOAD PIC
           # We don't want to d/l EACH time we are offered...just occasionly
+print "RESULT: $result\n";
           if ($pic_count % $pic_dl_freq == 0 && $image_error == 0 && $result =~ /Menu_Image/)
           {
             $str = "Sending request to download image\n";
@@ -293,7 +294,7 @@ while (1 == 1)
           {
 # WE DO NOT WANT TO DOWNLOAD THIS IMAGE
 # SEND COMMAND TO HAB TO EXIT MENU
-            $str = "Sending request to skip d/l of image this time.\n";
+            $str = "Sending request to skip d/l of image this time - or no image to download.\n";
             log_messages($str);
             print $str if $DEBUG;
             $port->lookclear;
