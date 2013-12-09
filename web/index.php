@@ -15,10 +15,12 @@ header("Access-Control-Allow-Origin: http://leederville.net");
   <script src="jq/ui/jquery.ui.widget.js"></script>
   <script src="jq/ui/jquery.ui.mouse.js"></script>
   <script src="jq/ui/jquery.ui.button.js"></script>
+  <script src="jq/ui/jquery.ui.accordion.js"></script>
   <script src="jq/ui/jquery.ui.position.js"></script>
   <script src="jq/ui/jquery.ui.effect.js"></script>
   <script src="jq/ui/jquery.ui.effect-slide.js"></script>
   <script src="jq/ui/jquery.ui.tabs.js"></script>
+  <script src="js/jquery.cookie.js"></script>
 
   <script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 

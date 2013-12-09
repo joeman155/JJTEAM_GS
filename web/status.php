@@ -92,6 +92,27 @@ $external_temp = $row['external_temp'];
 
 ?>
 <script>
+  $(function() {
+            var act = 0;
+            $( "#accordion" ).accordion({
+                create: function(event, ui) {
+                    //get index in cookie on accordion create event
+                    if($.cookie('saved_index') != null){
+                       act =  parseInt($.cookie('saved_index'));
+                    }
+                },
+                activate: function(event, ui) {
+                    //set cookie for current index on change event
+		    var active = $( "#accordion" ).accordion( "option", "active" );
+                    $.cookie('saved_index', null);
+                    $.cookie('saved_index', active);
+                },
+                active:parseInt($.cookie('saved_index'))
+            });
+  });
+
+//	$( "#accordion" ).accordion("option", "active", $.cookie('saved_index'));
+
         $("#cutdown").click(function() {
         alert("About to request cutdown");
         $.ajax({
@@ -102,24 +123,9 @@ $external_temp = $row['external_temp'];
             });
         });
 </script>
-<h2>Ground Radio Stats (<?= $radio_stats_ground_date?>)</h2>
-<table id="radio_stats_ground">
-<tr>
-  <th>Stats</th>
-  <td><?= $radio_stats_ground?></td>
-</tr>
-</table>
-
-
-<h2>HAB Radio Stats (<?= $radio_stats_hab_date?>)</h2>
-<table id="radio_stats_hab">
-<tr>
-  <th>Stats</th>
-  <td><?= $radio_stats_hab?></td>
-</tr>
-</table>
-
-
+<div id="accordion">
+<h3>GPS Information</h3>
+<div>
 <h2>HAB GPS Information (<?= $gps_creation_date?>)</h2>
 <table id="gps">
 <tr>
@@ -182,14 +188,12 @@ $external_temp = $row['external_temp'];
   <th>Direction</th>
   <td><?= $v_direction?></td>
 </tr>
-<tr>
-  <th>Distance a long ground</th>
-  <td><?= $v_vertical_speed?></td>
-</tr>
 </table>
+</div>
 
 
-<br/>
+<h3>Scientific measurements</h3>
+<div>
 <h2>Latest Measurements (<?= $measurement_date?>)</h2>
 <table id="measurements">
 <tr>
@@ -209,8 +213,11 @@ $external_temp = $row['external_temp'];
   <td><?= $external_temp?></td>
 </tr>
 </table>
+</div>
 
-<br/>
+
+<h3>Systems Health</h3>
+<div>
 <h2>Beaglebone Voltage (<?= $bb_voltage_date?>)</h2>
 <table id="bb_measurements">
 <tr>
@@ -239,8 +246,29 @@ if ($cutdown_msg != "") {
 <?
 }
 ?>
+</div>
+
+<h3>Radio Status</h3>
+<div>
+<h2>Ground Radio Stats (<?= $radio_stats_ground_date?>)</h2>
+<table id="radio_stats_ground">
+<tr>
+  <th>Stats</th>
+  <td><?= $radio_stats_ground?></td>
+</tr>
+</table>
+<h2>HAB Radio Stats (<?= $radio_stats_hab_date?>)</h2>
+<table id="radio_stats_hab">
+<tr>
+  <th>Stats</th>
+  <td><?= $radio_stats_hab?></td>
+</tr>
+</table>
+</div>
 
 
+<h3>Camera Image Downloads</h3>
+<div>
 <h2>X-Modem Download Progress</h2>
 <?
 if (file_exists($download_file_status)) {
@@ -263,7 +291,7 @@ if ($download_file_status == 1) {
    <? } 
 }
 ?> 
-
+</div>
 
 <?
 function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit) {
