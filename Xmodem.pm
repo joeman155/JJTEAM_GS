@@ -511,6 +511,7 @@ sub new {
 }
 
 sub start {
+	$blockid = 0;
 	my $self  = $_[0];
 	my $port = $self->{_port};
 	my $file  = $_[1] || $self->{_filename};
