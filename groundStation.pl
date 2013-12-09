@@ -494,7 +494,7 @@ sub decode_line()
     print $gps_fh $v_line;
     close($gps_fh);
 
-    insert_gps($v_lat, $v_long, $v_alt, $v_gps_date, $v_speed, $v_course, $v_gps_time);
+    insert_gps($v_lat, $v_long, $v_alt, $v_gps_date, $v_gps_time, $v_speed, $v_course);
 
     # Generate the kml file each time we have more gps data
     create_kml($gps_file);
@@ -726,6 +726,7 @@ sub insert_gps()
  $query = "INSERT INTO gps_t (latitude, longitude, height, speed, course, gps_date, gps_time, creation_date)
                    values (" . $latitude . ", " . $longitude . ", " . $height . ", " . $gps_speed . ", " . $gps_course . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
 
+		   print $query;
  $sth = $dbh->prepare($query);
  $sth->execute();
  
