@@ -183,14 +183,6 @@ $external_temp = $row['external_temp'];
   <td><?= $v_direction?></td>
 </tr>
 <tr>
-  <th>Speed</th>
-  <td><?= $v_horizontal_speed?></td>
-</tr>
-<tr>
-  <th>Direction in which HAB is travelling</th>
-  <td><?= $v_bearing?></td>
-</tr>
-<tr>
   <th>Distance a long ground</th>
   <td><?= $v_vertical_speed?></td>
 </tr>
