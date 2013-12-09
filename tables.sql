@@ -18,6 +18,8 @@ CREATE TABLE gps_t (id integer primary key autoincrement,
                     latitude float,
                     longitude float,
                     height    integer,
+		    speed     float,
+		    course    float,
                     gps_date  varchar2(20),
                     gps_time  varchar2(20),
                     creation_date datetime);

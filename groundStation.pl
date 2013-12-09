@@ -479,20 +479,22 @@ sub decode_line()
 
     insert_measurements($voltage, $1, $3, $2);
 
-  } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+)$/)
+  } elsif ($p_line =~ m/^La:(.+),Lo:(.+),A:(.+),D:(.*),T:(.+),S:(.+),C:(.+)$/)
   {
     $v_lat = $1/100000;
     $v_long = $2/100000;
     $v_alt = $3;
     $v_gps_date = $4;
     $v_gps_time = $5;
-    $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: " . $v_alt . "\nDate: " . $v_gps_date . "\nTime: " . $v_gps_time . "\n";
+    $v_speed = $6;
+    $v_course = $7;
+    $v_result = "GPS\nLatitude: " . $v_lat . "\nLongitude: " . $v_long . "\nAltitude: " . $v_alt . "\nDate: " . $v_gps_date . "\nTime: " . $v_gps_time . "\nSpeed: " . $v_speed . "\nCourse: " . $v_course . "\n";
     $v_line = $4 . "," . $5 . "," . $v_lat . "," . $v_long . "," . $3 . "\n";
     open(my $gps_fh, '>>' . $gps_file) or die "issue opening gps file";
     print $gps_fh $v_line;
     close($gps_fh);
 
-    insert_gps($v_lat, $v_long, $v_alt, $v_gps_date, $v_gps_time);
+    insert_gps($v_lat, $v_long, $v_alt, $v_gps_date, $v_speed, $v_course, $v_gps_time);
 
     # Generate the kml file each time we have more gps data
     create_kml($gps_file);
@@ -715,14 +717,14 @@ sub insert_measurements()
 
 sub insert_gps()
 {
- local($latitude, $longitude, $height, $gps_date, $gps_time) = @_;
+ local($latitude, $longitude, $height, $gps_date, $gps_time, $gps_speed, $gps_course) = @_;
 
  # Initialise DB connection
  my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
- $query = "INSERT INTO gps_t (latitude, longitude, height, gps_date, gps_time, creation_date)
-                   values (" . $latitude . ", " . $longitude . ", " . $height . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
+ $query = "INSERT INTO gps_t (latitude, longitude, height, speed, course, gps_date, gps_time, creation_date)
+                   values (" . $latitude . ", " . $longitude . ", " . $height . ", " . $gps_speed . ", " . $gps_course . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();

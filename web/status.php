@@ -53,9 +53,11 @@ $sth = $dbh->prepare($sql);
 $sth->execute();
 $row = $sth->fetch();
 
-$latitude = $row['latitude'];
+$latitude  = $row['latitude'];
 $longitude = $row['longitude'];
-$height = $row['height'];
+$height    = $row['height'];
+$speed     = $row['speed'];
+$course    = $row['course'];
 $gps_date = $row['gps_date'];
 $gps_time = $row['gps_time'];
 $gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
@@ -131,6 +133,14 @@ $external_temp = $row['external_temp'];
 <tr>
   <th>Altitude</th>
   <td><?= $height?></td>
+</tr>
+<tr>
+  <th>Speed</th>
+  <td><?= $speed?></td>
+</tr>
+<tr>
+  <th>Course</th>
+  <td><?= $course?></td>
 </tr>
 <tr>
   <th>Date</th>
