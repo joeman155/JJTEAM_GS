@@ -336,7 +336,7 @@ while (1 == 1)
           }
 
 	  # If no error...then imcrement count.
-	  if ($image_error == 0) {
+	  if ($image_error == 0 && $result =~ /Menu_Image/) {
           	$pic_count++;
 	  }
         }
