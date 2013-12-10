@@ -726,7 +726,6 @@ sub insert_gps()
  $query = "INSERT INTO gps_t (latitude, longitude, height, speed, course, gps_date, gps_time, creation_date)
                    values (" . $latitude . ", " . $longitude . ", " . $height . ", " . $gps_speed . ", " . $gps_course . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
 
-		   print $query;
  $sth = $dbh->prepare($query);
  $sth->execute();
  
