@@ -150,7 +150,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	async: false,
 	success: function(s,x) {
 		$('body').css('background', 'white');
-		$("#datetime").html('<h2>' + s + '</h2>');
+		$("#datetime").html('<h5>' + s + '</h5>');
 		},
 	error: function() {
 		$('body').css('background', 'red');
@@ -165,7 +165,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 	cache: false,
 	async: false,
 	success: function(s,x) {
-	$("#pid").html('<h2>Daemon Status: ' + s + '</h2>');
+	$("#pid").html('<h5>Daemon Status: ' + s + '</h5>');
 		}
 
 	});

@@ -109,9 +109,11 @@ $external_temp = $row['external_temp'];
                     $.cookie('saved_index', null);
                     $.cookie('saved_index', active);
                 },
-                active:parseInt($.cookie('saved_index'))
+		active:parseInt($.cookie('saved_index')),
+		heightStyle: "content"
             });
   });
+
 
                 // active:parseInt($.cookie('saved_index'))
 //	$( "#accordion" ).accordion("option", "active", $.cookie('saved_index'));
