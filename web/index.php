@@ -21,6 +21,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
   <script src="jq/ui/jquery.ui.effect-slide.js"></script>
   <script src="jq/ui/jquery.ui.tabs.js"></script>
   <script src="js/jquery.cookie.js"></script>
+  <script src="js/jquery.timeago.js"></script>
 
   <script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 
@@ -91,6 +92,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
             }
 
 	$(function() {
+
 		$( "#tabs" ).tabs( {
 			activate: function(e,ui) {
 			var active = $("#tabs").tabs("option", "active");

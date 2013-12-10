@@ -24,7 +24,7 @@ $sth->execute();
 
 $row = $sth->fetch();
 $radio_stats_ground = $row['stats'];
-$radio_stats_ground_date =  date("d-m-y H:i:s", strtotime($row['creation_date']));
+$radio_stats_ground_date =  date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 
 # Get latest HAB Radio Stats
@@ -34,7 +34,7 @@ $sth->execute();
 
 $row = $sth->fetch();
 $radio_stats_hab = $row['stats'];
-$radio_stats_hab_date =  date("d-m-y H:i:s", strtotime($row['creation_date']));
+$radio_stats_hab_date =  date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 
 
@@ -45,7 +45,7 @@ $sth->execute();
 
 $row = $sth->fetch();
 $bb_voltage = $row['voltage'];
-$bb_voltage_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
+$bb_voltage_date = date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 # HAB GPS
 $sql = "select * from gps_t where id = (select max(id) from gps_t)";
@@ -60,7 +60,7 @@ $speed     = $row['speed'];
 $course    = $row['course'];
 $gps_date = $row['gps_date'];
 $gps_time = $row['gps_time'];
-$gps_creation_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
+$gps_creation_date = date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 
 # Calculate distance between LOCAL and HAB GPS 
@@ -84,7 +84,7 @@ $sth = $dbh->prepare($sql);
 $sth->execute();
 $row = $sth->fetch();
 
-$measurement_date = date("d-m-y H:i:s", strtotime($row['creation_date']));
+$measurement_date = date("Y-m-d H:i:s", strtotime($row['creation_date']));
 $voltage = $row['voltage'];
 $pressure = $row['pressure'];
 $internal_temp = $row['internal_temp'];
@@ -93,6 +93,10 @@ $external_temp = $row['external_temp'];
 ?>
 <script>
   $(function() {
+
+            // Initialise fuzzy timeago
+            $("abbr.timeago").timeago();
+
             var act = 0;
             $( "#accordion" ).accordion({
                 create: function(event, ui) {
@@ -129,7 +133,7 @@ $external_temp = $row['external_temp'];
         });
 </script>
 <div id="accordion">
-<h3>GPS Information</h3>
+<h3>GPS Information - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>
 <h2>HAB GPS Information (<?= $gps_creation_date?>)</h2>
 <table id="gps" class="horizontal">
@@ -183,7 +187,7 @@ $external_temp = $row['external_temp'];
 </div>
 
 
-<h3>Scientific measurements</h3>
+<h3>Scientific measurements - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>
 <h2>Latest Measurements (<?= $measurement_date?>)</h2>
 <table id="measurements">
@@ -207,7 +211,7 @@ $external_temp = $row['external_temp'];
 </div>
 
 
-<h3>Systems Health</h3>
+<h3>Systems Health - <abbr class="timeago" title="<?= $bb_voltage_date?>"></abbr></h3>
 <div>
 <h2>Beaglebone Voltage (<?= $bb_voltage_date?>)</h2>
 <table id="bb_measurements">
@@ -239,7 +243,7 @@ if ($cutdown_msg != "") {
 ?>
 </div>
 
-<h3>Radio Status</h3>
+<h3>Radio Status - <abbr class="timeago" title="<?= $radio_stats_ground_date?>"></abbr></h3>
 <div>
 <h2>Ground Radio Stats (<?= $radio_stats_ground_date?>)</h2>
 <table id="radio_stats_ground">
@@ -257,8 +261,14 @@ if ($cutdown_msg != "") {
 </table>
 </div>
 
+<?
+# Get download date
+if (file_exists($download_file_status)) {
+  $download_date = date ("Y-m-d H:i:s", filemtime($download_file_status));
+}
+?>
 
-<h3>Camera Image Downloads</h3>
+<h3>Camera Image Downloads - <abbr class="timeago" title="<?= $download_date?>"></h3>
 <div>
 <h2>X-Modem Download Progress</h2>
 <?
