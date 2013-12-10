@@ -272,14 +272,16 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 </head>
 <body>
 
-<div id="header" class="demo-description">
-	<p>Hope web client - Messages.</p>
-</div>
+<div id="header" class="demo-description" style="width: 600px;">
+    <div style="float: left; width: 200px;">
+      Hope web client - Messages
+    </div>
 
-<div id="datetime">
-</div>
+    <div id="datetime" style="float: left; width: 200px;">
+    </div>
 
-<div id="pid">
+    <div id="pid" style="float: left; width: 200px;">
+    </div>
 </div>
 
 <div id="tabs">
