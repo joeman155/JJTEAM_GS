@@ -99,7 +99,9 @@ $external_temp = $row['external_temp'];
                     //get index in cookie on accordion create event
                     if($.cookie('saved_index') != null){
                        act =  parseInt($.cookie('saved_index'));
-                    }
+		    } else {
+		       $.cookie('saved_index', 0);
+		    }
                 },
                 activate: function(event, ui) {
                     //set cookie for current index on change event
@@ -111,6 +113,7 @@ $external_temp = $row['external_temp'];
             });
   });
 
+                // active:parseInt($.cookie('saved_index'))
 //	$( "#accordion" ).accordion("option", "active", $.cookie('saved_index'));
 
         $("#cutdown").click(function() {
@@ -127,65 +130,51 @@ $external_temp = $row['external_temp'];
 <h3>GPS Information</h3>
 <div>
 <h2>HAB GPS Information (<?= $gps_creation_date?>)</h2>
-<table id="gps">
+<table id="gps" class="horizontal">
 <tr>
-  <th>Latitude</th>
-  <td><?= $latitude?></td>
-</tr>
-<tr>
-  <th>Longitude</th>
-  <td><?= $longitude?></td>
-</tr>
-<tr>
-  <th>Altitude</th>
-  <td><?= $height?></td>
-</tr>
-<tr>
-  <th>Speed</th>
-  <td><?= $speed?></td>
-</tr>
-<tr>
-  <th>Course</th>
-  <td><?= $course?></td>
-</tr>
-<tr>
+  <th>Lat</th>
+  <th>Long</th>
+  <th>Alt</th>
+  <th>Spd</th>
+  <th>Crs</th>
   <th>Date</th>
-  <td><?= $gps_date?></td>
+  <th>Time</th>
 </tr>
 <tr>
-  <th>Time</th>
+  <td><?= $latitude?></td>
+  <td><?= $longitude?></td>
+  <td><?= $height?></td>
+  <td><?= $speed?></td>
+  <td><?= $course?></td>
+  <td><?= $gps_date?></td>
   <td><?= $gps_time?></td>
 </tr>
 </table>
 
 <h2>Local GPS Information (<?= $v_local_timestamp?>)</h2>
-<table id="local_gps">
+<table id="local_gps" class="horizontal">
 <tr>
   <th>Latitude</th>
-  <td><?= $v_local_lat?></td>
-</tr>
-<tr>
   <th>Longitude</th>
-  <td><?= $v_local_long?></td>
+  <th>Altitude</th>
 </tr>
 <tr>
-  <th>Altitude</th>
+  <td><?= $v_local_lat?></td>
+  <td><?= $v_local_long?></td>
   <td><?= round($v_local_alt,0)?></td>
 </tr>
 </table>
 
 <h2>Relational calculated values</h2>
-<table id="relational">
+<table id="relational" class="horizontal">
 <tr>
   <th>Distance (Great circle)</th>
-  <td><?= $v_horizontal_distance?></td>
-</tr>
-<tr>
   <th>Approx Distance (LOS)</th>
-  <td><?= $v_los_distance?></td>
+  <th>Direction</th>
 </tr>
 <tr>
-  <th>Direction</th>
+  <td><?= $v_horizontal_distance?></td>
+  <td><?= $v_los_distance?></td>
   <td><?= $v_direction?></td>
 </tr>
 </table>
