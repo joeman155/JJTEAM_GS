@@ -91,7 +91,7 @@ my $filename = "";
 $pic_count = 0;
 $pic_dl_freq = 5; # How often to download a pic.i.e. download every 'pic_dl_freq'th pic
 my $serial_port = "/dev/ttyO1";
-my $serial_speed = 57600;
+my $serial_speed = 9600;
 
 my $port=Device::SerialPort->new($serial_port);
 $port->read_const_time(2000);       # const time for read (milliseconds)
