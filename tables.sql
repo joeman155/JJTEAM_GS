@@ -35,3 +35,10 @@ CREATE TABLE radio_stats_t (id integer primary key autoincrement,
 			     place integer,
                              stats text,
                              creation_date datetime);
+
+
+CREATE TABLE heartbeat_t (id integer primary key autoincrement,
+	                  instance_id varchar2(100),
+			  heartbeat integer,
+			  creation_date datetime);
+				                             

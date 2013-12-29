@@ -132,6 +132,9 @@ $external_temp = $row['external_temp'];
             });
         });
 </script>
+<div>
+Heartbeat: - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr>
+</div>
 <div id="accordion">
 <h3>GPS Information - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>

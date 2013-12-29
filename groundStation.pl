@@ -446,6 +446,8 @@ sub decode_line()
   } elsif ($p_line =~ /^H:([0-9]+)$/)
   {
     $v_result = "Heartbeat Count: " . $1;
+    
+    insert_heartbeat($1);
 
     # We have 3 second delay after getting heartbeat.... so we quickly get
     # stats on state of link
@@ -713,6 +715,23 @@ sub insert_measurements()
  
  $dbh->disconnect();
 
+}
+
+sub insert_heartbeat()
+{
+ local($heartbeat) = @_;
+
+ # Initialise DB connection
+ my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+
+
+ $query = "INSERT INTO heartbeat_t (heartbeat, creation_date) 
+ 	values (" . $heartbeat . ", datetime('now', 'localtime'))";
+
+ $sth = $dbh->prepare($query);
+ $sth->execute();
+ 
+ $dbh->disconnect();
 }
 
 sub insert_gps()
