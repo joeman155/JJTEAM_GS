@@ -37,6 +37,14 @@ $radio_stats_hab = $row['stats'];
 $radio_stats_hab_date =  date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 
+# Get latest HAB heartbeat
+$sql = "select * from heartbeat_t where id = (select max(id) from heartbeat_t)";
+$sth = $dbh->prepare($sql);
+$sth->execute();
+
+$row = $sth->fetch();
+$heartbeat = $row['heartbeat'];
+$heartbeat_date =  date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 # Get latest beaglebone voltage
 $sql = "select * from bb_voltage_t where id = (select max(id) from bb_voltage_t)";
@@ -133,7 +141,7 @@ $external_temp = $row['external_temp'];
         });
 </script>
 <div>
-Heartbeat: - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr>
+Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>"></abbr>
 </div>
 <div id="accordion">
 <h3>GPS Information - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
