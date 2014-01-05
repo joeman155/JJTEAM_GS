@@ -24,7 +24,7 @@ my $tcpPort = 8000;
 # Stats var
 my $radio_stats_count = 0;
 my $i = 1;
-
+my %data;  # Holds altitude/air pressure data
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
@@ -710,7 +710,7 @@ sub insert_measurements()
 
  # Put in DB
  $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, estimated_altitude, creation_date)
-                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", " . $alt . ", ", datetime('now', 'localtime'))";
+                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", " . $alt . ", datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
