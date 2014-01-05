@@ -24,7 +24,11 @@ my $tcpPort = 8000;
 # Stats var
 my $radio_stats_count = 0;
 my $i = 1;
+
+
+# Pressure/altitude
 my %data;  # Holds altitude/air pressure data
+load_air_data();
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
@@ -141,7 +145,8 @@ while (1 == 1)
           until ("" ne $habline) {
             $habline = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $habline);
-	    sleep 1;                          # polling sample time
+	    # sleep 1;                          # polling sample time
+            select(undef,undef,undef,0.5);
 
             # Get BBB voltage supply reading and put into table
             get_bb_voltage();
@@ -305,7 +310,8 @@ while (1 == 1)
             until ("" ne $gotit) {
               $gotit = $port->lookfor;       # poll until data ready
               die "Aborted without match\n" unless (defined $gotit);
-              sleep 1;                          # polling sample time
+	      # sleep 1;                          # polling sample time
+              select(undef,undef,undef,0.5);
             }
 
             if ($gotit =~ /K/)
@@ -881,22 +887,26 @@ sub get_altitude()
  local ($pressure) = @_;
 
 
- $prev_key = 1000;
+ $prev_key = 101.34;
+ 
+ # Convert pressure (in Pa) to kPa
+ $pressure = $pressure/1000;
+
+ print "PRESSURE: $pressure\n\n";
 
  foreach my $key (sort {$b <=> $a} keys %data) {
-
-   # print "Comparing $pressure to  $prev_key and $key\n";
+   print "Comparing $pressure to  $prev_key and $key\n";
    if ($pressure > $key && $pressure < $prev_key) {
-     # print "Pressure: $pressure between $key and $prev_key\n";
+      print "Pressure: $pressure between $key and $prev_key\n";
 
-     $altitude = $data{$prev_key} +  ($data{$key} - $data{$prev_key}) * ($pressure - $key)/($key - $prev_key);
-     break;
+     $altitude = $data{$key} +  ($data{$key} - $data{$prev_key}) * ($pressure - $key)/($key - $prev_key);
+     last;
 
    }
 
    $prev_key = $key;
  }
 
- return floor($altitude);
+ return int($altitude);
 }
 
