@@ -145,8 +145,7 @@ while (1 == 1)
           until ("" ne $habline) {
             $habline = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $habline);
-	    # sleep 1;                          # polling sample time
-            select(undef,undef,undef,0.5);
+            select(undef,undef,undef,0.3);
 
             # Get BBB voltage supply reading and put into table
             get_bb_voltage();
@@ -195,7 +194,7 @@ while (1 == 1)
           until ("" ne $gotit) {
             $gotit = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $gotit);
-            sleep 1;                          # polling sample time
+            select(undef,undef,undef,0.3);
           }
           if ($gotit =~ /B/)
           {
@@ -245,7 +244,7 @@ while (1 == 1)
             until ("" ne $gotit) {
               $gotit = $port->lookfor;       # poll until data ready
               die "Aborted without match\n" unless (defined $gotit);
-              sleep 1;                          # polling sample time
+              select(undef,undef,undef,0.3);
             }
 
 
@@ -310,8 +309,7 @@ while (1 == 1)
             until ("" ne $gotit) {
               $gotit = $port->lookfor;       # poll until data ready
               die "Aborted without match\n" unless (defined $gotit);
-	      # sleep 1;                          # polling sample time
-              select(undef,undef,undef,0.5);
+              select(undef,undef,undef,0.3);
             }
 
             if ($gotit =~ /K/)
@@ -322,7 +320,7 @@ while (1 == 1)
             }
             elsif ($gotit =~ /W/)
             {
-              $str = "(Trying to initiate SKIP of img tfr) - Timeout waiting for response from ground station.\n";
+              $str = "(Trying to initiate SKIP of img tfr) - Timeout waiting for response from ground station." . $gotit . "\n";
               log_messages($str);
               print $str if $DEBUG;
             }
@@ -358,7 +356,7 @@ while (1 == 1)
           until ("" ne $gotit) {
             $gotit = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $gotit);
-            sleep 1;                          # polling sample time
+            select(undef,undef,undef,0.3);
           }
 
           if ($gotit =~ /T/) 
@@ -398,7 +396,7 @@ while (1 == 1)
           until ("" ne $gotit) {
             $gotit = $port->lookfor;       # poll until data ready
             die "Aborted without match\n" unless (defined $gotit);
-            sleep 1;                          # polling sample time
+            select(undef,undef,undef,0.3);
           }
 
           if ($gotit =~ /N/)
