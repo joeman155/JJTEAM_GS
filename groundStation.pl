@@ -892,14 +892,12 @@ sub get_altitude()
  # Convert pressure (in Pa) to kPa
  $pressure = $pressure/1000;
 
- print "PRESSURE: $pressure\n\n";
-
  foreach my $key (sort {$b <=> $a} keys %data) {
-   print "Comparing $pressure to  $prev_key and $key\n";
+#   print "Comparing $pressure to  $prev_key and $key\n";
    if ($pressure > $key && $pressure < $prev_key) {
-      print "Pressure: $pressure between $key and $prev_key\n";
+#      print "Pressure: $pressure between $key and $prev_key\n";
 
-     $altitude = $data{$key} +  ($data{$key} - $data{$prev_key}) * ($pressure - $key)/($key - $prev_key);
+     $altitude = $data{$key} -  ($data{$key} - $data{$prev_key}) * ($key - $pressure)/($key - $prev_key);
      last;
 
    }
