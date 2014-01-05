@@ -97,6 +97,7 @@ $voltage = $row['voltage'];
 $pressure = $row['pressure'];
 $internal_temp = $row['internal_temp'];
 $external_temp = $row['external_temp'];
+$estimated_altitude = $row['estimated_altitude'];
 
 ?>
 <script>
@@ -217,6 +218,10 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 <tr>
   <th>External Temp</th>
   <td><?= $external_temp?></td>
+</tr>
+<tr>
+  <th>Estimated Altitude</th>
+  <td><?= $estimated_altitude?></td>
 </tr>
 </table>
 </div>

@@ -8,6 +8,7 @@ CREATE TABLE measurements_t (id integer primary key autoincrement,
                          instance_id varchar2(100),
                          voltage float,
                          pressure float,
+			 estimated_altitude integer,
                          internal_temp float,
                          external_temp float,
                          creation_date datetime);

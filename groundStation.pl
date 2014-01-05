@@ -703,12 +703,14 @@ sub insert_measurements()
 {
  local($voltage, $pressure, $internal_temp, $external_temp) = @_;
 
+ $alt = get_altitude($pressure);
+
  # Initialise DB connection
  my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
- $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, creation_date)
-                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", datetime('now', 'localtime'))";
+ $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, estimated_altitude, creation_date)
+                   values (" . $voltage . ", " . $pressure . ", " . $internal_temp . ", " . $external_temp . ", " . $alt . ", ", datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
@@ -850,3 +852,51 @@ sub get_radio_stats()
   exit_at_mode();
 
 }
+
+
+
+sub load_air_data()
+{
+open FILE, "air_data.txt" or die $!;
+ local $altitude;
+ local $pressure;
+
+while ($line = <FILE>) {
+
+ $line =~ /^(.*) (.*)$/;
+
+ $altitude = $1;
+ $pressure = $2;
+
+# print "Alt: $altitude  has pressure: $pressure\n";
+
+  $data{$pressure} = $altitude;
+
+}
+}
+
+
+sub get_altitude()
+{
+ local ($pressure) = @_;
+
+
+ $prev_key = 1000;
+
+ foreach my $key (sort {$b <=> $a} keys %data) {
+
+   # print "Comparing $pressure to  $prev_key and $key\n";
+   if ($pressure > $key && $pressure < $prev_key) {
+     # print "Pressure: $pressure between $key and $prev_key\n";
+
+     $altitude = $data{$prev_key} +  ($data{$key} - $data{$prev_key}) * ($pressure - $key)/($key - $prev_key);
+     break;
+
+   }
+
+   $prev_key = $key;
+ }
+
+ return floor($altitude);
+}
+
