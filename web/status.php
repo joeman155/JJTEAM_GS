@@ -198,8 +198,13 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 </table>
 </div>
 
+<h3>Alerts - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
+<div>
+<h2>Temperature</h2>
 
-<h3>Scientific measurements - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
+</div>
+
+<h3>HAB Measurements - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>
 <h2>Latest Measurements (<?= $measurement_date?>)</h2>
 <table id="measurements">
@@ -227,7 +232,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 </div>
 
 
-<h3>Systems Health - <abbr class="timeago" title="<?= $bb_voltage_date?>"></abbr></h3>
+<h3>Ground Health - <abbr class="timeago" title="<?= $bb_voltage_date?>"></abbr></h3>
 <div>
 <h2>Beaglebone Voltage (<?= $bb_voltage_date?>)</h2>
 <table id="bb_measurements">
@@ -236,7 +241,11 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= round($bb_voltage,2)?></td>
 </tr>
 </table>
+<div>
 
+
+<h3>HAB control</h3>
+<div>
 <h2>Cutdown</h2>
 <?
 if (file_exists($cutdown_init_file)) {

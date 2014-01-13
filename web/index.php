@@ -284,10 +284,10 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 
 <div id="tabs">
 	<ul>
-		<li><a href="#messages">Log</a></li>
 		<li><a href="status.html">Status</a></li>
-		<li><a href="map.html">Map</a></li>
+		<li><a href="#messages">Log</a></li>
 		<li><a href="images.php">Images</a></li>
+		<li><a href="map.html">Map</a></li>
 	</ul>
 	<div id="messages" class="container">
 		<ul id="messages">
