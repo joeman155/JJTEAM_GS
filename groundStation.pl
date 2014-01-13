@@ -271,6 +271,7 @@ while (1 == 1)
               $i++;
               $str = "Finished Transmission\n";
 	      `echo 0 > $download_file_status`;
+	      `echo "" > $x_modem_packet_num`;
               log_messages($str);
 	      print $str if $DEBUG;
             } 
