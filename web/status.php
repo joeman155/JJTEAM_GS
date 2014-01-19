@@ -44,7 +44,8 @@ $sth->execute();
 
 $row = $sth->fetch();
 $heartbeat = $row['heartbeat'];
-$heartbeat_date =  date("Y-m-d H:i:s", strtotime($row['creation_date']));
+$heartbeat_date_raw = $row['creation_date'];
+$heartbeat_date =  date("Y-m-d H:i:s", strtotime($heartbeat_date_raw));
 
 # Get latest beaglebone voltage
 $sql = "select * from bb_voltage_t where id = (select max(id) from bb_voltage_t)";
@@ -98,6 +99,39 @@ $pressure = $row['pressure'];
 $internal_temp = $row['internal_temp'];
 $external_temp = $row['external_temp'];
 $estimated_altitude = $row['estimated_altitude'];
+
+
+
+# ALERTS
+# temperature
+if ($internal_temp < 273) {
+	$alert_temperature = "Temperature Alert - Below 273";
+} else if ($internal_temp > (273 + 50)) {
+	$alert_temperature = "Temperature Alert - Above 323K";
+} else {
+	$alert_temperature = "None";
+}
+
+
+# altitude
+$alert_altitude = "None";
+if ($height > 27000) {
+	$alert_altitude = "Exceeded 27000m!!";
+}
+
+# radio loss of contact
+$alert_loss_heartbeat = "None";
+if (time() - strtotime($heartbeat_date_raw) > 300) {
+	$alert_loss_heartbeat = "No heartbeat for more than 5 minutes!!";
+}
+
+
+# Distance exceeds 30km
+$alert_distance = "None";
+if ($v_los_distance > 30) {
+	$alert_distance = "Exceeded distance of 30km!!";
+}
+
 
 ?>
 <script>
@@ -200,7 +234,25 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 
 <h3>Alerts - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>
-<h2>Temperature</h2>
+<h2>HAB Alerts</h2>
+<table>
+<tr>
+  <th>HAB Temperature</th>
+  <td><?= $alert_temperature?></td>
+</tr>
+<tr>
+  <th>Altitude</th>
+  <td><?= $alert_altitude?></td>
+</tr>
+<tr>
+  <th>No radio signal for more than 3 minutes</th>
+  <td><?= $alert_loss_heartbeat?></td>
+</tr>
+<tr>
+  <th>Distance exceeds 30km</th>
+  <td><?= $alert_distance?></td>
+</tr>
+</table>
 
 </div>
 
@@ -241,7 +293,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= round($bb_voltage,2)?></td>
 </tr>
 </table>
-</div>
+<div>
 
 
 <h3>HAB control</h3>
