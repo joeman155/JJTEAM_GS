@@ -1,6 +1,9 @@
 <?
+
+# CONFIGUIRATION
 include "config.inc";
 
+# PARAMETERS (phone GPS)
 $v_local_lat = $_REQUEST['local_lat'];
 $v_local_long = $_REQUEST['local_long'];
 $v_local_alt  = $_REQUEST['local_alt'];
@@ -104,10 +107,10 @@ $estimated_altitude = $row['estimated_altitude'];
 
 # ALERTS
 # temperature
-if ($internal_temp < 273) {
-	$alert_temperature = "Temperature Alert - Below 273";
-} else if ($internal_temp > (273 + 50)) {
-	$alert_temperature = "Temperature Alert - Above 323K";
+if ($internal_temp < 273 + $threshold_temperature_low) {
+	$alert_temperature = "Temperature Alert - Below " . $threshold_temperature_low;
+} else if ($internal_temp > (273 + $threshold_temperature_high)) {
+	$alert_temperature = "Temperature Alert - Above " . $threshold_temperature_high;
 } else {
 	$alert_temperature = "None";
 }
@@ -115,21 +118,21 @@ if ($internal_temp < 273) {
 
 # altitude
 $alert_altitude = "None";
-if ($height > 27000) {
-	$alert_altitude = "Exceeded 27000m!!";
+if ($height > $threshold_altitude) {
+	$alert_altitude = "Exceeded " . $threshold_altitude . "m!!";
 }
 
 # radio loss of contact
 $alert_loss_heartbeat = "None";
-if (time() - strtotime($heartbeat_date_raw) > 300) {
-	$alert_loss_heartbeat = "No heartbeat for more than 5 minutes!!";
+if (time() - strtotime($heartbeat_date_raw) > $threshold_heartbeat) {
+	$alert_loss_heartbeat = "No heartbeat for more than " . $threshold_heartbeat . " seconds!!";
 }
 
 
 # Distance exceeds 30km
 $alert_distance = "None";
-if ($v_los_distance > 30) {
-	$alert_distance = "Exceeded distance of 30km!!";
+if ($v_los_distance > $threshold_distance) {
+	$alert_distance = "Exceeded distance of " . $threshold_distance . "km!!";
 }
 
 
@@ -241,15 +244,15 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $alert_temperature?></td>
 </tr>
 <tr>
-  <th>Altitude</th>
+  <th>Altitude - <?= $threshold_altitude?>m</th>
   <td><?= $alert_altitude?></td>
 </tr>
 <tr>
-  <th>No radio signal for more than 3 minutes</th>
+  <th>No radio signal for more than <?= $threshold_heartbeat?> seconds</th>
   <td><?= $alert_loss_heartbeat?></td>
 </tr>
 <tr>
-  <th>Distance exceeds 30km</th>
+  <th>Distance exceeds <?= $threshold_distance?>km</th>
   <td><?= $alert_distance?></td>
 </tr>
 </table>
