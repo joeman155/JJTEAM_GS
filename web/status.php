@@ -296,7 +296,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= round($bb_voltage,2)?></td>
 </tr>
 </table>
-<div>
+</div>
 
 
 <h3>HAB control</h3>
