@@ -199,6 +199,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <th>Alt</th>
   <th>Spd</th>
   <th>Crs</th>
+  <th>Satellites</th>
   <th>Date</th>
   <th>Time</th>
 </tr>
