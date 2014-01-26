@@ -751,7 +751,7 @@ sub insert_gps()
 
  # Put in DB
  $query = "INSERT INTO gps_t (latitude, longitude, height, speed, course, satellites, gps_date, gps_time, creation_date)
-                   values (" . $latitude . ", " . $longitude . ", " . $height . ", " . $gps_speed . ", " . $gps_course . ", " . $v_satellites . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
+                   values (" . $latitude . ", " . $longitude . ", " . $height . ", " . $gps_speed . ", " . $gps_course . ", " . $satellites . ", '" . $gps_date . "', '" . $gps_time . "', datetime('now', 'localtime'))";
 
  $sth = $dbh->prepare($query);
  $sth->execute();
