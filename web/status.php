@@ -70,6 +70,7 @@ $longitude = $row['longitude'];
 $height    = $row['height'];
 $speed     = $row['speed'];
 $course    = $row['course'];
+$satellites = $row['satellites'];
 $gps_date = $row['gps_date'];
 $gps_time = $row['gps_time'];
 $gps_creation_date = date("Y-m-d H:i:s", strtotime($row['creation_date']));
@@ -115,6 +116,12 @@ if ($internal_temp < 273 + $threshold_temperature_low) {
 	$alert_temperature = "None";
 }
 
+
+# Satellites
+$alert_satellites = "None";
+if ($satellites < $threshold_satellites) {
+	$alert_satellites = "Nmber of satellites less thatn " . $threshold_satellites;
+}
 
 # altitude
 $alert_altitude = "None";
@@ -201,6 +208,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $height?></td>
   <td><?= $speed?></td>
   <td><?= $course?></td>
+  <td><?= $satellites?></td>
   <td><?= $gps_date?></td>
   <td><?= $gps_time?></td>
 </tr>
@@ -244,11 +252,15 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $alert_temperature?></td>
 </tr>
 <tr>
+  <th>Satellites</th>
+  <td><?= $alert_satellites?></td>
+</tr>
+<tr>
   <th>Altitude - <?= $threshold_altitude?>m</th>
   <td><?= $alert_altitude?></td>
 </tr>
 <tr>
-  <th>No radio signal for more than <?= $threshold_heartbeat?> seconds</th>
+  <th>No heartbeat for more than <?= $threshold_heartbeat?> seconds</th>
   <td><?= $alert_loss_heartbeat?></td>
 </tr>
 <tr>

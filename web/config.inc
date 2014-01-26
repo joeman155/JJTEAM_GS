@@ -13,3 +13,4 @@ $threshold_altitude = 27000;
 $threshold_distance = 30;
 $threshold_temperature_low = 0;
 $threshold_temperature_high = 50;
+$threshold_satellites = 4;
