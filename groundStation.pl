@@ -62,7 +62,7 @@ $mode = 0;
 # Sensor constants
 $voltage_multipler = 5.7 * 3.3 /1024;
 
-$bb_voltage_multipler = 11 * 1.8/1800;
+$bb_voltage_multipler = 9.3 * 1/1800;
 
 # Parameters
 $param1 = $ARGV[0];
