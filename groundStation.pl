@@ -64,6 +64,9 @@ $voltage_multipler = 5.7 * 3.3 /1024;
 
 $bb_voltage_multipler = 9.3 * 1/1800;
 
+$bb_voltage_ctr = 0; # we only want to get the voltage every now and then...we keep
+                     # count of # of iterations with this.
+
 # Parameters
 $param1 = $ARGV[0];
 
@@ -148,7 +151,13 @@ while (1 == 1)
             select(undef,undef,undef,0.3);
 
             # Get BBB voltage supply reading and put into table
-            get_bb_voltage();
+	    if ($bb_voltage_ctr > 100) {
+                get_bb_voltage();
+	        $bb_voltage_ctr = 0;
+	    } else  {
+              $bb_voltage_ctr = $bb_voltage_ctr + 1;
+	    }
+
           }
 
 
