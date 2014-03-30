@@ -387,6 +387,24 @@ if ($download_file_status == 1) {
 ?> 
 </div>
 
+
+<h3>File Downloads</h3>
+<div>
+<a href="/groundStation.log">Log File</a>
+<br />
+<a href="/table.php?table=messages_t">Messsages Table</a>
+<br />
+<a href="/table.php?table=bb_voltage_t">BB Voltages Table</a>
+<br />
+<a href="/table.php?table=gps_t">GPS Table</a>
+<br />
+<a href="/table.php?table=heartbeat_t">Heartbeat Table</a>
+<br />
+<a href="/table.php?table=measurements_t">Measurements Table</a>
+<br />
+<a href="/table.php?table=radio_stats_t">Radio Stats Table</a>
+</div>
+
 <?
 function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit) {
   $theta = $lon1 - $lon2;
