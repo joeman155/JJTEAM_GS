@@ -650,6 +650,8 @@ sub start {
     	   `echo $blockid > /home/root/hope/run/x_modem_packet`;
 
            # Write buffer data to file , so we get image of file as it d/l
+           truncate(OUTFILE, 0);
+           seek OUTFILE, 0, 0;
            print(OUTFILE $buffer->dump());
           }
 
