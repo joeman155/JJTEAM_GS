@@ -656,7 +656,7 @@ sub start {
            close OUTFILE;   # So it gets output to the file
 
            # Open file again incase we need to finish off and close later.
-           my $fstatus_open = open OUTFILE, '>'.$file;
+           my $fstatus_open = open OUTFILE, '>>'.$file;
           }
 
       } else {
