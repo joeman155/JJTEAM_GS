@@ -653,6 +653,10 @@ sub start {
            truncate(OUTFILE, 0);
            seek OUTFILE, 0, 0;
            print(OUTFILE $buffer->dump());
+           close OUTFILE;   # So it gets output to the file
+
+           # Open file again incase we need to finish off and close later.
+           my $fstatus_open = open OUTFILE, '>'.$file;
           }
 
       } else {
