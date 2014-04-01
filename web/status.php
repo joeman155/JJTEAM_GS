@@ -120,7 +120,7 @@ if ($internal_temp < 273 + $threshold_temperature_low) {
 # Satellites
 $alert_satellites = "None";
 if ($satellites < $threshold_satellites) {
-	$alert_satellites = "Nmber of satellites less that " . $threshold_satellites;
+	$alert_satellites = "Number of satellites less that " . $threshold_satellites;
 }
 
 # altitude
