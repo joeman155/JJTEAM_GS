@@ -46,7 +46,7 @@ $cmd = 'convert ' . $directory . '/' . $file . ' -geometry 160x120 ' . $director
 
 $thumbnail = $directory . '/thumbnails/' . $file;
 
-if ( ! file_exists($thumbnail))
+if ( ! file_exists($thumbnail) || filemtime($thumbnail) < filemtime($directory . '/' . $file))
 {
 `$cmd`;
 }
