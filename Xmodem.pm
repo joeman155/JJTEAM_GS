@@ -648,6 +648,9 @@ sub start {
 	   # Update our little file with block id
 	   $blockid = $blockid + 1;
     	   `echo $blockid > /home/root/hope/run/x_modem_packet`;
+
+           # Write buffer data to file , so we get image of file as it d/l
+           print(OUTFILE $buffer->dump());
           }
 
       } else {
