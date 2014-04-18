@@ -226,15 +226,11 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <th>Lat</th>
   <th>Long</th>
   <th>Alt</th>
-  <th>Spd</th>
-  <th>Crs</th>
 </tr>
 <tr>
   <td><?= $latitude?></td>
   <td><?= $longitude?></td>
   <td><?= $height?></td>
-  <td><?= $speed?></td>
-  <td><?= $course?></td>
 </tr>
 <tr>
   <th>Satellites</th>
@@ -245,6 +241,14 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $satellites?></td>
   <td><?= $gps_date?></td>
   <td><?= $gps_time?></td>
+</tr>
+<tr>
+  <th>Spd</th>
+  <th>Crs</th>
+</tr>
+<tr>
+  <td><?= $speed?></td>
+  <td><?= $course?></td>
 </tr>
 </table>
 
@@ -316,7 +320,8 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $voltage?></td>
 </tr>
 <tr>
-  <th>Air Pressure (Pa)</th
+  <th>Air Pressure (Pa)</th>
+  <td><?= $pressure?></td>
 </tr>
 <tr>
   <th>Internal Temp (K)</th>
