@@ -95,6 +95,8 @@ if ($tdiff <> 0) {
    $v_vertical_velocity = 0;
 }
 
+$v_vertical_velocity = round($v_vertical_velocity, 0);
+
 
 
 # Calculate distance between LOCAL and HAB GPS 
