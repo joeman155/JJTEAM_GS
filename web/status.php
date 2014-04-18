@@ -76,6 +76,27 @@ $gps_time = $row['gps_time'];
 $gps_creation_date = date("Y-m-d H:i:s", strtotime($row['creation_date']));
 
 
+# Get the previous altitude
+$prev_id = $row['id'] - 1;
+
+$sql = "select height, gps_time from gps_t where id = " . $prev_id;
+$sth = $dbh->prepare($sql);
+$sth->execute();
+$row = $sth->fetch();
+
+$prev_height = $row['height'];
+$prev_time   = $row['gps_time'];
+
+# NOW!!.. we calculate the vertical velocity
+$tdiff = time2seconds($gps_time) - time2seconds($prev_time);
+if ($tdiff <> 0) {
+   $v_vertical_velocity = 60 * ($height - $prev_height)/$tdiff;
+} else {
+   $v_vertical_velocity = 0;
+}
+
+
+
 # Calculate distance between LOCAL and HAB GPS 
 if ($latitude != "" && $longitude != "" && $v_local_lat != "" && $v_local_long != "") {
   $v_horizontal_distance = calculateDistance($v_local_lat, $v_local_long, $latitude, $longitude, "K");
@@ -199,9 +220,6 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <th>Alt</th>
   <th>Spd</th>
   <th>Crs</th>
-  <th>Satellites</th>
-  <th>Date</th>
-  <th>Time</th>
 </tr>
 <tr>
   <td><?= $latitude?></td>
@@ -209,6 +227,13 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $height?></td>
   <td><?= $speed?></td>
   <td><?= $course?></td>
+</tr>
+<tr>
+  <th>Satellites</th>
+  <th>Date</th>
+  <th>Time</th>
+</tr>
+<tr>
   <td><?= $satellites?></td>
   <td><?= $gps_date?></td>
   <td><?= $gps_time?></td>
@@ -229,17 +254,19 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 </tr>
 </table>
 
-<h2>Relational calculated values</h2>
+<h2>GPS calculated values</h2>
 <table id="relational" class="horizontal">
 <tr>
   <th>Distance (Great circle)</th>
   <th>Approx Distance (LOS)</th>
   <th>Direction</th>
+  <th>Vertical velocity(m/min)</th>
 </tr>
 <tr>
   <td><?= $v_horizontal_distance?></td>
   <td><?= $v_los_distance?></td>
   <td><?= $v_direction?></td>
+  <td><?= $v_vertical_velocity?></td>
 </tr>
 </table>
 </div>
@@ -281,19 +308,18 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $voltage?></td>
 </tr>
 <tr>
-  <th>Air Pressure</th>
-  <td><?= $pressure?></td>
+  <th>Air Pressure (Pa)</th
 </tr>
 <tr>
-  <th>Internal Temp</th>
+  <th>Internal Temp (K)</th>
   <td><?= $internal_temp?></td>
 </tr>
 <tr>
-  <th>External Temp</th>
+  <th>External Temp (K)</th>
   <td><?= $external_temp?></td>
 </tr>
 <tr>
-  <th>Estimated Altitude</th>
+  <th>Estimated Altitude (m)</th>
   <td><?= $estimated_altitude?></td>
 </tr>
 </table>
@@ -452,4 +478,11 @@ function calculateDirection($p_lat1, $p_lon1, $p_lat2, $p_lon2) {
 }
 
 
+
+
+function time2seconds($time='00:00:00')
+{
+    list($hours, $mins, $secs) = explode(':', $time);
+    return ($hours * 3600 ) + ($mins * 60 ) + $secs;
+}
 
