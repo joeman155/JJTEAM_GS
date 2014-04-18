@@ -128,11 +128,15 @@ $estimated_altitude = $row['estimated_altitude'];
 
 
 # ALERTS
+# REset alert css
+$alert_css = "";
 # temperature
 if ($internal_temp < 273 + $threshold_temperature_low) {
 	$alert_temperature = "Temperature Alert - Below " . $threshold_temperature_low;
+        $alert_css = "style=\"color: red;\"";
 } else if ($internal_temp > (273 + $threshold_temperature_high)) {
 	$alert_temperature = "Temperature Alert - Above " . $threshold_temperature_high;
+        $alert_css = "style=\"color: red;\"";
 } else {
 	$alert_temperature = "None";
 }
@@ -142,18 +146,21 @@ if ($internal_temp < 273 + $threshold_temperature_low) {
 $alert_satellites = "None";
 if ($satellites < $threshold_satellites) {
 	$alert_satellites = "Number of satellites less that " . $threshold_satellites;
+        $alert_css = "style=\"color: red;\"";
 }
 
 # altitude
 $alert_altitude = "None";
 if ($height > $threshold_altitude) {
 	$alert_altitude = "Exceeded " . $threshold_altitude . "m!!";
+        $alert_css = "style=\"color: red;\"";
 }
 
 # radio loss of contact
 $alert_loss_heartbeat = "None";
 if (time() - strtotime($heartbeat_date_raw) > $threshold_heartbeat) {
 	$alert_loss_heartbeat = "No heartbeat for more than " . $threshold_heartbeat . " seconds!!";
+        $alert_css = "style=\"color: red;\"";
 }
 
 
@@ -161,6 +168,7 @@ if (time() - strtotime($heartbeat_date_raw) > $threshold_heartbeat) {
 $alert_distance = "None";
 if ($v_los_distance > $threshold_distance) {
 	$alert_distance = "Exceeded distance of " . $threshold_distance . "km!!";
+        $alert_css = "style=\"color: red;\"";
 }
 
 
@@ -271,7 +279,7 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 </table>
 </div>
 
-<h3>Alerts - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
+<h3 <?= $alert_css?>>Alerts - <abbr class="timeago" title="<?= $gps_creation_date?>"></abbr></h3>
 <div>
 <h2>HAB Alerts</h2>
 <table>
