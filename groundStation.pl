@@ -62,7 +62,8 @@ $mode = 0;
 # Sensor constants
 $voltage_multipler = 5.7 * 3.3 /1024;
 
-$bb_voltage_multipler = 9.3 * 1/1800;
+# ((r2 + r1)/r2) * (1.8/1800)
+$bb_voltage_multipler = ((1.5 + 10.1)/1.5) * (1.8/1800);
 
 $bb_voltage_ctr = 0; # we only want to get the voltage every now and then...we keep
                      # count of # of iterations with this.
