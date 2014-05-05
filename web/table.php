@@ -17,19 +17,22 @@ catch (PDOException $e)
 
 # Get latest Ground Radio Stats
 $sql = "select * from " . $v_table . " order by id asc";
-$tabrows = $dbh->query($sql);
+$sth = $dbh->prepare($sql);
+$sth->execute();
 
 print "<table style=\"width: 800px;\">\n";
-foreach ($tabrows as $row) {
+
+
+while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
 print "<tr>\n";
 foreach ($row as $cell) {
-	print "   <td>";
-	print $cell;
-	print "   </td>\n";
+        print "   <td>";
+        print $cell;
+        print "   </td>\n";
 
 }
 print "</tr>\n";
-
 }
+
 
 print "</table>\n";
