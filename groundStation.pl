@@ -15,12 +15,6 @@ use DBI;
 use POSIX;
 
 
-
-
-
-#get the port to bind to or default to 8000 - which remote.pl connects to
-my $tcpPort = 8000;
-
 # Stats var
 my $radio_stats_count = 0;
 my $i = 1;
