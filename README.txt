@@ -34,10 +34,18 @@ Dependencies
 
 Installation
 -------
-1. Ensure all dependencies are met.
+1. Ensure all hardward dependencies are met.
+
+i.e. - Wiring up DS3232 RTC
+     - Plugging in Tenda 311 USB stick
+     - Attached RFD900 to the Beaglebone Black
+     - Power Supply created and attached
+     - Antenna attached to RFD900 modem
+
+2. 
 Since this is a lot of work, an image has been made available:-
 
-http://leederville.net/hab/resources/GS-BBB-20140821-01.img
+http://leederville.net/hab/resources/GS-BBB-20140821-01.img.gz
 
 (You will need to get this on to your BeagleBone Black by first booting up
 with any Angstrom distribution off microSD....then connect to localnet work...then use 
@@ -45,22 +53,29 @@ a command like the following:-
 
 ssh USERNAME@your.linux.machine 'dd if=/tmp/20140821/GS-BBB-20140821-01.img bs=1M' | dd of=/dev/mmcblk1 bs=1M 
 
+Then remove microSD and reboot Beaglebone Black
 )
 
 
-2. Ensure RFD900 modem is attached to /dev/ttyO1 and has a speed of 57600
+3. Ensure RFD900 modem is attached to /dev/ttyO1 and has a speed of 57600
 
-3. Create INIT Scripts to run 'startap'
+4. Log on as user root 
 
-4. Copy across web files
+5. Clean out old DB and create fresh one
+ cd hope
+ rm hope.db
+ sqlite3 hope.db < tables.sql
 
-5. Create SQLITE3 tables using tables.sql
-
-6. Configure IP of BBB with 192.168.11.65
+That should be it!
 
 
 Updates
 ---------
-To get updates of the Groundstation scripts, run:-
+To get updates of the Groundstation scripts:-
 
+1. Ensure Ethernet cable is attached and Internet is available from Beaglebone Black
+
+2. Run the following as user root:-
+
+cd hope
 ./update_gs.sh
