@@ -36,7 +36,6 @@ cp jjteam_gs/load_message.pl .
 cp jjteam_gs/remove_all_messages.pl .
 cp jjteam_gs/startap.sh .
 cp jjteam_gs/tables.sql .
-cp jjteam_gs/update_gs.sh .
 
 echo
 
@@ -60,4 +59,10 @@ echo
 echo
 echo Finished!
 echo
+echo Please execute following command 
+echo 
+echo cp jjteam_gs/update_gs.sh .
+echo 
 echo Read README.txt for any non-standard steps that need to be performed.
+echo
+
