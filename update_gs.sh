@@ -11,6 +11,7 @@ dl_url="http://leederville.net/hab/resources/jjteam_gs.tar.gz"
 # -- END OF CONFIGURATION -- #
 
 echo Downloading latest version of scripts...
+rm -f jjteam_gs.tar.gz
 wget "${dl_url}"
 
 echo Extracting latest version
@@ -35,6 +36,7 @@ cp jjteam_gs/load_message.pl .
 cp jjteam_gs/remove_all_messages.pl .
 cp jjteam_gs/startap.sh .
 cp jjteam_gs/tables.sql .
+cp jjteam_gs/update_gs.sh .
 
 echo
 
