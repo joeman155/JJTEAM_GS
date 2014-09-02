@@ -20,7 +20,7 @@ tar zxvf jjteam_gs.tar.gz
 
 # Copy web files
 echo Copying web files...
-cp -pr jjteam_gs/web/* /www/pages/
+cp -pr jjteam_gs/web/* /var/www/gs/
 
 echo
 
@@ -35,6 +35,14 @@ cp jjteam_gs/load_message.pl .
 cp jjteam_gs/remove_all_messages.pl .
 cp jjteam_gs/startap.sh .
 cp jjteam_gs/tables.sql .
+
+echo
+
+# Create other dirs
+echo Creating directories...
+[ -d out ] || mkdir out
+[ -d out/images ] || mkdir out/images
+ln -s /var/www/gs/out out
 
 echo
 
