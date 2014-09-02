@@ -41,6 +41,8 @@ echo
 
 # Create other dirs
 echo Creating directories...
+[ -d run ] || mkdir run
+chmod 777 run
 [ -d out ] || mkdir out
 [ -d out/images ] || mkdir out/images
 ln -s /var/www/gs/out out
