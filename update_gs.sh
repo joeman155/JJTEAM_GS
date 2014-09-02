@@ -61,7 +61,7 @@ echo Finished!
 echo
 echo Please execute following command 
 echo 
-echo cp jjteam_gs/update_gs.sh .
+echo "cp jjteam_gs/update_gs.sh ."
 echo 
 echo Read README.txt for any non-standard steps that need to be performed.
 echo
