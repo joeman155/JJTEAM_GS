@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
-use lib '/home/root/hope/modules/lib/perl/site_perl/5.14.2';
+use lib '/home/root/hope/modules/lib/perl/5.14.2';
+use lib '/home/root/hope/modules/share/perl/5.14.2';
 
 # use strict;
 use warnings;
@@ -772,7 +773,7 @@ print "Listening";
 
 sub get_bb_voltage()
 {
- $v_ain1 = `cat /sys/devices/ocp.2/helper.14/AIN1`;
+ $v_ain1 = `cat /sys/devices/ocp.3/helper.15/AIN1`;
  $v_voltage = $bb_voltage_multipler * $v_ain1;
 
  # Initialise DB connection
