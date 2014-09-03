@@ -37,7 +37,7 @@ $day   = sprintf '%02d', $day;
 my $rrmmdd =  $year+1900 . $month . $day;
 
 # gps_file
-$gps_file = "out/gps_data" . $rrmmdd . ".txt";
+$gps_file = $home_dir . "out/gps_data" . $rrmmdd . ".txt";
 
 # X-Modem packet file
 $download_file_status = $home_dir . "run/download_file_status";
@@ -274,7 +274,7 @@ while (1 == 1)
 
               my $receive = Device::SerialPort::Xmodem::Receive->new(
                     port     => $port,
-                    filename => 'out/images/' . $v_file,
+                    filename => $home_dir . 'out/images/' . $v_file,
                     DEBUG    => 1
               );
 
@@ -597,7 +597,7 @@ sub create_kml()
 {
 local ($gps_file) = @_;
 
-open (my $kml_file, ">out/hab_gps.kml") or die "Cannot create hab_gps.kml";
+open (my $kml_file, ">" . $home_dir . "out/hab_gps.kml") or die "Cannot create hab_gps.kml";
 
 $startline = << "STARTLINE";
 <?xml version="1.0" encoding="utf-8"?>
