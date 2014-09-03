@@ -23,7 +23,7 @@ my $i = 1;
 
 # Pressure/altitude
 my %data;  # Holds altitude/air pressure data
-load_air_data();
+load_air_data("/home/root/hope/air_data.txt");
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
@@ -866,9 +866,10 @@ sub get_radio_stats()
 
 
 
-sub load_air_data()
+sub load_air_data($)
 {
-open FILE, "air_data.txt" or die $!;
+local ($file) = @_;
+open FILE, $file or die $!;
  local $altitude;
  local $pressure;
 
