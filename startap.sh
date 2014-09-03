@@ -30,4 +30,4 @@ nohup udhcpd  -f -S /home/root/hope/etc/udhcpd.conf.wlan &
 
 
 echo Starting groundstation...
-/home/root/hope/groundStation.pl >> /home/root/hope/groundStation.log 2>&1 
+nohup /home/root/hope/groundStation.pl >> /home/root/hope/groundStation.log 2>&1  &

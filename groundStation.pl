@@ -21,9 +21,15 @@ my $radio_stats_count = 0;
 my $i = 1;
 
 
+$home_dir = "/home/root/hope/";
+
+# DATABASE
+my $db_string = "dbi:SQLite:dbname=" . $home_dir . "hope.db";
+
+
 # Pressure/altitude
 my %data;  # Holds altitude/air pressure data
-load_air_data("/home/root/hope/air_data.txt");
+load_air_data($home_dir . "air_data.txt");
 
 my($day, $month, $year) = (localtime)[3,4,5];
 $month = sprintf '%02d', $month+1;
@@ -34,19 +40,19 @@ my $rrmmdd =  $year+1900 . $month . $day;
 $gps_file = "out/gps_data" . $rrmmdd . ".txt";
 
 # X-Modem packet file
-$download_file_status = "/home/root/hope/run/download_file_status";
-$x_modem_packet_num = "/home/root/hope/run/x_modem_packet";
+$download_file_status = $home_dir . "run/download_file_status";
+$x_modem_packet_num = $home_dir . "run/x_modem_packet";
 `echo "" > $x_modem_packet_num`;
 `echo 0 > $download_file_status`;
 
 
 
 # measurements_file
-$measurements_file = "out/measurements.txt";
+$measurements_file = $home_dir . "out/measurements.txt";
 
 # Cutdown file
-$cutdown_req_file = "/home/root/hope/run/cutdown_requested.txt";
-$cutdown_init_file = "/home/root/hope/run/cutdown_initiated.txt";
+$cutdown_req_file  = $home_dir . "run/cutdown_requested.txt";
+$cutdown_init_file = $home_dir . "run/cutdown_initiated.txt";
 `rm -f $cutdown_req_file`;
 `rm -f $cutdown_init_file`;
 $cutdown_initiated = 0;
@@ -672,7 +678,7 @@ sub log_radio_stats($$)
  local ($p_place, $p_stats) = @_;
 
     # Initialise DB connection
-    my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+    my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
     # Put in DB
     $query = "INSERT INTO radio_stats_t (place, stats, creation_date) values ($p_place, '" . $p_stats . "', datetime('now', 'localtime'))";
@@ -695,7 +701,7 @@ sub log_messages($)
     `echo "$message" >> /tmp/message.log`;
 
     # Initialise DB connection
-    my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+    my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
     # Put in DB
     $query = "INSERT INTO messages_t (message, creation_date) values ('" . $message . "', datetime('now', 'localtime'))";
@@ -717,7 +723,7 @@ sub insert_measurements()
  $alt = get_altitude($pressure);
 
  # Initialise DB connection
- my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+ my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
  $query = "INSERT INTO measurements_t (voltage, pressure, internal_temp, external_temp, estimated_altitude, creation_date)
@@ -735,7 +741,7 @@ sub insert_heartbeat()
  local($heartbeat) = @_;
 
  # Initialise DB connection
- my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+ my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
 
  $query = "INSERT INTO heartbeat_t (heartbeat, creation_date) 
@@ -752,7 +758,7 @@ sub insert_gps()
  local($latitude, $longitude, $height, $gps_date, $gps_time, $gps_speed, $gps_course, $satellites) = @_;
 
  # Initialise DB connection
- my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+ my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
  $query = "INSERT INTO gps_t (latitude, longitude, height, speed, course, satellites, gps_date, gps_time, creation_date)
@@ -777,7 +783,7 @@ sub get_bb_voltage()
  $v_voltage = $bb_voltage_multipler * $v_ain1;
 
  # Initialise DB connection
- my $dbh = DBI->connect("dbi:SQLite:dbname=hope.db","","",{ RaiseError => 1},) or die $DBI::errstr;
+ my $dbh = DBI->connect($db_string,"","",{ RaiseError => 1},) or die $DBI::errstr;
 
  # Put in DB
  $query = "INSERT INTO bb_voltage_t (voltage, creation_date)
