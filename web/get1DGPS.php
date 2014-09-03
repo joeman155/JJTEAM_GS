@@ -12,8 +12,9 @@ include "config.inc";
 
    # GPS
    $now = date("Y-m-d");
-$now = "2014-09-01";
-   $sql = "select * from gps_t where creation_date >= '" . $now . "'";
+   $sql = "select latitude, longitude, height, gps_date, gps_time, time(creation_date) as creation_date
+           from gps_t 
+           where creation_date >= '" . $now . "'";
 
    $sth = $dbh->prepare($sql);
 
@@ -28,8 +29,7 @@ $now = "2014-09-01";
       $height = $row['height'];
       $gps_date = $row['gps_date'];
       $gps_time = $row['gps_time'];
-      // $gps_creation_date = date("d-M-Y H:i:s", $row['creation_date']);
-      $gps_creation_date = date("H:i:s", $row['creation_date']);
+      $gps_creation_date = $row['creation_date'];
 
 
       $v['latitude'] = $latitude;

@@ -73,10 +73,10 @@
                     pointRadius: 6,
                     pointerEvents: "visiblePainted",
                     // label with \n linebreaks
-                    label : "Time: ${time}\nPos: ${pos}",
+                    label : "${time}\n${pos}",
                     
                     fontColor: "${favColor}",
-                    fontSize: "12px",
+                    fontSize: "10px",
                     fontFamily: "Courier New, monospace",
                     fontWeight: "bold",
                     labelAlign: "${align}",
