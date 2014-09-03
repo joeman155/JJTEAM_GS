@@ -2,10 +2,13 @@
 
 
 # echo APD wait a few seconds for the USB to be ready
-sleep 15
+sleep 5
+
+# Initialise the Serial Port
+echo ttyO1_armhf.com > /sys/devices/bone_capemgr.9/slots
 
 # Initialise the ADC
-echo cape-bone-iio > /sys/devices/bone_capemgr.8/slots
+echo cape-bone-iio > /sys/devices/bone_capemgr.9/slots
 
 
 echo Set date and time
@@ -22,7 +25,8 @@ ifconfig wlan0 inet 192.168.11.65 up
 nohup udhcpd  -f -S /home/root/hope/etc/udhcpd.conf.wlan &
 
 # echo APD start wifi AP
-nohup hostapd /home/root/hope/etc/hostapd.conf &
+# This is started in main init scripts.
+# nohup hostapd /home/root/hope/etc/hostapd.conf &
 
 
 echo Starting groundstation...
