@@ -1,6 +1,3 @@
-<?
-header("Access-Control-Allow-Origin: http://leederville.net");
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,7 +31,7 @@ header("Access-Control-Allow-Origin: http://leederville.net");
 
 
 	<script>
-// GPS
+	// GPS
           if (navigator.geolocation)
             {
              navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback,{enableHighAccuracy:true});
