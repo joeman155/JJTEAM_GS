@@ -2,6 +2,17 @@
                 //maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
                 //                                 20037508.34, 20037508.34),
     function initmap() {
+           // Get Viewers GPS info
+          if (navigator.geolocation)
+            {
+          navigator.geolocation.watchPosition(gps_success_callback);
+            }
+          else
+            {
+            $("#gps_error").html("Geolocation is not supported by this browser.");
+            }
+
+	// Initialise the map
            var options = {
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 displayProjection: new OpenLayers.Projection("EPSG:4326"),
@@ -34,7 +45,13 @@
 	// Balloon tracking icon
         var size = new OpenLayers.Size(21,25);
         var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+        var balloon_start_icon = new OpenLayers.Icon('/api/img/start.png', size, offset);
         var balloon_icon = new OpenLayers.Icon('/api/img/balloon.png', size, offset);
+
+	// Tracking Vehicle icon
+	var vehicle_icon = new OpenLayers.Icon('/api/img/vehicle.png', size, offset);
+
+	// Create layer for markers
         var markers = new OpenLayers.Layer.Markers( "Markers" );
 
 	// New Map
@@ -46,7 +63,8 @@
         // Get GPS co-ordinates for the current day.
 	var balloon_gps;
 	var points = [];
-	var style = {strokeColor:"#0500bd", strokeWidth:30};
+	var p_flag = 0;
+	var style = {strokeColor:"#0500bd", strokeWidth:3};
         $.ajax({
                 url: 'get1DGPS.php',
                 type: "GET",
@@ -58,7 +76,12 @@
                  		v_lat=element.latitude;
                 	        v_long=element.longitude;
         			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
-        			markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_icon.clone()));
+				if (p_flag == 0) {
+        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon));
+					p_flag = 1;
+				} else {
+        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_icon.clone()));
+				}
 				points.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
 				});
                         },
@@ -69,8 +92,14 @@
 
 	// Draw balloon path
 	var line = new OpenLayers.Geometry.LineString(points);
-	var fea = new OpenLayers.Feature.Vector(line);
+	var fea = new OpenLayers.Feature.Vector(line, {}, style);
 	vec.addFeatures(fea);
+
+	// Draw marker of vehicle
+	if (v_local_lat) {
+        	vehicle_gps = new OpenLayers.LonLat(v_local_long,v_local_lat).transform( fromProjection, toProjection);
+		markers.addMarker(new OpenLayers.Marker(vehicle_gps, vehicle_icon));
+	}
 
 	// Add Layers
         map.addLayer(newL);
