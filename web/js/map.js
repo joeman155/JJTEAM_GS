@@ -57,7 +57,36 @@
 	// New Map
         map = new OpenLayers.Map("map-canvas",options);
         var newL = new OpenLayers.Layer.OSM("Default", "/osm_tiles/${z}/${x}/${y}.png", {numZoomLevels: 19});
-	var vec = new OpenLayers.Layer.Vector("Overlay");
+
+
+	//Overlay
+        // allow testing of specific renderers via "?renderer=Canvas", etc
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers; 
+	var vec = new OpenLayers.Layer.Vector("Overlay", {
+                styleMap: new OpenLayers.StyleMap({'default':{
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1,
+                    strokeWidth: 3,
+                    fillColor: "#FF5500",
+                    fillOpacity: 0.5,
+                    pointRadius: 6,
+                    pointerEvents: "visiblePainted",
+                    // label with \n linebreaks
+                    label : "Time: ${time}\nPos: ${pos}",
+                    
+                    fontColor: "${favColor}",
+                    fontSize: "12px",
+                    fontFamily: "Courier New, monospace",
+                    fontWeight: "bold",
+                    labelAlign: "${align}",
+                    labelXOffset: "${xOffset}",
+                    labelYOffset: "${yOffset}",
+                    labelOutlineColor: "white",
+                    labelOutlineWidth: 3
+                }}),
+                renderers: renderer
+        });
 
 
         // Get GPS co-ordinates for the current day.
@@ -75,6 +104,7 @@
 			$.each(data, function(index,element) {
                  		v_lat=element.latitude;
                 	        v_long=element.longitude;
+				v_pos = v_lat + ", " + v_long + ", " + element.height;
         			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
 				if (p_flag == 0) {
         				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon));
@@ -82,6 +112,22 @@
 				} else {
         				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_icon.clone()));
 				}
+
+				// Add Position and time of recording
+				var labelOffsetPoint = new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection);
+			 	var labelOffsetFeature = new OpenLayers.Feature.Vector(labelOffsetPoint);
+				labelOffsetFeature.attributes = {
+				time: element.gps_creation_date,
+				pos: v_pos,
+				favColor: 'blue',
+				align: "cm",
+				// positive value moves the label to the right
+				xOffset: 0,
+				// negative value moves the label down
+				yOffset:-20
+				};
+				vec.addFeatures(labelOffsetFeature);
+
 				points.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
 				});
                         },
@@ -89,6 +135,10 @@
                         alert('failure when getting latest gps data');
                         }
                 });
+
+
+
+
 
 	// Draw balloon path
 	var line = new OpenLayers.Geometry.LineString(points);

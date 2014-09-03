@@ -28,7 +28,8 @@ $now = "2014-09-01";
       $height = $row['height'];
       $gps_date = $row['gps_date'];
       $gps_time = $row['gps_time'];
-      $gps_creation_date = date("d-M-Y H:i:s", $row['creation_date']);
+      // $gps_creation_date = date("d-M-Y H:i:s", $row['creation_date']);
+      $gps_creation_date = date("H:i:s", $row['creation_date']);
 
 
       $v['latitude'] = $latitude;
