@@ -45,7 +45,10 @@ echo Creating directories...
 chmod 777 run
 [ -d out ] || mkdir out
 [ -d out/images ] || mkdir out/images
-ln -s /var/www/gs/out out
+[ -d out/images/thumbnails ] || mkdir out/images/thumbnails
+chmod 777 out/images/thumbnails
+ln -s /home/root/hope/out /var/www/gs/out 
+ln -s /home/root/hope/groundStation.log /var/www/gs/groundStation.log
 
 echo
 

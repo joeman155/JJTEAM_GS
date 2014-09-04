@@ -271,10 +271,10 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
 <h2>GPS calculated values</h2>
 <table id="relational" class="horizontal">
 <tr>
-  <th>Distance (Great circle)</th>
-  <th>Approx Distance (LOS)</th>
-  <th>Direction</th>
-  <th>Vertical velocity(m/min)</th>
+  <th>Distance (Great circle) (km)</th>
+  <th>Approx Distance (LOS) (km)</th>
+  <th>Direction (degrees)</th>
+  <th>Vertical velocity (m/min)</th>
 </tr>
 <tr>
   <td><?= $v_horizontal_distance?></td>
