@@ -4,11 +4,11 @@
 include "config.inc";
 
 # PARAMETERS (phone GPS)
-$v_local_lat = $_REQUEST['local_lat'];
-$v_local_long = $_REQUEST['local_long'];
-$v_local_alt  = $_REQUEST['local_alt'];
-$v_local_got_gps = $_REQUEST['local_got_gps'];
-$v_local_timestamp = $_REQUEST['local_timestamp'];
+$v_local_lat       = isset($_REQUEST['local_lat']) ? $_REQUEST['local_lat'] : NULL;
+$v_local_long      = isset($_REQUEST['local_long']) ? $_REQUEST['local_long'] : NULL;
+$v_local_alt       = isset($_REQUEST['local_alt']) ? $_REQUEST['local_alt'] : NULL;
+$v_local_got_gps   = isset($_REQUEST['local_got_gps']) ? $_REQUEST['local_got_gps'] : NULL;
+$v_local_timestamp = isset($_REQUEST['local_timestamp']) ? $_REQUEST['local_timestamp'] : NULL;
 
 
 # Get all the latest measurements

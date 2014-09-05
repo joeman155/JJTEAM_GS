@@ -47,8 +47,8 @@ chmod 777 run
 [ -d out/images ] || mkdir out/images
 [ -d out/images/thumbnails ] || mkdir out/images/thumbnails
 chmod 777 out/images/thumbnails
-ln -s /home/root/hope/out /var/www/gs/out 
-ln -s /home/root/hope/groundStation.log /var/www/gs/groundStation.log
+ln -sf /home/root/hope/out /var/www/gs/out 
+ln -sf /home/root/hope/groundStation.log /var/www/gs/groundStation.log
 
 echo
 
