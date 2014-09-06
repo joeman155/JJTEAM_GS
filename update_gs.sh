@@ -41,14 +41,29 @@ echo
 
 # Create other dirs
 echo Creating directories...
+# For upload of area where we can upload path prediction files
+[ -d uploads ] || mkdir uploads
+chmod 777 uploads
+
+# Temp write area
 [ -d run ] || mkdir run
 chmod 777 run
+
+# Images area
 [ -d out ] || mkdir out
 [ -d out/images ] || mkdir out/images
 [ -d out/images/thumbnails ] || mkdir out/images/thumbnails
 chmod 777 out/images/thumbnails
+
+# Access to images from web interface
 ln -sf /home/root/hope/out /var/www/gs/out 
+
+# link to log...so it can be downloaded.
 ln -sf /home/root/hope/groundStation.log /var/www/gs/groundStation.log
+
+# Permissions so prediction path upload works
+chmod 777 .
+chmod 777 hope.db
 
 echo
 

@@ -158,6 +158,7 @@
 		<li><a href="#messages">Log</a></li>
 		<li><a href="images.php">Images</a></li>
 		<li><a href="#map-canvas">Map</a></li>
+		<li><a href="upload_prediction.php">Upload Prediction</a></li>
 	</ul>
 	<div id="messages" class="container">
 		<ul id="messages">
@@ -171,6 +172,9 @@
 	</div>
 
 	<div id="images">
+	</div>
+
+	<div id="prediction">
 	</div>
 </div>
 

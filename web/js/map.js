@@ -1,6 +1,3 @@
-			// new OpenLayers.Control.Graticule(true,0.1,0.1,true,true,1,100,"coordinates",true,"dm",-1000,-100)
-                //maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
-                //                                 20037508.34, 20037508.34),
     function initmap() {
            // Get Viewers GPS info
           if (navigator.geolocation)
@@ -89,11 +86,13 @@
         });
 
 
+
+
         // Get GPS co-ordinates for the current day.
 	var balloon_gps;
 	var points = [];
 	var p_flag = 0;
-	var style = {strokeColor:"#0500bd", strokeWidth:3};
+	var flight_style = {strokeColor:"#0500bd", strokeWidth:3};
         $.ajax({
                 url: 'get1DGPS.php',
                 type: "GET",
@@ -137,13 +136,48 @@
                 });
 
 
-
-
-
 	// Draw balloon path
 	var line = new OpenLayers.Geometry.LineString(points);
-	var fea = new OpenLayers.Feature.Vector(line, {}, style);
-	vec.addFeatures(fea);
+	var fea = new OpenLayers.Feature.Vector(line, {}, flight_style);
+
+
+        // Get predicted flight plan
+        var predicted_flight_path_gps;
+        var points1 = [];
+        var p_flag = 0;
+        var flight_prediction_style = {strokeColor:"#FF0000", strokeWidth:3};
+        $.ajax({
+                url: 'getPredictedFlightPath.php',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function(data) {
+                        $.each(data, function(index,element) {
+                                v_lat=element.latitude;
+                                v_long=element.longitude;
+        			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
+				if (p_flag == 0) {
+        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon));
+					p_flag = 1;
+				} 
+                                points1.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
+                                });
+                        },
+                failure: function() {
+                        alert('failure when getting flight prediction path data');
+                        }
+                });
+
+
+	// Draw predicted flight path
+	var line1 = new OpenLayers.Geometry.LineString(points1);
+	var fea1 = new OpenLayers.Feature.Vector(line1, {}, flight_prediction_style);
+
+
+	// Add all features to vectory
+	vec.addFeatures([fea, fea1]);
+
 
 	// Draw marker of vehicle
 	if (v_local_lat) {

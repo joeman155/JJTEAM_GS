@@ -44,3 +44,10 @@ CREATE TABLE heartbeat_t (id integer primary key autoincrement,
 			  heartbeat integer,
 			  creation_date datetime);
 				                             
+
+CREATE TABLE gps_prediction_t (id integer primary key autoincrement,
+		    dtime integer,
+                    latitude float,
+                    longitude float,
+                    height    integer,
+                    creation_date datetime);
