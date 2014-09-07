@@ -31,7 +31,7 @@
 
 
   <script>
-	// Timer to intialize the map and re-initialize every 90 seconds
+	// Timer to intialize the map and re-initialize every 120 seconds
 	var map_active = 0;
 	setInterval(function(){
 		if (map_active == 1) {
@@ -39,7 +39,7 @@
         		initmap();
      		}	
 		}, 
-	90000);
+	120000);
 
 	// GPS
         if (navigator.geolocation) {

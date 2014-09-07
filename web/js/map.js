@@ -133,7 +133,7 @@
 			$.each(data, function(index,element) {
                  		v_lat=element.latitude;
                 	        v_long=element.longitude;
-				v_pos = v_lat + ", " + v_long + ", " + element.height;
+				v_pos = v_lat + "," + v_long + "," + element.height;
         			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
 				if (p_flag == 0) {
         				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon));
@@ -206,8 +206,8 @@
 
 
 	// Add all features to vectory
-	vec.addFeatures([fea]);
-	static_vec.addFeatures([fea1]);
+	vec.addFeatures([fea]);          // non-static features
+	static_vec.addFeatures([fea1]);  // static features
 
 
 	// Draw marker of vehicle
@@ -226,5 +226,4 @@
 	// Center map and zoom in
 	map.setCenter(start_position, zoom);
         map.zoomIn();
-
  }
