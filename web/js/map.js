@@ -50,13 +50,14 @@
 
 	// Create layer for markers
         var markers = new OpenLayers.Layer.Markers( "Markers" );
+        var static_markers = new OpenLayers.Layer.Markers( "Markers_Predict" );
 
 	// New Map
         map = new OpenLayers.Map("map-canvas",options);
         var newL = new OpenLayers.Layer.OSM("Default", "/osm_tiles/${z}/${x}/${y}.png", {numZoomLevels: 19});
 
 
-	//Overlay
+	// Overlay for balloon flight path
         // allow testing of specific renderers via "?renderer=Canvas", etc
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers; 
@@ -85,6 +86,35 @@
                 renderers: renderer
         });
 
+
+        // Overlay for balloon flight path prediction
+        // allow testing of specific renderers via "?renderer=Canvas", etc
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+        var static_vec = new OpenLayers.Layer.Vector("Overlay_Prediction", {
+                styleMap: new OpenLayers.StyleMap({'default':{
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1,
+                    strokeWidth: 3,
+                    fillColor: "#FF5500",
+                    fillOpacity: 0.5,
+                    pointRadius: 6,
+                    pointerEvents: "visiblePainted",
+                    // label with \n linebreaks
+                    label : "${time}\n${pos}",
+
+                    fontColor: "${favColor}",
+                    fontSize: "10px",
+                    fontFamily: "Courier New, monospace",
+                    fontWeight: "bold",
+                    labelAlign: "${align}",
+                    labelXOffset: "${xOffset}",
+                    labelYOffset: "${yOffset}",
+                    labelOutlineColor: "white",
+                    labelOutlineWidth: 3
+                }}),
+                renderers: renderer
+        });
 
 
 
@@ -158,7 +188,7 @@
                                 v_long=element.longitude;
         			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
 				if (p_flag == 0) {
-        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon.clone()));
+        				static_markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon.clone()));
 					p_flag = 1;
 				} 
                                 points1.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
@@ -176,7 +206,8 @@
 
 
 	// Add all features to vectory
-	vec.addFeatures([fea, fea1]);
+	vec.addFeatures([fea]);
+	static_vec.addFeatures([fea1]);
 
 
 	// Draw marker of vehicle
@@ -187,10 +218,13 @@
 
 	// Add Layers
         map.addLayer(newL);
+        map.addLayer(static_markers);
         map.addLayer(markers);
+        map.addLayer(static_vec);
         map.addLayer(vec);
 
 	// Center map and zoom in
 	map.setCenter(start_position, zoom);
         map.zoomIn();
+
  }

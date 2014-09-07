@@ -30,7 +30,17 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 
 
-	<script>
+  <script>
+	// Timer to intialize the map and re-initialize every 90 seconds
+	map_active = 0;
+	setInterval(function(){
+		if (map_active == 1) {
+			map.destroy();
+        		initmap();
+     		}	
+		}, 
+	90000);
+
 	// GPS
           if (navigator.geolocation)
             {
@@ -48,7 +58,10 @@
 			var active = $("#tabs").tabs("option", "active");
 				if (active == 3) {
 					initmap();
-				}
+					map_active = 1;
+				} else {
+					map_active = 0;
+                                }
 			}
 		});
 
