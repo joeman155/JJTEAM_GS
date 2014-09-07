@@ -32,7 +32,7 @@
 
   <script>
 	// Timer to intialize the map and re-initialize every 90 seconds
-	map_active = 0;
+	var map_active = 0;
 	setInterval(function(){
 		if (map_active == 1) {
 			map.destroy();
@@ -42,17 +42,14 @@
 	90000);
 
 	// GPS
-          if (navigator.geolocation)
-            {
+        if (navigator.geolocation) {
              navigator.geolocation.getCurrentPosition(gps_success_callback,gps_error_callback,{enableHighAccuracy:true});
-            }
-          else
-            {
+        } else {
             $("#gps_error").html("Geolocation is not supported by this browser.");
-            }
+        }
 
 	$(function() {
-
+	// Initiailise the tab area
 		$( "#tabs" ).tabs( {
 			activate: function(e,ui) {
 			var active = $("#tabs").tabs("option", "active");
@@ -157,7 +154,7 @@
 </head>
 <body>
 
-<div id="header" class="demo-description" style="width: 500px; padding-top: 3px;">
+<div id="header" class="header-class" style="width: 500px; padding-top: 3px;">
     <div id="datetime" style="float: left; width: 200px;">
     </div>
 
