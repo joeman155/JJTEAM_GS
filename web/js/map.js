@@ -158,7 +158,7 @@
                                 v_long=element.longitude;
         			balloon_gps = new OpenLayers.LonLat(v_long,v_lat).transform( fromProjection, toProjection);
 				if (p_flag == 0) {
-        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon));
+        				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_start_icon.clone()));
 					p_flag = 1;
 				} 
                                 points1.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
