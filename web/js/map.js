@@ -71,7 +71,7 @@
                     pointRadius: 6,
                     pointerEvents: "visiblePainted",
                     // label with \n linebreaks
-                    label : "${time}\n${pos}",
+                    label : "${gps_time} (${creation_date})\n${pos}",
                     
                     fontColor: "${favColor}",
                     fontSize: "10px",
@@ -146,7 +146,8 @@
 				var labelOffsetPoint = new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection);
 			 	var labelOffsetFeature = new OpenLayers.Feature.Vector(labelOffsetPoint);
 				labelOffsetFeature.attributes = {
-				time: element.gps_creation_date,
+				creation_date: element.gps_creation_date,
+				gps_time: element.gps_time,
 				pos: v_pos,
 				favColor: 'blue',
 				align: "cm",
