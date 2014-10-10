@@ -5,13 +5,16 @@
 include "config.inc";
 
 
-$allowedExts = array("csv");
+$allowedExts = array("csv","txt");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-   if ((($_FILES["file"]["type"] == "text/csv"))
+   if (
+       (
+        ($_FILES["file"]["type"] == "text/csv") || ($_FILES["file"]["type"] == "text/plain")
+       )
        && 
        ($_FILES["file"]["size"] < 20000)
        && 
@@ -37,6 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        }
    } else {
      echo "Invalid file";
+     echo "<br>";
+     echo $_FILES["file"]["type"];
+     echo "<br>";
    }
 } else {
 ?>
