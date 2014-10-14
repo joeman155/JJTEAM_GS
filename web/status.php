@@ -388,25 +388,18 @@ if ($cutdown_msg != "") {
 }
 ?>
 
-<h2>No Photos
+<h2>Enable/Disable Photo Downloads</h2>
 <?
 if (file_exists($nophotos_file)) {
   $nophotos_msg = "Disabled";
+  $nophotos_button_msg = "Enable";
 } else {
   $nophotos_msg = "Enabled";
-}
-
-if ($nophotos_msg != "") {
-?>
-        <b>Photo Downloads</b>: <?= $nophotos_msg ?>
-<?
-} else {
-?>
-<input id="nophotos" type="button" value="Disable Photo Download"/>
-<?
+  $nophotos_button_msg = "Disable";
 }
 ?>
-
+<input id="nophotos" type="button" value="<?=$nophotos_button_msg?> Photo Download"/>
+(Currently <?=$nophotos_msg?>)
 </div>
 
 <h3>Radio Status - <abbr class="timeago" title="<?= $radio_stats_ground_date?>"></abbr></h3>

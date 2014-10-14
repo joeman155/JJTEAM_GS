@@ -243,7 +243,8 @@ while (1 == 1)
 # MODE 0 - NORMAL OPERATION
 # SEE IF WE WANT TO DOWNLOAD PIC
           # We don't want to d/l EACH time we are offered...just occasionly
-          if ($pic_count % $pic_dl_freq == 0 && $image_error == 0 && $result =~ /Menu_Image/)
+          # and we do not want to download if disabled
+          if ($pic_count % $pic_dl_freq == 0 && $image_error == 0 && $result =~ /Menu_Image/ && ! -f $nophotos_file)
           {
             $str = "Sending request to download image\n";
             log_messages($str);

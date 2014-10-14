@@ -1,5 +1,11 @@
-Disabling photo downloads...
-
 <?
+# CONFIGUIRATION
+include "config.inc";
 
-`touch /home/root/hope/run/nophotos.txt`;
+if (file_exists($nophotos_file)) {
+  `rm -f $nophotos_file`;
+  print "Enabling photo downloads...";
+} else {
+   `touch $nophotos_file`;
+   print "Disabling photo downloads...";
+}
