@@ -57,6 +57,11 @@ $cutdown_init_file = $home_dir . "run/cutdown_initiated.txt";
 `rm -f $cutdown_init_file`;
 $cutdown_initiated = 0;
 
+
+# No Photos
+$nophotos_file = $home_dir . "run/nophotos.txt";
+`rm -f $nophotos_file`;
+
 # Defaults 
 $mode = 0;
 

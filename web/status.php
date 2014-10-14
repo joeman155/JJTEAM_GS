@@ -215,6 +215,18 @@ if ($v_los_distance > $threshold_distance) {
                 }
             });
         });
+
+
+        $("#nophotos").click(function() {
+        alert("About to disable photo downloads");
+        $.ajax({
+                url: "nophotos.php",
+                success: function(s,x) {
+                        $("#stats").html(s);
+                }
+            });
+        });
+
 </script>
 <div>
 Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>"></abbr>
@@ -375,6 +387,26 @@ if ($cutdown_msg != "") {
 <?
 }
 ?>
+
+<h2>No Photos
+<?
+if (file_exists($nophotos_file)) {
+  $nophotos_msg = "Disabled";
+} else {
+  $nophotos_msg = "Enabled";
+}
+
+if ($nophotos_msg != "") {
+?>
+        <b>Photo Downloads</b>: <?= $nophotos_msg ?>
+<?
+} else {
+?>
+<input id="nophotos" type="button" value="Disable Photo Download"/>
+<?
+}
+?>
+
 </div>
 
 <h3>Radio Status - <abbr class="timeago" title="<?= $radio_stats_ground_date?>"></abbr></h3>
