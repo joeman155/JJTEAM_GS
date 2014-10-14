@@ -218,7 +218,7 @@ if ($v_los_distance > $threshold_distance) {
 
 
         $("#nophotos").click(function() {
-        alert("About to disable photo downloads");
+        alert("About to disable/enable photo downloads");
         $.ajax({
                 url: "nophotos.php",
                 success: function(s,x) {
