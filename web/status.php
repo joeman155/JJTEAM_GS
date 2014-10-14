@@ -257,8 +257,8 @@ Heartbeat: <?= $heartbeat?> - <abbr class="timeago" title="<?= $heartbeat_date?>
   <td><?= $gps_time?></td>
 </tr>
 <tr>
-  <th>Spd</th>
-  <th>Crs</th>
+  <th>Spd (km/hr)</th>
+  <th>Crs (deg)</th>
 </tr>
 <tr>
   <td><?= $speed?></td>
