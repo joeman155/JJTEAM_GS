@@ -131,6 +131,7 @@
                 cache: false,
                 success: function(data) {
 			$.each(data, function(index,element) {
+				v_total = data.length; // Total # of points. Only want position on LAST point
                  		v_lat=element.latitude;
                 	        v_long=element.longitude;
 				v_pos = v_lat + "," + v_long + "," + element.height;
@@ -142,21 +143,23 @@
         				markers.addMarker(new OpenLayers.Marker(balloon_gps, balloon_icon.clone()));
 				}
 
-				// Add Position and time of recording
-				var labelOffsetPoint = new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection);
-			 	var labelOffsetFeature = new OpenLayers.Feature.Vector(labelOffsetPoint);
-				labelOffsetFeature.attributes = {
-				creation_date: element.gps_creation_date,
-				gps_time: element.gps_time,
-				pos: v_pos,
-				favColor: 'blue',
-				align: "cm",
-				// positive value moves the label to the right
-				xOffset: 0,
-				// negative value moves the label down
-				yOffset:-20
-				};
-				vec.addFeatures(labelOffsetFeature);
+				// Add Position and time of recording for LAST point
+				if (index == v_total - 1) {
+				   var labelOffsetPoint = new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection);
+			 	   var labelOffsetFeature = new OpenLayers.Feature.Vector(labelOffsetPoint);
+				   labelOffsetFeature.attributes = {
+				   creation_date: element.gps_creation_date,
+				   gps_time: element.gps_time,
+				   pos: v_pos,
+				   favColor: 'blue',
+				   align: "cm",
+				   // positive value moves the label to the right
+				   xOffset: 0,
+				   // negative value moves the label down
+				   yOffset:-20
+				   };
+				   vec.addFeatures(labelOffsetFeature);
+				}
 
 				points.push( new OpenLayers.Geometry.Point(v_long,v_lat).transform( fromProjection, toProjection));
 				});
