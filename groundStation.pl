@@ -923,6 +923,6 @@ sub get_altitude()
    $prev_key = $key;
  }
 
- return int($altitude);
+ return int($altitude/3.2808399);
 }
 
